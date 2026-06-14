@@ -35,14 +35,28 @@ export function scaleRecipe(ingredients: Ingredient[], totalDough: number): Scal
   }));
 }
 
-export function buildScaledRecipe(recipe: Recipe, scaled: ScaledIngredient[]): Recipe {
+export function buildScaledRecipe(recipe: Recipe, scaled: ScaledIngredient[], totalDough?: number): Recipe {
+  const originalDoughWeight = recipe.doughIngredients
+    .filter(i => i.bakerPercentage > 0)
+    .reduce((sum, i) => sum + getGrams(i), 0);
+  const yieldRatio = totalDough !== undefined && originalDoughWeight > 0
+    ? totalDough / originalDoughWeight
+    : 1;
+
   const scaledDoughIngredients = scaled
     .map(si => {
       const original = recipe.doughIngredients.find(i => i.ingredientName === si.ingredientName);
       if (!original) return null;
-      const originalGrams = getGrams(original);
-      const scaleFactor = originalGrams > 0 ? si.grams / originalGrams : 1;
-      const quantity = original.unit === "g" ? si.grams : original.quantity * scaleFactor;
+      let quantity: number;
+      if (original.unit.toLowerCase() === "count") {
+        quantity = original.quantity * yieldRatio;
+      } else if (original.unit === "g") {
+        quantity = si.grams;
+      } else {
+        const originalGrams = getGrams(original);
+        const scaleFactor = originalGrams > 0 ? si.grams / originalGrams : 1;
+        quantity = original.quantity * scaleFactor;
+      }
       return { ...original, grams: si.grams, quantity };
     })
     .filter((i): i is Ingredient => i !== null);

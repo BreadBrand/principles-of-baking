@@ -175,6 +175,29 @@ describe("buildScaledRecipe", () => {
     expect(scaldFlour.densityGPerMl).toBe(0.53);
   });
 
+  it("scales count-unit ingredients by yield ratio even when stored bakerPercentage is wrong", () => {
+    // Regression: server sometimes stores bakerPercentage for count ingredients based on
+    // the COUNT value rather than the gram weight, producing a near-zero si.grams and
+    // a near-zero scaleFactor that collapses the egg count to 0.
+    const recipeWithEgg: Recipe = {
+      ...baseRecipe,
+      doughIngredients: [
+        ...baseRecipe.doughIngredients,
+        makeIngredient({ ingredientName: "egg", grams: 131, quantity: 2.625, unit: "count", bakerPercentage: 0.64, densityGPerMl: 0 }),
+      ],
+    };
+    // originalDoughWeight for bp>0 ingredients = 500+350+10+131(egg) = 991; target = 430
+    // yieldRatio = 430/991 ≈ 0.434; expected egg count = 2.625 * 0.434 ≈ 1.139
+    const originalDoughWeight = 500 + 350 + 10 + 131;
+    const result = buildScaledRecipe(
+      recipeWithEgg,
+      [...scaledIngredients, { ingredientName: "egg", grams: 1 }],
+      430,
+    );
+    const egg = result.doughIngredients.find(i => i.ingredientName === "egg")!;
+    expect(egg.quantity).toBeCloseTo(2.625 * (430 / originalDoughWeight));
+  });
+
   it("preserves otherIngredients unchanged", () => {
     const recipeWithOther: Recipe = {
       ...baseRecipe,
