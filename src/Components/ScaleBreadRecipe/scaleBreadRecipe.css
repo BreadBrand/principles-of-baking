@@ -54,6 +54,18 @@
   box-sizing: border-box;
 }
 
+.scaleQuickButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.scaleQuickButtons .top {
+  padding: 10px 0;
+  width: 72px;
+  text-align: center;
+}
+
 .scaleForm label {
   font-size: 0.68rem;
   text-transform: uppercase;
@@ -138,7 +150,7 @@
   }
 
   .scaleResultHeader {
-    padding: 10px 16px 0;
+    padding: 10px 16px 20px;
   }
 }
 

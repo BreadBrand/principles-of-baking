@@ -3,7 +3,7 @@ import InputWithLabel from "../InputWithLabel/inputWithLabel";
 import DropDown from "../DropDown/DropDown";
 import { RecipeContext } from "../../App";
 import Button from "../Button/button";
-import { scaleRecipe, buildScaledRecipe } from "../../Utility/scaleRecipe";
+import { scaleRecipe, buildScaledRecipe, getGrams } from "../../Utility/scaleRecipe";
 import RecipeDetailView from "../RecipeDetailView/recipeDetailView";
 import "./scaleBreadRecipe.css";
 
@@ -42,6 +42,15 @@ const ScaleBreadRecipe = () => {
 
   const handlePrepare = () => {
     if (!recipe || totalDough <= 0) return;
+    setShowResult(true);
+  };
+
+  const handleQuickScale = (factor: number) => {
+    if (!recipe) return;
+    const originalWeight = recipe.doughIngredients
+      .filter(i => i.bakerPercentage > 0)
+      .reduce((sum, i) => sum + getGrams(i), 0);
+    setTotalDough(Math.round(originalWeight * factor));
     setShowResult(true);
   };
 
@@ -86,6 +95,11 @@ const ScaleBreadRecipe = () => {
           onChange={(e) => handleRecipeChange(e.target.value)}
           id="recipe-selector"
         />
+        <div className="scaleQuickButtons">
+          <Button onClick={() => handleQuickScale(0.5)} disabled={!recipe}>½</Button>
+          <Button onClick={() => handleQuickScale(2)} disabled={!recipe}>×2</Button>
+          <Button onClick={() => handleQuickScale(3)} disabled={!recipe}>×3</Button>
+        </div>
         <InputWithLabel
           label="Target dough weight (g)"
           value={totalDough > 0 ? totalDough.toString() : ""}
