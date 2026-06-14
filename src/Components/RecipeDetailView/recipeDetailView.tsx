@@ -54,8 +54,21 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
   }
 
   const displayIngredient = (ing: Ingredient) => {
+    if (ing.unit.toLowerCase() === "count") {
+      return `${Math.round(ing.quantity)}: ${ing.ingredientName}`;
+    }
+
     const isGrams = ing.unit.toLowerCase() === "grams" || ing.unit.toLowerCase() === "g";
     const isMl = ing.unit.toLowerCase() === "ml";
+
+    if (unit === "g" && !isGrams) {
+      if (ing.unit.toLowerCase() === "oz") {
+        return `${Math.round(ing.quantity * 28.35)} g: ${ing.ingredientName}`;
+      }
+      if (ing.grams > 0) {
+        return `${ing.grams} g: ${ing.ingredientName}`;
+      }
+    }
 
     if (unit === "cups") {
       let ml: number | null = null;

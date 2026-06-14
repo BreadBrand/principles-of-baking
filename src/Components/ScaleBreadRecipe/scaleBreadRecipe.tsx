@@ -27,7 +27,7 @@ const ScaleBreadRecipe = () => {
   const scaledRecipe = useMemo(() => {
     if (!recipe || !showResult) return null;
     const scaled = scaleRecipe(recipe.doughIngredients, totalDough);
-    return buildScaledRecipe(recipe, scaled);
+    return buildScaledRecipe(recipe, scaled, totalDough);
   }, [recipe, totalDough, showResult]);
 
   const handleRecipeChange = (value: string) => {
