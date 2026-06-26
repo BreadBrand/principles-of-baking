@@ -32,7 +32,7 @@ const AboutMe = () => {
           </a>
         </div>
         <h1 className="heroName">Brandon Bashein</h1>
-        <p className="heroRole">Senior Frontend Developer</p>
+        <p className="heroRole">Senior Full Stack Engineer</p>
       </div>
 
       <div className="contentZone">
