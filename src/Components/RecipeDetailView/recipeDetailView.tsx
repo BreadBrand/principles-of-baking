@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { Recipe, Ingredient } from "../../types/models";
+import { Recipe } from "../../types/models";
 import UnitToggle from "../UnitToggle/UnitToggle";
 import YeastToggle from "../YeastToggle/YeastToggle";
 import useConvertYeast, { YeastType } from "../../Hooks/useConvertYeast";
 import { isStarter, isWater, isYeast } from "../../Utility/ingredientMatchers";
+import { formatIngredientDisplay } from "../../Utility/formatIngredientDisplay";
 import "./recipeDetailView.css";
-import { CONVERSION_THRESHOLD, CUP_VOLUME, TBLS_VOLUME, TSP_VOLUME } from "../../Utility/constants";
-import { tbspToFraction, toFraction } from "../../Utility/helperFunctions";
 
 type RecipeDetailViewProps = {
   recipe: Recipe | null;
@@ -42,56 +41,6 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
     setYeastType(previous => previous === "dry" ? "sourdough" : "dry");
   };
 
-  const abbreviateUnit = (unit: string) => {
-    switch (unit.toLowerCase()) {
-      case "grams":
-        return "g";
-      case "count":
-        return "";
-      default:
-        return unit;
-    }
-  }
-
-  const displayIngredient = (ing: Ingredient) => {
-    if (ing.unit.toLowerCase() === "count") {
-      return `${Math.round(ing.quantity)}: ${ing.ingredientName}`;
-    }
-
-    const isGrams = ing.unit.toLowerCase() === "grams" || ing.unit.toLowerCase() === "g";
-    const isMl = ing.unit.toLowerCase() === "ml";
-
-    if (unit === "g" && !isGrams) {
-      if (ing.unit.toLowerCase() === "oz") {
-        return `${Math.round(ing.quantity * 28.35)} g: ${ing.ingredientName}`;
-      }
-      if (ing.grams > 0) {
-        return `${ing.grams} g: ${ing.ingredientName}`;
-      }
-    }
-
-    if (unit === "cups") {
-      let ml: number | null = null;
-      if (isGrams && ing.densityGPerMl && ing.densityGPerMl > 0) {
-        ml = ing.quantity / ing.densityGPerMl;
-      } else if (isMl) {
-        ml = ing.quantity;
-      }
-
-      if (ml !== null) {
-        if (ml >= CONVERSION_THRESHOLD) {
-          return `${toFraction(ml / CUP_VOLUME)} cups: ${ing.ingredientName}`;
-        } else if (ml >= TBLS_VOLUME) {
-          return `${tbspToFraction(ml / TBLS_VOLUME)} tbsp: ${ing.ingredientName}`;
-        } else {
-          return `${tbspToFraction(ml / TSP_VOLUME)} tsp: ${ing.ingredientName}`;
-        }
-      }
-    }
-
-    return `${toFraction(ing.quantity)} ${abbreviateUnit(ing.unit)}: ${ing.ingredientName}`;
-  };
-
   const baseYeastType: YeastType = recipe.yeastType ?? (recipe.doughIngredients.some(i => isStarter(i.ingredientName)) ? "sourdough" : "dry");
   const displayDoughIngredients = yeastType !== baseYeastType
     ? convertYeast(recipe.doughIngredients, baseYeastType)
@@ -117,7 +66,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
           <ul className="ingredients" role="list">
             {displayIngredients.map(ing => (
               <li key={ing.ingredientName}>
-                {displayIngredient(ing)}
+                {formatIngredientDisplay(ing, unit)}
               </li>
             ))}
           </ul>
