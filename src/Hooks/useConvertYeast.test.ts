@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import useConvertYeast from "./useConvertYeast";
 import { Ingredient } from "../types/models";
+import { formatIngredientDisplay } from "../Utility/formatIngredientDisplay";
 
 const makeIngredient = (
   partial: Pick<Ingredient, "ingredientName" | "grams" | "quantity" | "unit"> & Partial<Ingredient>
@@ -41,6 +42,18 @@ describe("useConvertYeast", () => {
       expect(starter).toBeDefined();
       expect(starter!.grams).toBe(100);
       expect(starter!.quantity).toBe(100);
+    });
+
+    it("gives the starter a nonzero density so it can convert to cups", () => {
+      const result = convertYeast(dryYeastRecipe, "dry");
+      const starter = result.find(i => i.ingredientName === "sourdough starter");
+      expect(starter!.densityGPerMl).toBeGreaterThan(0);
+    });
+
+    it("displays the starter in cups, not grams, when cups is selected", () => {
+      const result = convertYeast(dryYeastRecipe, "dry");
+      const starter = result.find(i => i.ingredientName === "sourdough starter")!;
+      expect(formatIngredientDisplay(starter, "cups")).toBe("½ + ⅛ cups: sourdough starter");
     });
 
     it("reduces flour by half the starter weight", () => {
@@ -118,6 +131,18 @@ describe("useConvertYeast", () => {
       expect(yeast).toBeDefined();
       expect(yeast!.grams).toBe(5);
       expect(yeast!.quantity).toBe(5);
+    });
+
+    it("gives the yeast a nonzero density so it can convert to cups", () => {
+      const result = convertYeast(sourdoughRecipe, "sourdough");
+      const yeast = result.find(i => i.ingredientName === "active dry yeast");
+      expect(yeast!.densityGPerMl).toBeGreaterThan(0);
+    });
+
+    it("displays the yeast in tsp, not grams, when cups is selected", () => {
+      const result = convertYeast(sourdoughRecipe, "sourdough");
+      const yeast = result.find(i => i.ingredientName === "active dry yeast")!;
+      expect(formatIngredientDisplay(yeast, "cups")).toBe("2 ½ tsp: active dry yeast");
     });
 
     it("restores flour by half the starter weight", () => {
