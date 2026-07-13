@@ -50,7 +50,7 @@ const useConvertYeast = () => {
           grams: starterGrams,
           phase: "dough" as const,
           bakerPercentage: 0,
-          densityGPerMl: 0,
+          densityGPerMl: 1.0,
         },
       ];
     } else {
@@ -101,7 +101,7 @@ const useConvertYeast = () => {
           grams: yeastGrams,
           phase: "dough" as const,
           bakerPercentage: 0,
-          densityGPerMl: 0,
+          densityGPerMl: 0.43,
         },
       ];
     }
