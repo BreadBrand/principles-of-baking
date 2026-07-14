@@ -11,6 +11,10 @@ type RecipeDetailViewProps = {
   recipe: Recipe | null;
 };
 
+function inferBaseYeastType(recipe: Recipe): YeastType {
+  return recipe.yeastType ?? (recipe.doughIngredients.some(i => isStarter(i.ingredientName)) ? "sourdough" : "dry");
+}
+
 const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
   const [unit, setUnit] = useState("g")
   const [yeastType, setYeastType] = useState<YeastType>("dry");
@@ -23,9 +27,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
       volumeUnits.includes(i.unit.toLowerCase())
     );
     setUnit(isVolumeBased ? "cups" : "g");
-    setYeastType(
-      recipe.yeastType ?? (recipe.doughIngredients.some(i => isStarter(i.ingredientName)) ? "sourdough" : "dry")
-    );
+    setYeastType(inferBaseYeastType(recipe));
   }, [recipe?.id]);
 
   if (!recipe) return null;
@@ -41,7 +43,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
     setYeastType(previous => previous === "dry" ? "sourdough" : "dry");
   };
 
-  const baseYeastType: YeastType = recipe.yeastType ?? (recipe.doughIngredients.some(i => isStarter(i.ingredientName)) ? "sourdough" : "dry");
+  const baseYeastType: YeastType = inferBaseYeastType(recipe);
   const displayDoughIngredients = yeastType !== baseYeastType
     ? convertYeast(recipe.doughIngredients, baseYeastType)
     : recipe.doughIngredients;
