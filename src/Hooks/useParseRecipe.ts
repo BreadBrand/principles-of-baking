@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { RecipeDTO } from "../types/dto";
 import { auth } from "../firebase";
+import { getAuthToken, buildApiUrl } from "../Utility/apiClient";
 
 interface ParseResult {
   recipe: RecipeDTO | null;
@@ -28,11 +29,8 @@ export function useParseRecipe(): ParseResult {
     setParseFailed(false);
 
     try {
-      const idToken = await auth.currentUser?.getIdToken();
-      if (!idToken) throw new Error("Not authenticated");
-
-      const base = import.meta.env.VITE_API_BASE?.trim();
-      const url = base ? `${base.replace(/\/$/, "")}/api/recipes/parse` : "/api/recipes/parse";
+      const idToken = await getAuthToken(auth.currentUser, "Not authenticated");
+      const url = buildApiUrl("api/recipes/parse");
 
       const response = await fetch(url, {
         method: "POST",
