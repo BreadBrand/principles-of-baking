@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DropDown from "../DropDown/DropDown";
 import Calendar from "../Calendar/Calendar";
+import { RecipeContext } from "../../App";
+import "./recipeSchedule.css";
 
 const RecipeSchedule = () => {
-    const [recipe, setRecipe] = useState<string>("");
-    //TODO: remove place holder data for recipe get request
-    const recipes = [
-        { label: "1", value: "1" },
-        { label: "2", value: "2" },
-        { label: "3", value: "3" },
-        { label: "4", value: "4" }
-    ];
+  const recipes = useContext(RecipeContext);
+  const [selectedId, setSelectedId] = useState<string>(recipes[0]?.id ?? "");
 
-    const onSelectRecipe = (value: string) => {
-        setRecipe(value);
-    };
+  useEffect(() => {
+    if (recipes.length > 0 && !selectedId) {
+      setSelectedId(recipes[0].id);
+    }
+  }, [recipes]);
 
-    return (
-        <>
-            <DropDown label="Recipe Selector" value={recipe} options={recipes} onChange={(e) => onSelectRecipe(e.target.value)} />
-            <div>desired date to eat</div>
-            <Calendar />
-        </>
-    );
+  const handleRecipeChange = (value: string) => {
+    setSelectedId(value);
+  };
+
+  return (
+    <div className="calendarLayout">
+      <DropDown
+        label="Recipe"
+        value={selectedId}
+        options={recipes}
+        onChange={(e) => handleRecipeChange(e.target.value)}
+        id="recipe-selector"
+      />
+      <div>desired date to eat</div>
+      <Calendar />
+    </div>
+  );
 };
 
 export default RecipeSchedule;

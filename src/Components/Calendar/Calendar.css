@@ -1,7 +1,7 @@
 .calendarContainer {
   color: #F4DFBA;
   height: 700px;
-  width: 100%; /* <-- was 100vh, now width of container */
+  width: 900px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -12,7 +12,6 @@
 .calendar {
   background: #876445;
   border-radius: 10px;
-  width: 90%;
   max-width: 900px;
   height: 80%;
   display: flex;
