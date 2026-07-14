@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { auth } from '../firebase';
 import { type RecipeRequest } from '../types/dto';
 import { type Recipe } from '../types/models';
+import { getAuthToken, buildApiUrl } from '../Utility/apiClient';
 
 type CreateRecipeResult =
   | { ok: true; data: Recipe }
@@ -10,22 +11,14 @@ type CreateRecipeResult =
 const useCreateRecipe = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const join = (a = "", b = "") =>
-    `${a.replace(/\/$/, "")}/${b.replace(/^\//, "")}`;
 
   const createRecipe = async (recipeData: RecipeRequest): Promise<CreateRecipeResult> => {
     setLoading(true);
     setError(null);
 
     try {
-      const idToken = await auth.currentUser?.getIdToken();
-
-      if (!idToken) {
-        throw new Error('User is not authenticated');
-      }
-
-      const base = import.meta.env.VITE_API_BASE?.trim();
-      const url = base ? join(base, "api/recipes") : "/api/recipes";
+      const idToken = await getAuthToken(auth.currentUser, 'User is not authenticated');
+      const url = buildApiUrl("api/recipes");
 
       const resp = await fetch(url, {
         method: 'POST',
