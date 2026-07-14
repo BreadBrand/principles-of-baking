@@ -1,0 +1,4 @@
+.calendarLayout {
+  display: flex;
+  flex-direction: column;
+}

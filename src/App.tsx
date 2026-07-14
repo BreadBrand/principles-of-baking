@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useRef } from 'react';
-import './App.css'
+import './App.css';
 import Tab from './Components/TabComponents/tab';
 import useFetchRecipes from './Hooks/UseFetchRecipes';
 import Header from './Components/Header/header';
