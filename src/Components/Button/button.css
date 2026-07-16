@@ -1,11 +1,11 @@
 .primary {
-  background-color: #876445;
+  background-color: var(--surface-color);
   color: var(--text-color);
 }
 
 .secondary {
-  background-color: #CA965C;
-  color: #F0D9BD;
+  background-color: var(--accent-secondary-color);
+  color: var(--surface-text-color);
 }
 
 .button {
@@ -54,7 +54,7 @@ button:disabled {
 }
 
 .bottom:focus-visible {
-  outline: 2px solid #98BCE8;
+  outline: 2px solid var(--link-color);
   outline-offset: 4px;
 }
 

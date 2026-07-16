@@ -1,7 +1,7 @@
 .textArea {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  color: #876445;
-  border: 1px solid #CA965C;
+  color: var(--surface-color);
+  border: 1px solid var(--accent-secondary-color);
   font-size: inherit;
   background: white;
   padding: 10px;

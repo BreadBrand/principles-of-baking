@@ -29,11 +29,11 @@
 
 /* Modal Container */
 .parseModalContent {
-  background: rgba(202, 150, 92, 0.1);
+  background: rgba(var(--accent-secondary-color-rgb), 0.1);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   color: var(--text-color);
-  border: 1px solid rgba(202, 150, 90, 0.5);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.5);
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
@@ -54,7 +54,7 @@
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #EEC373;
+  color: var(--accent-color);
   opacity: 0.85;
   margin: 1.25rem 0 0.6rem;
   font-weight: 500;
@@ -93,7 +93,7 @@
 .confidenceSection {
   margin: 1.25rem 0;
   padding: 0.75rem 1rem;
-  border: 1px solid rgba(202, 150, 90, 0.25);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.25);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
 }
@@ -152,9 +152,9 @@
   width: 100%;
   box-sizing: border-box;
   background: white;
-  border: 1px solid #CA965C;
+  border: 1px solid var(--accent-secondary-color);
   border-radius: 8px;
-  color: #876445;
+  color: var(--surface-color);
   padding: 5px 8px;
   font-size: 0.88rem;
   font-family: inherit;
@@ -162,7 +162,7 @@
 }
 
 .editInput:focus {
-  outline: 2px solid rgba(202, 150, 92, 0.5);
+  outline: 2px solid rgba(var(--accent-secondary-color-rgb), 0.5);
   outline-offset: 1px;
 }
 
@@ -185,8 +185,8 @@
 
 /* Ingredient card row */
 .ingredientRow {
-  background: rgba(202, 150, 92, 0.08);
-  border: 1px solid rgba(202, 150, 92, 0.2);
+  background: rgba(var(--accent-secondary-color-rgb), 0.08);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.2);
   border-radius: 8px;
   padding: 8px 12px;
   margin-bottom: 6px;
@@ -202,16 +202,16 @@
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(238, 195, 115, 0.65);
+  color: rgba(var(--accent-color-rgb), 0.65);
   margin-bottom: 3px;
 }
 
 /* Remove (×) button */
 .removeBtn {
-  background: rgba(202, 150, 92, 0.12);
-  border: 1px solid rgba(202, 150, 92, 0.25);
+  background: rgba(var(--accent-secondary-color-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.25);
   border-radius: 6px;
-  color: rgba(244, 223, 186, 0.5);
+  color: rgba(var(--text-color-rgb), 0.5);
   width: 28px;
   aspect-ratio: 1 / 1;
   line-height: 1;
@@ -226,16 +226,16 @@
 }
 
 .removeBtn:hover {
-  background: rgba(202, 150, 92, 0.22);
-  color: rgba(244, 223, 186, 0.85);
+  background: rgba(var(--accent-secondary-color-rgb), 0.22);
+  color: rgba(var(--text-color-rgb), 0.85);
 }
 
 /* Add row / add step button */
 .addRowBtn {
   background: transparent;
-  border: 1px dashed rgba(202, 150, 92, 0.35);
+  border: 1px dashed rgba(var(--accent-secondary-color-rgb), 0.35);
   border-radius: 8px;
-  color: rgba(202, 150, 92, 0.8);
+  color: rgba(var(--accent-secondary-color-rgb), 0.8);
   font-size: 0.82rem;
   padding: 6px 14px;
   margin-top: 4px;
@@ -247,8 +247,8 @@
 }
 
 .addRowBtn:hover {
-  background: rgba(202, 150, 92, 0.06);
-  color: #CA965C;
+  background: rgba(var(--accent-secondary-color-rgb), 0.06);
+  color: var(--accent-secondary-color);
 }
 
 /* Instruction ordered list */
@@ -277,9 +277,9 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(202, 150, 92, 0.2);
-  border: 1px solid rgba(202, 150, 92, 0.35);
-  color: #EEC373;
+  background: rgba(var(--accent-secondary-color-rgb), 0.2);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.35);
+  color: var(--accent-color);
   font-size: 0.7rem;
   display: flex;
   align-items: center;
@@ -296,10 +296,10 @@
 
 /* Manual entry banner */
 .parseBanner {
-  background: rgba(224, 112, 64, 0.12);
-  border: 1px solid rgba(224, 112, 64, 0.35);
+  background: rgba(var(--review-color-rgb), 0.12);
+  border: 1px solid rgba(var(--review-color-rgb), 0.35);
   border-radius: 8px;
-  color: #e07040;
+  color: var(--review-color);
   font-size: 0.85rem;
   padding: 10px 14px;
   margin-bottom: 1.25rem;
@@ -308,7 +308,7 @@
 
 /* Inline error message */
 .errorText {
-  color: #e07040;
+  color: var(--review-color);
   font-size: 0.85rem;
   margin: 0;
 }
@@ -320,7 +320,7 @@
 
 .originalTextLabel {
   font-size: 0.85rem;
-  color: rgba(202, 150, 92, 1);
+  color: rgba(var(--accent-secondary-color-rgb), 1);
   margin-bottom: 6px;
 }
 
@@ -330,7 +330,7 @@
   margin-top: 8px;
   padding: 10px 12px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(202, 150, 92, 0.4);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.4);
   border-radius: 8px;
   color: inherit;
   font-size: 0.82rem;

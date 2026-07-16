@@ -10,7 +10,7 @@
 .stepContent {
   max-width: 665px;
   width: 90%;
-  color: #f4dfba;
+  color: var(--text-color);
   line-height: 1.6;
 }
 

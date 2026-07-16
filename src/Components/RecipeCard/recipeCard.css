@@ -10,11 +10,11 @@
   inset: 0;
   border-radius: 10px;
   z-index: 0;
-  background: #EEC373;
+  background: var(--accent-color);
 }
 
 .recipeCard {
-  background: #876445;
+  background: var(--surface-color);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
   color: var(--text-color);
   padding: 10px 12px;
@@ -47,7 +47,7 @@
 }
 
 .recipeCard:focus-visible {
-  outline: 2px solid #98BCE8;
+  outline: 2px solid var(--link-color);
   outline-offset: 2px;
 }
 
@@ -82,15 +82,15 @@
   font-size: 0.68rem;
   padding: 2px 8px;
   border-radius: 20px;
-  background: rgba(238, 195, 115, 0.15);
-  color: #EEC373;
-  border: 1px solid rgba(238, 195, 115, 0.25);
+  background: rgba(var(--accent-color-rgb), 0.15);
+  color: var(--accent-color);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.25);
 }
 
 .yeastBadgeDry {
-  background: rgba(152, 189, 232, 0.18);
-  color: #98BCE8;
-  border-color: rgba(152, 189, 232, 0.35);
+  background: rgba(var(--link-color-rgb), 0.18);
+  color: var(--link-color);
+  border-color: rgba(var(--link-color-rgb), 0.35);
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -34,26 +34,26 @@
 
 .navLinks a {
   text-decoration: none;
-  color: #F4DFBA;
+  color: var(--text-color);
   font-size: 1.2rem;
   font-weight: bold;
   line-height: 1.5rem;
 }
 
 .navLinks a:hover {
-  color: #EEC373;
+  color: var(--accent-color);
 }
 
 .navLinks a:focus-visible,
 .logo:focus-visible {
-  outline: 2px solid #98BCE8;
+  outline: 2px solid var(--link-color);
   outline-offset: 4px;
   border-radius: 2px;
 }
 
 .hamburgerButton:focus-visible,
 .recipesButton:focus-visible {
-  outline: 2px solid #98BCE8;
+  outline: 2px solid var(--link-color);
   outline-offset: 4px;
 }
 
@@ -71,7 +71,7 @@
   display: none;
   background: none;
   border: none;
-  color: #f4dfba;
+  color: var(--text-color);
   font-size: 2rem;
   cursor: pointer;
   z-index: 120;
@@ -112,7 +112,7 @@
     display: block;
     background: none;
     border: none;
-    color: #f4dfba;
+    color: var(--text-color);
     font-size: 1.2rem;
     cursor: pointer;
     opacity: 0;
