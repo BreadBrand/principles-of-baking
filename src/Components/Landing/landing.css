@@ -1,7 +1,7 @@
 .landingContainer {
   height: 100vh;
   position: relative;
-  color: #F4DFBA;
+  color: var(--text-color);
 }
 
 .heroImage {
@@ -9,7 +9,7 @@
   background-size: cover;
   background-position: center;
   height: 100vh;
-  border-bottom: 10px solid #EEC373;
+  border-bottom: 10px solid var(--accent-color);
 }
 
 .heroText {
@@ -33,7 +33,7 @@
 }
 
 .glass {
-  background: linear-gradient(135deg, rgba(202, 150, 92, 0.1), rgba(202, 150, 92, 0));
+  background: linear-gradient(135deg, rgba(var(--accent-secondary-color-rgb), 0.1), rgba(var(--accent-secondary-color-rgb), 0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -61,8 +61,8 @@
   align-items: center;
   justify-content: center;
   min-height: 45vh;
-  background-color: #45484A;
-  background-image: radial-gradient(70% 100% at 50% 45%, rgba(238, 195, 115, 0.12), transparent 70%);
+  background-color: var(--background-color);
+  background-image: radial-gradient(70% 100% at 50% 45%, rgba(var(--accent-color-rgb), 0.12), transparent 70%);
   background-repeat: no-repeat;
   padding: 4rem 1.5rem;
   text-align: center;

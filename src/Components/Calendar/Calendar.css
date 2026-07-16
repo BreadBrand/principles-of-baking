@@ -1,5 +1,5 @@
 .calendarContainer {
-  color: #F4DFBA;
+  color: var(--text-color);
   height: 700px;
   width: 900px;
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 .calendar {
-  background: #876445;
+  background: var(--surface-color);
   border-radius: 10px;
   max-width: 900px;
   height: 80%;
@@ -29,7 +29,7 @@
 }
 
 .controls button {
-  background: #CA965C;
+  background: var(--accent-secondary-color);
   border: none;
   border-radius: 6px;
   color: #fff;
@@ -55,11 +55,11 @@
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: 600;
-  border-bottom: 2px solid #CA965C;
+  border-bottom: 2px solid var(--accent-secondary-color);
 }
 
 .headerCell {
-  border-right: 1px solid #CA965C;
+  border-right: 1px solid var(--accent-secondary-color);
   padding: 0.25rem 0;
 }
 
@@ -76,7 +76,7 @@
 
 .day,
 .saturday {
-  border: 1px solid #CA965C;
+  border: 1px solid var(--accent-secondary-color);
   border-right: none;
   min-height: 75px;
   position: relative;
@@ -90,7 +90,7 @@
 
 /* last cell in row */
 .saturday {
-  border-right: 1px solid #CA965C;
+  border-right: 1px solid var(--accent-secondary-color);
 }
 
 /* --- MOBILE --- */
