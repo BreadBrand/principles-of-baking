@@ -33,9 +33,10 @@ const Step4 = () => {
         This section will go over how I knead dough by hand. There are many ways to knead dough, and you may find
         a different method that works better for you. So use that instead. But if you are new to kneading, this
         method is a good place to start.
-
-        Slap and fold method:
-        <ol>
+      </p>
+      <div className="recipeBox">
+        <span className="sectionLabel">Slap and fold method</span>
+        <ol className="instructionList">
           <li>Flour your work surface and hands.</li>
           <li>Place the dough on the floured surface.</li>
           <li>Using both of your hands scoop under the dough so that your two middle fingers touch one another under
@@ -44,12 +45,14 @@ const Step4 = () => {
           <li>Then slap the side closest to you onto the counter</li>
           <li>Then turning your hands 90 degrees relative to the dough repeat all steps</li>
         </ol>
-
+      </div>
+      <p>
         This method is good for wet doughs because it requires less direct contact with the dough. If you are
         having trouble with the dough sticking to your hands, try wetting your hands with water instead of flouring
         them. This can help prevent the dough from sticking to your hands.
-
-        But trust the process, After 10 to 15 minutes the dough should be smoother and more stretchy than when you
+      </p>
+      <p>
+        But trust the process, after 10 to 15 minutes the dough should be smoother and more stretchy than when you
         started.
       </p>
       <h2>No-Knead Technique</h2>
