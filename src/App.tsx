@@ -70,6 +70,6 @@ function App() {
       </DrawerProvider>
     </RecipeContext.Provider>
   );
-};
+}
 
 export default App

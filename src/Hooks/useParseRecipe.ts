@@ -49,7 +49,9 @@ export function useParseRecipe(): ParseResult {
           const parsed = JSON.parse(body);
           message = parsed.message || message;
           errorCode = parsed.error || "";
-        } catch {}
+        } catch {
+          // body wasn't valid JSON — fall back to the raw text message set above
+        }
         if (errorCode === "PARSE_FAILED") setParseFailed(true);
         throw new Error(message);
       }
