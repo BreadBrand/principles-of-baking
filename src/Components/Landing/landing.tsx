@@ -20,8 +20,8 @@ const Landing = () => {
         </div>
       </div>
       <div className="underViewContainer">
-        <h1 className="text-4xl font-bold">Welcome to the Bread Machine</h1>
-        <p className="text-lg">An app to help you scale your bread recipes and help you experiment!</p>
+        <h1>Welcome to the Bread Machine</h1>
+        <p>An app to help you scale your bread recipes and help you experiment!</p>
       </div>
     </div>
   )
