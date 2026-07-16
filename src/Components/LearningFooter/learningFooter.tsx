@@ -2,12 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../Button/button';
 import './learningFooter.css';
 
+const TOTAL_STEPS = 4;
+
 type LearningFooterProps = {
   step: number;
 };
 
 const LearningFooter = ({ step }: LearningFooterProps) => {
   const navigate = useNavigate();
+  const isLastStep = step >= TOTAL_STEPS;
 
   const handleNext = () => {
     const nextStep = step + 1;
@@ -28,8 +31,9 @@ const LearningFooter = ({ step }: LearningFooterProps) => {
       <div>
         {step > 0 && <Button onClick={handleBack}>Back</Button>}
       </div>
+      {step > 0 && <div className="stepProgress">Step {step} of {TOTAL_STEPS}</div>}
       <div>
-        <Button onClick={handleNext}>Next</Button>
+        {!isLastStep && <Button onClick={handleNext}>Next</Button>}
       </div>
     </div>
   );
