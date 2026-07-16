@@ -4,7 +4,7 @@
   right: -260px;
   height: 100vh;
   width: 260px;
-  background: linear-gradient(135deg, rgba(202, 150, 92, 0.10), rgba(202, 150, 92, 0));
+  background: linear-gradient(135deg, rgba(var(--accent-secondary-color-rgb), 0.10), rgba(var(--accent-secondary-color-rgb), 0));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
@@ -29,9 +29,9 @@
   align-items: center;
   justify-content: center;
   align-self: center;
-  background: rgba(202, 150, 92, 0.3);
-  border: 1px solid rgba(244, 223, 186, 0.5);
-  color: #f4dfba;
+  background: rgba(var(--accent-secondary-color-rgb), 0.3);
+  border: 1px solid rgba(var(--text-color-rgb), 0.5);
+  color: var(--text-color);
   font-size: 1.5rem;
   width: 44px;
   height: 44px;
@@ -50,14 +50,14 @@
 }
 
 .sideDrawer a {
-  color: #f4dfba;
+  color: var(--text-color);
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
 .sideDrawer a:hover {
-  color: #eec373;
+  color: var(--accent-color);
 }
 
 /* Backdrop overlay */
