@@ -2,6 +2,7 @@
 const Step3 = () => {
   return (
     <div className="stepContent">
+      <h2>What Is Fermentation?</h2>
       <p>
         The next lesson will cover fermentation. Fermentation is the process of yeast consuming sugars and producing
         carbon dioxide and alcohol.
@@ -18,6 +19,8 @@ const Step3 = () => {
         For those who don't drink alcohol, the alcohol is burned off during baking so there is no alcohol in the final
         product.
       </p>
+
+      <h2>What Affects Fermentation Speed</h2>
       <p>
         The fermentation time is affected by the temperature of the dough. The warmer the dough the faster the
         fermentation. The cooler the dough the slower the fermentation.
@@ -34,6 +37,8 @@ const Step3 = () => {
         The longer the fermentation the more flavor the bread has. The shorter the fermentation the less flavor the
         bread has.
       </p>
+
+      <h2>Bulk vs. Final Fermentation</h2>
       <p>
         Bulk fermentation is the first fermentation that happens after the dough is mixed. This is when the dough
         doubles in size. This can take 1 to 2 hours depending on the temperature of the dough.
@@ -47,16 +52,21 @@ const Step3 = () => {
         The final fermentation is the fermentation that happens after the dough is shaped. This is when the dough
         rises to the final size before baking. This can take 1 to 2 hours depending on the temperature of the dough.
       </p>
-      <p>
-        A very common pattern I use is to mix the dough in the evening and let it bulk ferment in the refrigerator
-        overnight. I wake up follow my normal morning routine and go to work. When I get home from work I shape the
-        dough and let it rise while I make dinner. Then I bake the bread after dinner to enjoy a nice homemade loaf
-        during the week.
-      </p>
-      <p>
-        This means I don't have to babysit a sourdough starter or spend all day making bread. I can make bread that
-        is more flavorful than store bought bread and doesn't require a lot of time.
-      </p>
+
+      <h2>A Schedule That Works</h2>
+      <div className="pullQuote">
+        <span className="sectionLabel">From the baker</span>
+        <p>
+          A very common pattern I use is to mix the dough in the evening and let it bulk ferment in the refrigerator
+          overnight. I wake up follow my normal morning routine and go to work. When I get home from work I shape the
+          dough and let it rise while I make dinner. Then I bake the bread after dinner to enjoy a nice homemade loaf
+          during the week.
+        </p>
+        <p>
+          This means I don't have to babysit a sourdough starter or spend all day making bread. I can make bread that
+          is more flavorful than store bought bread and doesn't require a lot of time.
+        </p>
+      </div>
     </div>
   );
 };
