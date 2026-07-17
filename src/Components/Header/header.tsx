@@ -44,7 +44,11 @@ const Header = ({ openLogin }: HeaderProps) => {
           style={{ justifySelf: "flex-end" }}
           onClick={() => {
             closeDrawer();
-            user ? handleLogout() : openLogin();
+            if (user) {
+              handleLogout();
+            } else {
+              openLogin();
+            }
           }}
         >
           {user ? "Logout" : "Login"}

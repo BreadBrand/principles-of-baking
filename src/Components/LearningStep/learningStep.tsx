@@ -13,11 +13,13 @@ const components: { [key: string]: React.FC } = {
   "4": Step4,
 };
 
+const StepNotFound: React.FC = () => <div>Step not found</div>;
+
 const LearningStep = () => {
   const { step } = useParams<{ step: string }>();
 
   //remove '1' if null return step not found
-  const StepComponent = components[step ?? '1'] ?? (() => <div>Step not found</div>);
+  const StepComponent = components[step ?? '1'] ?? StepNotFound;
 
   return (
     <div className="stepContainer">

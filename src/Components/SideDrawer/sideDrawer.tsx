@@ -45,7 +45,11 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
             style={{ alignSelf: "flex-start" }}
             onClick={() => {
               closeDrawer();
-              user ? handleLogout() : openLogin();
+              if (user) {
+                handleLogout();
+              } else {
+                openLogin();
+              }
             }}
           >
             {user ? "Logout" : "Login"}
