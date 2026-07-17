@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import "./learningStep.css";
 import LearningFooter from "../LearningFooter/learningFooter";
 import Step1 from "./Step1/step1";

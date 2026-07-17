@@ -7,7 +7,7 @@ import Landing from './Components/Landing/landing';
 import GetStarted from './Components/GetStarted/getStarted';
 import LearningStep from './Components/LearningStep/learningStep';
 import AboutMe from './Components/AboutMe/aboutMe';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router';
 import { LoginModal } from './Components/Login/Login';
 import { Toast } from './Components/Toast/Toast';
 import { useAuth } from './Context/AuthContext';
