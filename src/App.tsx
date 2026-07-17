@@ -23,19 +23,26 @@ function App() {
   const { toasts, addToast, removeToast } = useToast();
   const prevUser = useRef(user);
 
+  // Closing the login modal on a successful sign-in is a pure, idempotent state
+  // update (always sets to the same fixed value), so it's handled with React's
+  // "adjust state during render" pattern rather than in the effect below -- this
+  // also correctly reacts to the `user` transition regardless of whether it comes
+  // from this tab's own login or a cross-tab auth-state sync (Firebase broadcasts
+  // auth changes across tabs), since both update the same `user` value from
+  // Context. Needs its own useState-tracked previous value (a ref won't work here
+  // -- refs don't participate in render bailout/retry) distinct from the `prevUser`
+  // ref below, which the toast effect uses for a different purpose at a different
+  // time (after commit, not during render).
+  const [prevUserForModalClose, setPrevUserForModalClose] = useState(user);
+  if (user !== prevUserForModalClose) {
+    setPrevUserForModalClose(user);
+    if (user) setIsLoginOpen(false);
+  }
+
   useEffect(() => {
     if (user === undefined) return;
     if (user) {
       addToast(`Welcome, ${user.displayName || "friend"}!`);
-      // `user` is state synced from Firebase's onAuthStateChanged (AuthProvider.tsx),
-      // which fires on cross-tab sign-ins too (default localStorage persistence
-      // broadcasts auth changes to other open tabs). LoginModal already closes itself
-      // via onClose() on a same-tab sign-in, but this line is what closes the modal
-      // when auth state changes from an external source (e.g. logging in from
-      // another tab) -- a legitimate "sync with external system" effect the static
-      // rule can't see through the Context indirection to verify.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsLoginOpen(false);
     } else if (prevUser.current) {
       addToast("You have logged out.");
     }
