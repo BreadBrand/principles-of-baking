@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import DropDown from "../DropDown/DropDown";
 import Calendar from "../Calendar/Calendar";
 import { RecipeContext } from "../../Context/RecipeContext";
@@ -6,16 +6,12 @@ import "./recipeSchedule.css";
 
 const RecipeSchedule = () => {
   const recipes = useContext(RecipeContext);
-  const [selectedId, setSelectedId] = useState<string>(recipes[0]?.id ?? "");
+  const [selectedIdOverride, setSelectedIdOverride] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (recipes.length > 0 && !selectedId) {
-      setSelectedId(recipes[0].id);
-    }
-  }, [recipes]);
+  const selectedId = selectedIdOverride ?? recipes[0]?.id ?? "";
 
   const handleRecipeChange = (value: string) => {
-    setSelectedId(value);
+    setSelectedIdOverride(value);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface ToastItem {
   message: string;
@@ -10,7 +10,7 @@ const MAX_TOASTS = 3;
 export const useToast = () => {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-  const addToast = (message: string, type: ToastItem["type"] = "info") => {
+  const addToast = useCallback((message: string, type: ToastItem["type"] = "info") => {
     setToasts((prev) => {
       const newToasts = [...prev, { message, type }];
       if (newToasts.length > MAX_TOASTS) {
@@ -18,11 +18,11 @@ export const useToast = () => {
       }
       return newToasts;
     });
-  };
+  }, []);
 
-  const removeToast = (index: number) => {
+  const removeToast = useCallback((index: number) => {
     setToasts((prev) => prev.filter((_, i) => i !== index));
-  };
+  }, []);
 
   return {
     toasts,

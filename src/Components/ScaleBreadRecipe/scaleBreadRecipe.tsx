@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo, useEffect, ChangeEvent } from "react";
+import { useContext, useState, useMemo, ChangeEvent } from "react";
 import InputWithLabel from "../InputWithLabel/inputWithLabel";
 import DropDown from "../DropDown/DropDown";
 import { RecipeContext } from "../../Context/RecipeContext";
@@ -9,15 +9,11 @@ import "./scaleBreadRecipe.css";
 
 const ScaleBreadRecipe = () => {
   const recipes = useContext(RecipeContext);
-  const [selectedId, setSelectedId] = useState<string>(recipes[0]?.id ?? "");
+  const [selectedIdOverride, setSelectedIdOverride] = useState<string | null>(null);
   const [totalDough, setTotalDough] = useState<number>(0);
   const [showResult, setShowResult] = useState(false);
 
-  useEffect(() => {
-    if (recipes.length > 0 && !selectedId) {
-      setSelectedId(recipes[0].id);
-    }
-  }, [recipes]);
+  const selectedId = selectedIdOverride ?? recipes[0]?.id ?? "";
 
   const recipe = useMemo(
     () => recipes.find((r) => r.id === selectedId),
@@ -31,7 +27,7 @@ const ScaleBreadRecipe = () => {
   }, [recipe, totalDough, showResult]);
 
   const handleRecipeChange = (value: string) => {
-    setSelectedId(value);
+    setSelectedIdOverride(value);
     setShowResult(false);
   };
 
@@ -74,7 +70,7 @@ const ScaleBreadRecipe = () => {
             <span className="scalePrintHint">Select "Save as PDF" in the print dialog</span>
           </div>
         </div>
-        <RecipeDetailView recipe={scaledRecipe} />
+        <RecipeDetailView key={scaledRecipe.id} recipe={scaledRecipe} />
       </div>
     );
   }

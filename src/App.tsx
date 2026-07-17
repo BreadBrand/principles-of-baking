@@ -32,13 +32,13 @@ function App() {
       addToast("You have logged out.");
     }
     prevUser.current = user;
-  }, [user]);
+  }, [user, addToast]);
 
   useEffect(() => {
     if (error) {
       addToast(`Error fetching recipes: ${error}`, "error");
     }
-  }, [error]);
+  }, [error, addToast]);
 
   return (
     <RecipeContext.Provider value={recipes}>
