@@ -12,7 +12,7 @@ import { LoginModal } from './Components/Login/Login';
 import { Toast } from './Components/Toast/Toast';
 import { useAuth } from './Context/AuthContext';
 import { useToast } from './Hooks/useToast';
-import { DrawerProvider } from './Context/DrawerContext';
+import { DrawerProvider } from './Context/DrawerProvider';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
 import { RecipeContext } from './Context/RecipeContext';
 
