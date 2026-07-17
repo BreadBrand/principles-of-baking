@@ -37,8 +37,8 @@ const useCreateRecipe = () => {
       const created: Recipe = await resp.json();
 
       return { ok: true, data: created };
-    } catch (error: any) {
-      const msg = error?.message ?? "Unknown Error";
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown Error";
       setError(msg);
       return { ok: false, error: msg };
     } finally {

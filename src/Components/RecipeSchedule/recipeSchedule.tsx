@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import DropDown from "../DropDown/DropDown";
 import Calendar from "../Calendar/Calendar";
-import { RecipeContext } from "../../App";
+import { RecipeContext } from "../../Context/RecipeContext";
 import "./recipeSchedule.css";
 
 const RecipeSchedule = () => {

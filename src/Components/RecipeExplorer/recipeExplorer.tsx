@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { RecipeContext } from "../../App";
+import { RecipeContext } from "../../Context/RecipeContext";
 import RecipeCard from "../RecipeCard/recipeCard";
 import RecipeDetailView from "../RecipeDetailView/recipeDetailView";
 import "./recipeExplorer.css";

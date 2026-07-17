@@ -1,11 +1,12 @@
 import { ChangeEventHandler } from "react";
+import { type Recipe } from "../../types/models";
 import "./DropDown.css";
 
 interface DropDownProps {
   id?: string;
   label: string;
   value: string;
-  options: any[];
+  options: Recipe[] | string[];
   onChange: ChangeEventHandler<HTMLSelectElement>;
 }
 
@@ -19,8 +20,10 @@ const DropDown = ({ id, label, value, options, onChange }: DropDownProps) => {
         id={id}
         className="dropDown"
       >
-        {options.map((recipe) => (
-          <option key={recipe.title + recipe.description} value={recipe.id}>{recipe.title}</option>
+        {options.map((option) => (
+          typeof option === "string"
+            ? <option key={option} value={option}>{option}</option>
+            : <option key={option.id} value={option.id}>{option.title}</option>
         ))}
       </select>
     </div>

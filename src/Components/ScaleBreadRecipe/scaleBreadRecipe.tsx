@@ -1,7 +1,7 @@
 import { useContext, useState, useMemo, useEffect, ChangeEvent } from "react";
 import InputWithLabel from "../InputWithLabel/inputWithLabel";
 import DropDown from "../DropDown/DropDown";
-import { RecipeContext } from "../../App";
+import { RecipeContext } from "../../Context/RecipeContext";
 import Button from "../Button/button";
 import { scaleRecipe, buildScaledRecipe, getGrams } from "../../Utility/scaleRecipe";
 import RecipeDetailView from "../RecipeDetailView/recipeDetailView";

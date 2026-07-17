@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { auth } from "../../firebase";
 import "./Login.css";
+import { FirebaseError } from "firebase/app";
 import {
   signInWithEmailAndPassword,
   GithubAuthProvider,
@@ -58,7 +59,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     try {
       await signInWithPopup(auth, provider);
       onClose();
-    } catch (error: any) {
+    } catch (error) {
+      if (!(error instanceof FirebaseError)) {
+        console.error("GitHub login error: ", error);
+        return;
+      }
+
       if (error.code === "auth/account-exists-with-different-credential") {
         const existingEmail = error.customData?.email;
         const pendingCred = GithubAuthProvider.credentialFromError(error);
