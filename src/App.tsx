@@ -12,7 +12,7 @@ import { LoginModal } from './Components/Login/Login';
 import { Toast } from './Components/Toast/Toast';
 import { useAuth } from './Context/AuthContext';
 import { useToast } from './Hooks/useToast';
-import { DrawerProvider } from './Context/DrawerContext';
+import { DrawerProvider } from './Context/DrawerProvider';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
 import { RecipeContext } from './Context/RecipeContext';
 
@@ -32,13 +32,13 @@ function App() {
       addToast("You have logged out.");
     }
     prevUser.current = user;
-  }, [user]);
+  }, [user, addToast]);
 
   useEffect(() => {
     if (error) {
       addToast(`Error fetching recipes: ${error}`, "error");
     }
-  }, [error]);
+  }, [error, addToast]);
 
   return (
     <RecipeContext.Provider value={recipes}>

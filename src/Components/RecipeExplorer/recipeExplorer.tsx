@@ -58,7 +58,7 @@ const RecipeExplorer = () => {
       </aside>
       <main className="recipeView">
         {selectedRecipe ? (
-          <RecipeDetailView recipe={selectedRecipe} />
+          <RecipeDetailView key={selectedRecipe.id} recipe={selectedRecipe} />
         ) : (
           <div className="promptContainer">
             <p className="desktopPrompt">Select a recipe to view details</p>

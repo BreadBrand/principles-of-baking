@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Recipe } from "../../types/models";
 import UnitToggle from "../UnitToggle/UnitToggle";
 import YeastToggle from "../YeastToggle/YeastToggle";
@@ -11,24 +11,24 @@ type RecipeDetailViewProps = {
   recipe: Recipe | null;
 };
 
+const VOLUME_UNITS = ["cups", "tbls", "tbsp", "tsp"];
+
 function inferBaseYeastType(recipe: Recipe): YeastType {
   return recipe.yeastType ?? (recipe.doughIngredients.some(i => isStarter(i.ingredientName)) ? "sourdough" : "dry");
 }
 
-const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
-  const [unit, setUnit] = useState("g")
-  const [yeastType, setYeastType] = useState<YeastType>("dry");
-  const { convertYeast } = useConvertYeast();
+function inferInitialUnit(recipe: Recipe | null): string {
+  if (!recipe) return "g";
+  const isVolumeBased = recipe.doughIngredients.some(i => VOLUME_UNITS.includes(i.unit.toLowerCase()));
+  return isVolumeBased ? "cups" : "g";
+}
 
-  useEffect(() => {
-    if (!recipe) return;
-    const volumeUnits = ["cups", "tbls", "tbsp", "tsp"];
-    const isVolumeBased = recipe.doughIngredients.some(i =>
-      volumeUnits.includes(i.unit.toLowerCase())
-    );
-    setUnit(isVolumeBased ? "cups" : "g");
-    setYeastType(inferBaseYeastType(recipe));
-  }, [recipe?.id]);
+// Component is remounted via `key={recipe.id}` at each call site, so these
+// lazy initializers re-run per recipe without needing an effect to sync them.
+const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
+  const [unit, setUnit] = useState(() => inferInitialUnit(recipe));
+  const [yeastType, setYeastType] = useState<YeastType>(() => recipe ? inferBaseYeastType(recipe) : "dry");
+  const { convertYeast } = useConvertYeast();
 
   if (!recipe) return null;
 
