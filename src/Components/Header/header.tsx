@@ -6,7 +6,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 type HeaderProps = {
   openLogin: () => void;
@@ -44,7 +44,11 @@ const Header = ({ openLogin }: HeaderProps) => {
           style={{ justifySelf: "flex-end" }}
           onClick={() => {
             closeDrawer();
-            user ? handleLogout() : openLogin();
+            if (user) {
+              handleLogout();
+            } else {
+              openLogin();
+            }
           }}
         >
           {user ? "Logout" : "Login"}

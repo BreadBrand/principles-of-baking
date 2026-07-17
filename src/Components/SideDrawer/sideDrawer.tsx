@@ -27,7 +27,7 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
         className={`drawerOverlay ${isDrawerOpen ? "open" : ""}`}
         onClick={closeDrawer}
       />
-      <div className={`sideDrawer ${isDrawerOpen ? "open" : ""}`} inert={isDrawerOpen ? undefined : ""}>
+      <div className={`sideDrawer ${isDrawerOpen ? "open" : ""}`} inert={isDrawerOpen ? undefined : true}>
         <div className="drawerContent">
           <a href="/" onClick={closeDrawer}>
             Home
@@ -45,7 +45,11 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
             style={{ alignSelf: "flex-start" }}
             onClick={() => {
               closeDrawer();
-              user ? handleLogout() : openLogin();
+              if (user) {
+                handleLogout();
+              } else {
+                openLogin();
+              }
             }}
           >
             {user ? "Logout" : "Login"}

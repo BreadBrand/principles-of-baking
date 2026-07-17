@@ -7,7 +7,7 @@ import Landing from './Components/Landing/landing';
 import GetStarted from './Components/GetStarted/getStarted';
 import LearningStep from './Components/LearningStep/learningStep';
 import AboutMe from './Components/AboutMe/aboutMe';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router';
 import { LoginModal } from './Components/Login/Login';
 import { Toast } from './Components/Toast/Toast';
 import { useAuth } from './Context/AuthContext';
@@ -23,11 +23,26 @@ function App() {
   const { toasts, addToast, removeToast } = useToast();
   const prevUser = useRef(user);
 
+  // Closing the login modal on a successful sign-in is a pure, idempotent state
+  // update (always sets to the same fixed value), so it's handled with React's
+  // "adjust state during render" pattern rather than in the effect below -- this
+  // also correctly reacts to the `user` transition regardless of whether it comes
+  // from this tab's own login or a cross-tab auth-state sync (Firebase broadcasts
+  // auth changes across tabs), since both update the same `user` value from
+  // Context. Needs its own useState-tracked previous value (a ref won't work here
+  // -- refs don't participate in render bailout/retry) distinct from the `prevUser`
+  // ref below, which the toast effect uses for a different purpose at a different
+  // time (after commit, not during render).
+  const [prevUserForModalClose, setPrevUserForModalClose] = useState(user);
+  if (user !== prevUserForModalClose) {
+    setPrevUserForModalClose(user);
+    if (user) setIsLoginOpen(false);
+  }
+
   useEffect(() => {
     if (user === undefined) return;
     if (user) {
       addToast(`Welcome, ${user.displayName || "friend"}!`);
-      setIsLoginOpen(false);
     } else if (prevUser.current) {
       addToast("You have logged out.");
     }

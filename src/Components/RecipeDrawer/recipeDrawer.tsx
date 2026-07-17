@@ -35,7 +35,7 @@ const RecipeDrawer = ({
         className={`recipeDrawerOverlay ${isRecipeDrawerOpen ? "open" : ""}`}
         onClick={closeRecipeDrawer}
       />
-      <div className={`recipeDrawer ${isRecipeDrawerOpen ? "open" : ""}`} inert={isRecipeDrawerOpen ? undefined : ""}>
+      <div className={`recipeDrawer ${isRecipeDrawerOpen ? "open" : ""}`} inert={isRecipeDrawerOpen ? undefined : true}>
         <div className="drawerSearchWrapper">
           <input
             className="drawerSearchInput"
