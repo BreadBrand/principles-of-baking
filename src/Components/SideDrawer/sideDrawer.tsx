@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Button from "../Button/button";
 import { useAuth } from "../../Context/AuthContext";
 import { signOut } from "firebase/auth";
@@ -29,18 +30,18 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
       />
       <div className={`sideDrawer ${isDrawerOpen ? "open" : ""}`} inert={isDrawerOpen ? undefined : true}>
         <div className="drawerContent">
-          <a href="/" onClick={closeDrawer}>
+          <Link to="/" onClick={closeDrawer}>
             Home
-          </a>
-          <a href="/learn" onClick={closeDrawer}>
+          </Link>
+          <Link to="/learn" onClick={closeDrawer}>
             Learn how to bake
-          </a>
-          <a href="/tab" onClick={closeDrawer}>
+          </Link>
+          <Link to="/tab" onClick={closeDrawer}>
             Recipes and more
-          </a>
-          <a href="/about-me" onClick={closeDrawer}>
+          </Link>
+          <Link to="/about-me" onClick={closeDrawer}>
             About me
-          </a>
+          </Link>
           <Button
             style={{ alignSelf: "flex-start" }}
             onClick={() => {
