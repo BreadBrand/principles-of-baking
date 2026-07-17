@@ -6,7 +6,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
-import { useLocation } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 type HeaderProps = {
   openLogin: () => void;
@@ -30,13 +30,13 @@ const Header = ({ openLogin }: HeaderProps) => {
     <header className="headerContainer">
       <div className="navContainer">
         <div className="logoAndNav">
-          <a href="/" className="logo">
+          <Link to="/" className="logo">
             <RoundLogo height="75" width="75" />
-          </a>
+          </Link>
           <nav className="navLinks">
-            <a href="/learn">Learn how to bake</a>
-            <a href="/tab">Recipes and more</a>
-            <a href="about-me">About me</a>
+            <Link to="/learn">Learn how to bake</Link>
+            <Link to="/tab">Recipes and more</Link>
+            <Link to="/about-me">About me</Link>
           </nav>
         </div>
         <Button
