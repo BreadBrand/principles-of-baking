@@ -49,7 +49,9 @@ export function useParseRecipe(): ParseResult {
           const parsed = JSON.parse(body);
           message = parsed.message || message;
           errorCode = parsed.error || "";
-        } catch {}
+        } catch {
+          // body wasn't valid JSON — fall back to the raw text message set above
+        }
         if (errorCode === "PARSE_FAILED") setParseFailed(true);
         throw new Error(message);
       }
@@ -57,9 +59,9 @@ export function useParseRecipe(): ParseResult {
       const data: RecipeDTO = await response.json();
       setRecipe(data);
       return true;
-    } catch (err: any) {
+    } catch (err) {
       console.log("Parse failed:", err);
-      setError(err.message || "Failed to parse recipe.");
+      setError(err instanceof Error ? err.message : "Failed to parse recipe.");
       setRecipe(null);
       return false;
     } finally {

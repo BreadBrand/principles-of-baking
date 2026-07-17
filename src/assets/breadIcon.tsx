@@ -1,5 +1,5 @@
 
-const BreadIcon = ({ }) => {
+const BreadIcon = () => {
   const steam = {
     transformOrigin: "center bottom",
     animation: "steam 1.5s ease-in-out infinite",

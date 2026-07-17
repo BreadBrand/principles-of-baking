@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Tab from './Components/TabComponents/tab';
 import useFetchRecipes from './Hooks/UseFetchRecipes';
@@ -12,11 +12,9 @@ import { LoginModal } from './Components/Login/Login';
 import { Toast } from './Components/Toast/Toast';
 import { useAuth } from './Context/AuthContext';
 import { useToast } from './Hooks/useToast';
-import { type Recipe } from './types/models';
 import { DrawerProvider } from './Context/DrawerContext';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
-
-export const RecipeContext = createContext<Recipe[]>([]);
+import { RecipeContext } from './Context/RecipeContext';
 
 function App() {
   const { recipes, error } = useFetchRecipes();
@@ -70,6 +68,6 @@ function App() {
       </DrawerProvider>
     </RecipeContext.Provider>
   );
-};
+}
 
 export default App

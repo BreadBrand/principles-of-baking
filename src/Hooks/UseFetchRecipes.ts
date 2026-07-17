@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Recipe } from '../types/models';
+import { Recipe, Ingredient } from '../types/models';
 
 // Handles documents written before the doughIngredients migration
-function normalizeRecipe(raw: any): Recipe {
+type RawRecipeDoc = Omit<Recipe, 'doughIngredients' | 'otherIngredients'> & {
+  doughIngredients?: Ingredient[];
+  otherIngredients?: Ingredient[];
+  ingredients?: Ingredient[];
+};
+
+function normalizeRecipe(raw: RawRecipeDoc): Recipe {
   return {
     ...raw,
     doughIngredients: raw.doughIngredients ?? raw.ingredients ?? [],
@@ -22,7 +28,7 @@ const useFetchRecipes = () => {
         if (!resp.ok) {
           throw new Error('Network response was not ok');
         }
-        const data: any[] = await resp.json();
+        const data: RawRecipeDoc[] = await resp.json();
         setRecipes(data.map(normalizeRecipe));
       } catch (error) {
         console.error('Error fetching recipes:', error);
