@@ -7,13 +7,17 @@ import RecipeDrawer from "../RecipeDrawer/recipeDrawer";
 import { useDrawer } from "../../Context/DrawerContext";
 import WaveText from "../WaveText/waveText";
 import useRecipeFilter from "../../Hooks/useRecipeFilter";
+import useSyncRecipeUrl from "../../Hooks/useSyncRecipeUrl";
 
 const RecipeExplorer = () => {
   const recipes = useContext(RecipeContext);
   const { selectedId, setSelectedId } = useDrawer();
   const { filteredRecipes, searchTerm, setSearchTerm } = useRecipeFilter(recipes);
+  const { pendingUrlId } = useSyncRecipeUrl();
 
-  const selectedRecipe = filteredRecipes.find(r => r.id === selectedId) ?? null;
+  const selectedRecipe = recipes.find(r => r.id === selectedId) ?? null;
+  const isLoading = recipes.length === 0 && (selectedId !== null || pendingUrlId !== undefined);
+  const isNotFound = !isLoading && selectedId !== null && !recipes.some(r => r.id === selectedId);
 
   const showCount = filteredRecipes.length < recipes.length;
 
@@ -59,6 +63,16 @@ const RecipeExplorer = () => {
       <main className="recipeView">
         {selectedRecipe ? (
           <RecipeDetailView key={selectedRecipe.id} recipe={selectedRecipe} />
+        ) : isLoading ? (
+          <div className="promptContainer">
+            <p className="desktopPrompt">Loading recipe…</p>
+            <p className="mobilePrompt">Loading recipe…</p>
+          </div>
+        ) : isNotFound ? (
+          <div className="promptContainer">
+            <p className="desktopPrompt">Recipe not found</p>
+            <p className="mobilePrompt">Recipe not found</p>
+          </div>
         ) : (
           <div className="promptContainer">
             <p className="desktopPrompt">Select a recipe to view details</p>
