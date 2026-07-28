@@ -81,4 +81,15 @@ describe("resolveRecipeUrlSync", () => {
     });
     expect(result).toEqual({ kind: "setSelectedId", id: "new" });
   });
+
+  it("clears selectedId when the URL loses its id while a recipe was selected (e.g. clicking a plain /tab link)", () => {
+    const result = resolveRecipeUrlSync({
+      urlId: undefined,
+      prevUrlId: "abc",
+      selectedId: "abc",
+      activeTab: "tab1",
+      pathname: "/tab",
+    });
+    expect(result).toEqual({ kind: "clearSelectedId" });
+  });
 });

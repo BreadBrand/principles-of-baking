@@ -8,6 +8,7 @@ export function computeRecipeUrl(activeTab: string, selectedId: string | null): 
 
 export type RecipeUrlSyncResult =
   | { kind: "setSelectedId"; id: string }
+  | { kind: "clearSelectedId" }
   | { kind: "navigate"; to: string }
   | { kind: "noop" };
 
@@ -21,8 +22,13 @@ export function resolveRecipeUrlSync(input: {
   const { urlId, prevUrlId, selectedId, activeTab, pathname } = input;
   const urlIdChanged = urlId !== prevUrlId;
 
-  if (urlIdChanged && urlId !== undefined && urlId !== selectedId) {
-    return { kind: "setSelectedId", id: urlId };
+  if (urlIdChanged) {
+    if (urlId !== undefined && urlId !== selectedId) {
+      return { kind: "setSelectedId", id: urlId };
+    }
+    if (urlId === undefined && selectedId !== null) {
+      return { kind: "clearSelectedId" };
+    }
   }
 
   const target = computeRecipeUrl(activeTab, selectedId);
@@ -46,6 +52,8 @@ const useSyncRecipeUrl = () => {
 
     if (result.kind === "setSelectedId") {
       setSelectedId(result.id);
+    } else if (result.kind === "clearSelectedId") {
+      setSelectedId(null);
     } else if (result.kind === "navigate") {
       navigate(result.to, { replace: true });
     }
