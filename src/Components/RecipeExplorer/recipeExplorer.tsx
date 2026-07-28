@@ -15,7 +15,7 @@ const RecipeExplorer = () => {
   const { filteredRecipes, searchTerm, setSearchTerm } = useRecipeFilter(recipes);
   const { pendingUrlId } = useSyncRecipeUrl();
 
-  const selectedRecipe = filteredRecipes.find(r => r.id === selectedId) ?? null;
+  const selectedRecipe = recipes.find(r => r.id === selectedId) ?? null;
   const isLoading = recipes.length === 0 && (selectedId !== null || pendingUrlId !== undefined);
   const isNotFound = !isLoading && selectedId !== null && !recipes.some(r => r.id === selectedId);
 
