@@ -5,8 +5,8 @@
   height: 100vh;
   width: 260px;
   background: linear-gradient(135deg, rgba(var(--accent-secondary-color-rgb), 0.10), rgba(var(--accent-secondary-color-rgb), 0));
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,6 +37,7 @@
   height: 44px;
   border-radius: 50%;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   transition: background 0.2s ease, transform 0.1s ease;
 }
