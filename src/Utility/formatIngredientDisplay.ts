@@ -18,6 +18,13 @@ export function formatIngredientDisplay(ing: Ingredient, unit: string): string {
     return `${Math.round(ing.quantity)}: ${ing.ingredientName}`;
   }
 
+  const hasNoAmount = !(ing.grams > 0) && !(Number.isFinite(ing.quantity) && ing.quantity > 0);
+  if (hasNoAmount) {
+    return unit === "cups"
+      ? `a dash: ${ing.ingredientName}`
+      : `⅛ g: ${ing.ingredientName}`;
+  }
+
   const isGrams = ing.unit.toLowerCase() === "grams" || ing.unit.toLowerCase() === "g";
   const isMl = ing.unit.toLowerCase() === "ml";
 
