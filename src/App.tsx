@@ -64,6 +64,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/tab" element={<Tab />} />
+            <Route path="/tab/recipes/:id" element={<Tab />} />
             <Route path="/learn" element={<GetStarted />} />
             <Route path="/learning/step/:step" element={<LearningStep />} />
             <Route path="/about-me" element={<AboutMe />} />
