@@ -34,8 +34,8 @@
 
 .glass {
   background: linear-gradient(135deg, rgba(var(--accent-secondary-color-rgb), 0.1), rgba(var(--accent-secondary-color-rgb), 0));
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .noticeContainer {
