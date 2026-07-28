@@ -58,4 +58,31 @@ describe("formatIngredientDisplay", () => {
     const ing = makeIngredient({ ingredientName: "starter", quantity: 3, unit: "Tbls" });
     expect(formatIngredientDisplay(ing, "g")).toBe("3 Tbls: starter");
   });
+
+  it("shows a dash for a zero-amount optional ingredient in the cups view", () => {
+    const ing = makeIngredient({
+      ingredientName: "vanilla *optional",
+      quantity: NaN,
+      unit: "g",
+      grams: 0,
+      densityGPerMl: 0.879,
+    });
+    expect(formatIngredientDisplay(ing, "cups")).toBe("a dash: vanilla *optional");
+  });
+
+  it("shows ⅛ g for a zero-amount optional ingredient in the grams view", () => {
+    const ing = makeIngredient({
+      ingredientName: "vanilla *optional",
+      quantity: NaN,
+      unit: "g",
+      grams: 0,
+      densityGPerMl: 0.879,
+    });
+    expect(formatIngredientDisplay(ing, "g")).toBe("⅛ g: vanilla *optional");
+  });
+
+  it("treats an explicit zero quantity the same as a missing quantity", () => {
+    const ing = makeIngredient({ ingredientName: "salt", quantity: 0, unit: "g", grams: 0 });
+    expect(formatIngredientDisplay(ing, "cups")).toBe("a dash: salt");
+  });
 });
