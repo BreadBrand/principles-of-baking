@@ -15,6 +15,7 @@ import { useToast } from './Hooks/useToast';
 import { DrawerProvider } from './Context/DrawerProvider';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
 import { RecipeContext } from './Context/RecipeContext';
+import IosInstallPrompt from './Components/IosInstallPrompt/iosInstallPrompt';
 
 function App() {
   const { recipes, error } = useFetchRecipes();
@@ -71,6 +72,7 @@ function App() {
           </Routes>
         </Router>
         <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+        <IosInstallPrompt />
         <div className="toastContainer">
           {toasts.map((toast, idx) => (
             <Toast

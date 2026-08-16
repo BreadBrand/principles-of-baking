@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Recipe, Ingredient } from '../types/models';
+import { saveRecipesToCache, loadRecipesFromCache } from '../Utility/recipeCache';
 
 // Handles documents written before the doughIngredients migration
 type RawRecipeDoc = Omit<Recipe, 'doughIngredients' | 'otherIngredients'> & {
@@ -29,10 +30,15 @@ const useFetchRecipes = () => {
           throw new Error('Network response was not ok');
         }
         const data: RawRecipeDoc[] = await resp.json();
-        setRecipes(data.map(normalizeRecipe));
+        const normalized = data.map(normalizeRecipe);
+        setRecipes(normalized);
+        saveRecipesToCache(normalized);
       } catch (error) {
         console.error('Error fetching recipes:', error);
-        if (error instanceof Error) {
+        const cached = loadRecipesFromCache();
+        if (cached) {
+          setRecipes(cached);
+        } else if (error instanceof Error) {
           setError(error.message);
         } else {
           setError('An unknown error occurred.');
