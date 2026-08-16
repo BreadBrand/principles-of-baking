@@ -95,7 +95,8 @@
 @media (max-width: 480px) {
 
   .navLinks,
-  .loginButton {
+  .loginButton,
+  .installButton {
     display: none;
   }
 

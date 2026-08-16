@@ -8,7 +8,7 @@ import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
 import { Link, useLocation } from 'react-router';
 import OfflineIndicator from '../OfflineIndicator/offlineIndicator';
-import { useInstallPrompt } from '../../Hooks/useInstallPrompt';
+import { useInstallPromptContext } from '../../Context/InstallPromptContext';
 
 type HeaderProps = {
   openLogin: () => void;
@@ -22,7 +22,7 @@ const Header = ({ openLogin }: HeaderProps) => {
   // latter when a recipe is selected) -- a strict "/tab" match would hide
   // the mobile drawer-reopen button as soon as a recipe was selected.
   const isTabPage = location.pathname.startsWith("/tab");
-  const { canInstall, promptInstall } = useInstallPrompt();
+  const { canInstall, promptInstall } = useInstallPromptContext();
 
   const handleLogout = async () => {
     try {
@@ -48,7 +48,7 @@ const Header = ({ openLogin }: HeaderProps) => {
         </div>
         <div className="headerActions">
           {canInstall && (
-            <Button onClick={promptInstall}>
+            <Button className="installButton" onClick={promptInstall}>
               Install App
             </Button>
           )}

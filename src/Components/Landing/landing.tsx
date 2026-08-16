@@ -1,6 +1,10 @@
 import './landing.css';
+import Button from '../Button/button';
+import { useInstallPromptContext } from '../../Context/InstallPromptContext';
 
 const Landing = () => {
+  const { canInstall, promptInstall } = useInstallPromptContext();
+
   return (
     <div className="landingContainer">
       <div className="heroImage" />
@@ -22,6 +26,11 @@ const Landing = () => {
       <div className="underViewContainer">
         <h1>Welcome to the Bread Machine</h1>
         <p>An app to help you scale your bread recipes and help you experiment!</p>
+        {canInstall && (
+          <Button className="landingInstallButton" onClick={promptInstall}>
+            Install App
+          </Button>
+        )}
       </div>
     </div>
   )
