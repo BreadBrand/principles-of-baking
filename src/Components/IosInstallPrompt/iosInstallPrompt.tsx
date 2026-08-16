@@ -9,8 +9,9 @@ const IosInstallPrompt = () => {
   return (
     <div className="iosInstallPrompt" role="note">
       <p>
-        Install Bread Machine for offline access: tap <strong>Share</strong>,
-        then <strong>Add to Home Screen</strong>.
+        Install for offline access: tap <strong>•••</strong> or{' '}
+        <strong>Share</strong>, then find <strong>Add to Home Screen</strong>{' '}
+        (tap <strong>View More</strong> if needed).
       </p>
       <button
         className="iosInstallPromptDismiss"
