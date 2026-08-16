@@ -9,9 +9,10 @@ const IosInstallPrompt = () => {
   return (
     <div className="iosInstallPrompt" role="note">
       <p>
-        Install for offline access: tap <strong>•••</strong> or{' '}
-        <strong>Share</strong>, then find <strong>Add to Home Screen</strong>{' '}
-        (tap <strong>View More</strong> if needed).
+        Install for offline access: tap <strong>Share</strong> (look under{' '}
+        <strong>•••</strong> if you don't see it), then find{' '}
+        <strong>Add to Home Screen</strong> (tap <strong>View More</strong> if
+        it's hidden).
       </p>
       <button
         className="iosInstallPromptDismiss"
