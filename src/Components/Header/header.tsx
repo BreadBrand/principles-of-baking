@@ -7,6 +7,7 @@ import { auth } from '../../firebase';
 import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
 import { Link, useLocation } from 'react-router';
+import OfflineIndicator from '../OfflineIndicator/offlineIndicator';
 
 type HeaderProps = {
   openLogin: () => void;
@@ -33,6 +34,7 @@ const Header = ({ openLogin }: HeaderProps) => {
           <Link to="/" className="logo">
             <RoundLogo height="75" width="75" />
           </Link>
+          <OfflineIndicator />
           <nav className="navLinks">
             <Link to="/learn">Learn how to bake</Link>
             <Link to="/tab">Recipes and more</Link>
