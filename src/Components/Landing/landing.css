@@ -84,6 +84,10 @@
   line-height: 1.5;
 }
 
+.landingInstallButton {
+  margin-top: 1.5rem;
+}
+
 @media (min-width: 2200px) {
   .landingContainer {
     max-width: 1920px;

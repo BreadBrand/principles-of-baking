@@ -4,6 +4,7 @@ import { useAuth } from "../../Context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDrawer } from "../../Context/DrawerContext";
+import { useInstallPromptContext } from "../../Context/InstallPromptContext";
 import "./sideDrawer.css";
 
 type SideDrawerProps = {
@@ -12,6 +13,7 @@ type SideDrawerProps = {
 const SideDrawer = ({ openLogin }: SideDrawerProps) => {
   const { isDrawerOpen, closeDrawer } = useDrawer();
   const { user } = useAuth();
+  const { canInstall, promptInstall } = useInstallPromptContext();
 
   const handleLogout = async () => {
     try {
@@ -42,6 +44,17 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
           <Link to="/about-me" onClick={closeDrawer}>
             About me
           </Link>
+          {canInstall && (
+            <Button
+              style={{ alignSelf: "flex-start" }}
+              onClick={() => {
+                closeDrawer();
+                promptInstall();
+              }}
+            >
+              Install App
+            </Button>
+          )}
           <Button
             style={{ alignSelf: "flex-start" }}
             onClick={() => {

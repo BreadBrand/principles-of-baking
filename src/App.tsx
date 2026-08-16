@@ -16,6 +16,7 @@ import { DrawerProvider } from './Context/DrawerProvider';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
 import { RecipeContext } from './Context/RecipeContext';
 import IosInstallPrompt from './Components/IosInstallPrompt/iosInstallPrompt';
+import { InstallPromptProvider } from './Context/InstallPromptProvider';
 
 function App() {
   const { recipes, error } = useFetchRecipes();
@@ -58,6 +59,7 @@ function App() {
 
   return (
     <RecipeContext.Provider value={recipes}>
+      <InstallPromptProvider>
       <DrawerProvider>
       <Router>
         <Header openLogin={() => setIsLoginOpen(true)} />
@@ -84,6 +86,7 @@ function App() {
           ))}
         </div>
       </DrawerProvider>
+      </InstallPromptProvider>
     </RecipeContext.Provider>
   );
 }
