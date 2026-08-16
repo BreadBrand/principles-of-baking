@@ -45,7 +45,7 @@ const Header = ({ openLogin }: HeaderProps) => {
         </div>
         <div className="headerActions">
           {canInstall && (
-            <Button type="secondary" onClick={promptInstall}>
+            <Button onClick={promptInstall}>
               Install App
             </Button>
           )}
