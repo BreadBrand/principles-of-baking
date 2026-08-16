@@ -26,6 +26,12 @@
   gap: 20px;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .navLinks {
   display: flex;
   gap: 2rem;

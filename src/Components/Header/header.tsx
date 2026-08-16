@@ -8,6 +8,7 @@ import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
 import { Link, useLocation } from 'react-router';
 import OfflineIndicator from '../OfflineIndicator/offlineIndicator';
+import { useInstallPrompt } from '../../Hooks/useInstallPrompt';
 
 type HeaderProps = {
   openLogin: () => void;
@@ -18,6 +19,7 @@ const Header = ({ openLogin }: HeaderProps) => {
   const { openDrawer, closeDrawer, openRecipeDrawer, selectedId, activeTab } = useDrawer();
   const location = useLocation();
   const isTabPage = location.pathname === "/tab";
+  const { canInstall, promptInstall } = useInstallPrompt();
 
   const handleLogout = async () => {
     try {
@@ -41,20 +43,27 @@ const Header = ({ openLogin }: HeaderProps) => {
             <Link to="/about-me">About me</Link>
           </nav>
         </div>
-        <Button
-          className="loginButton"
-          style={{ justifySelf: "flex-end" }}
-          onClick={() => {
-            closeDrawer();
-            if (user) {
-              handleLogout();
-            } else {
-              openLogin();
-            }
-          }}
-        >
-          {user ? "Logout" : "Login"}
-        </Button>
+        <div className="headerActions">
+          {canInstall && (
+            <Button type="secondary" onClick={promptInstall}>
+              Install App
+            </Button>
+          )}
+          <Button
+            className="loginButton"
+            style={{ justifySelf: "flex-end" }}
+            onClick={() => {
+              closeDrawer();
+              if (user) {
+                handleLogout();
+              } else {
+                openLogin();
+              }
+            }}
+          >
+            {user ? "Logout" : "Login"}
+          </Button>
+        </div>
         <div className="mobileButtons">
           <button
             className={`
