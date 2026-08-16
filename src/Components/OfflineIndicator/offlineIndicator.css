@@ -20,3 +20,21 @@
   background: var(--warning-color);
   flex-shrink: 0;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes offlineIndicatorBreathe {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.85);
+    }
+  }
+
+  .offlineIndicatorDot {
+    animation: offlineIndicatorBreathe 2.2s ease-in-out infinite;
+  }
+}
