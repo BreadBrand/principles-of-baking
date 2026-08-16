@@ -18,7 +18,10 @@ const Header = ({ openLogin }: HeaderProps) => {
   const { user } = useAuth();
   const { openDrawer, closeDrawer, openRecipeDrawer, selectedId, activeTab } = useDrawer();
   const location = useLocation();
-  const isTabPage = location.pathname === "/tab";
+  // Covers both /tab and /tab/recipes/:id (shareable recipe URLs push the
+  // latter when a recipe is selected) -- a strict "/tab" match would hide
+  // the mobile drawer-reopen button as soon as a recipe was selected.
+  const isTabPage = location.pathname.startsWith("/tab");
   const { canInstall, promptInstall } = useInstallPrompt();
 
   const handleLogout = async () => {
