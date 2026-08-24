@@ -44,6 +44,23 @@ describe("formatIngredientDisplay", () => {
     expect(formatIngredientDisplay(ing, "cups")).toBe("4 cups: bread flour");
   });
 
+  it("falls back to stored grams in the cups view when density is unknown (muffin recipe repro: blueberries)", () => {
+    // Regression: a recipe with mostly cup-measured ingredients plus
+    // blueberries stored in grams displayed as "270 g: blueberries" even
+    // in the cups view, because blueberries had no density entry to convert
+    // through. That's the correct fallback, not corruption — verify it
+    // stays that way rather than showing a wrong/blank value.
+    const ing = makeIngredient({ ingredientName: "blueberries", quantity: 270, unit: "grams", grams: 270 });
+    expect(formatIngredientDisplay(ing, "cups")).toBe("270 g: blueberries");
+  });
+
+  it("converts blueberries to cups once a density is known", () => {
+    // Same ingredient as above, with the density gap closed (breadmachine
+    // utility/ingredient_densities.go now has a "blueberries" entry).
+    const ing = makeIngredient({ ingredientName: "blueberries", quantity: 148, unit: "grams", grams: 148, densityGPerMl: 0.62 });
+    expect(formatIngredientDisplay(ing, "cups")).toBe("1 cups: blueberries");
+  });
+
   it("converts ml to tbsp within the tbsp threshold range", () => {
     const ing = makeIngredient({ ingredientName: "vanilla extract", quantity: 20, unit: "ml" });
     expect(formatIngredientDisplay(ing, "cups")).toBe("1 ½ tbsp: vanilla extract");
