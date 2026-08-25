@@ -38,6 +38,19 @@
   margin-bottom: 10px;
 }
 
+.subsectionLabel {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-color);
+  opacity: 0.65;
+  margin: 14px 0 6px;
+}
+
+.subsectionLabel:first-child {
+  margin-top: 0;
+}
+
 .ingredients {
   font-size: 1rem;
   list-style: none;

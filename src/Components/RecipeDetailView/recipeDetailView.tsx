@@ -5,6 +5,7 @@ import YeastToggle from "../YeastToggle/YeastToggle";
 import useConvertYeast, { YeastType } from "../../Hooks/useConvertYeast";
 import { isStarter, isWater, isYeast } from "../../Utility/ingredientMatchers";
 import { formatIngredientDisplay } from "../../Utility/formatIngredientDisplay";
+import { groupByPhase } from "../../Utility/groupByPhase";
 import "./recipeDetailView.css";
 
 type RecipeDetailViewProps = {
@@ -48,6 +49,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
     ? convertYeast(recipe.doughIngredients, baseYeastType)
     : recipe.doughIngredients;
   const displayIngredients = [...displayDoughIngredients, ...(recipe.otherIngredients ?? [])];
+  const ingredientGroups = groupByPhase(displayIngredients);
 
   return (
     <div className="recipeDetailView">
@@ -65,13 +67,18 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
       <div className="body">
         <div>
           <div className="sectionLabel">Ingredients</div>
-          <ul className="ingredients" role="list">
-            {displayIngredients.map(ing => (
-              <li key={ing.ingredientName}>
-                {formatIngredientDisplay(ing, unit)}
-              </li>
-            ))}
-          </ul>
+          {ingredientGroups.map(group => (
+            <div key={group.phase || "__main__"}>
+              {group.phase && <div className="subsectionLabel">{group.phase}</div>}
+              <ul className="ingredients" role="list">
+                {group.items.map(ing => (
+                  <li key={ing.ingredientName}>
+                    {formatIngredientDisplay(ing, unit)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         <div>
           <div className="sectionLabel">Instructions</div>
