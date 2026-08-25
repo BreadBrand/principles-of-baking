@@ -5,6 +5,7 @@ export type IngredientDraft = {
   ingredientName: string;
   quantity: number;
   unit: Unit;
+  phase?: string;
 };
 export type RecipeRequest = {
   title: string;
@@ -19,6 +20,7 @@ export interface IngredientDTO {
   ingredientName: string;
   quantity: number;
   unit: string;
+  phase?: string;
   rawLine: string;
   parseOK: boolean;
 }
