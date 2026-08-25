@@ -197,6 +197,21 @@
   align-items: end;
 }
 
+/* Ingredient subsection group header (e.g. "Tangzhong", "Main Dough") */
+.phaseHeaderRow {
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.phaseHeaderRow:first-child {
+  margin-top: 0;
+}
+
+.phaseLabelInput {
+  font-weight: 600;
+  max-width: 260px;
+}
+
 /* Small label above each field */
 .fieldLabel {
   display: block;

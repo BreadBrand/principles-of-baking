@@ -2,6 +2,7 @@ import { useState } from "react";
 import useCreateRecipe from "../../Hooks/UseCreateRecipe";
 import { parseFraction } from "../../Utility/parseFraction";
 import { type RecipeDTO, type IngredientDTO, type Unit } from "../../types/dto";
+import { groupByPhase } from "../../Utility/groupByPhase";
 import "./recipePreviewModal.css";
 import Button from "../Button/button";
 
@@ -102,53 +103,79 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
   const renderIngredientList = (
     list: EditIngredient[],
     set: React.Dispatch<React.SetStateAction<EditIngredient[]>>
-  ) => (
-    <>
-      <ul className="ingredientEditList">
-        {list.map((ing, i) => (
-          <li key={i} className="ingredientRow">
-            <div>
-              <span className="fieldLabel">Qty</span>
-              <input
-                type="text"
-                className="editInput ingQtyInput"
-                value={ing.quantity}
-                onChange={e => updateIng(list, set, i, "quantity", e.target.value)}
-                placeholder="e.g. 1/2"
-                aria-label="quantity"
-              />
-            </div>
-            <div>
-              <span className="fieldLabel">Unit</span>
-              <input
-                type="text"
-                className="editInput ingUnitInput"
-                value={ing.unit}
-                onChange={e => updateIng(list, set, i, "unit", e.target.value)}
-                placeholder="unit"
-                aria-label="unit"
-              />
-            </div>
-            <div>
-              <span className="fieldLabel">Ingredient</span>
-              <input
-                type="text"
-                className="editInput ingNameInput"
-                value={ing.ingredientName}
-                onChange={e => updateIng(list, set, i, "ingredientName", e.target.value)}
-                placeholder="ingredient name"
-                aria-label="ingredient name"
-              />
-            </div>
-            <button className="removeBtn" onClick={() => removeIng(set, i)} type="button" aria-label="remove">×</button>
-          </li>
+  ) => {
+    const groups = groupByPhase(list);
+
+    const renamePhase = (oldPhase: string, newPhase: string) =>
+      set(prev => prev.map(ing => (ing.phase?.trim() ?? "") === oldPhase ? { ...ing, phase: newPhase } : ing));
+
+    return (
+      <>
+        {groups.map(group => (
+          <div key={group.phase || "__main__"}>
+            {group.phase && (
+              <div className="phaseHeaderRow">
+                <span className="fieldLabel">Section</span>
+                <input
+                  type="text"
+                  className="editInput phaseLabelInput"
+                  value={group.phase}
+                  onChange={e => renamePhase(group.phase, e.target.value)}
+                  aria-label="ingredient section label"
+                />
+              </div>
+            )}
+            <ul className="ingredientEditList">
+              {group.items.map(ing => {
+                const i = list.indexOf(ing);
+                return (
+                  <li key={i} className="ingredientRow">
+                    <div>
+                      <span className="fieldLabel">Qty</span>
+                      <input
+                        type="text"
+                        className="editInput ingQtyInput"
+                        value={ing.quantity}
+                        onChange={e => updateIng(list, set, i, "quantity", e.target.value)}
+                        placeholder="e.g. 1/2"
+                        aria-label="quantity"
+                      />
+                    </div>
+                    <div>
+                      <span className="fieldLabel">Unit</span>
+                      <input
+                        type="text"
+                        className="editInput ingUnitInput"
+                        value={ing.unit}
+                        onChange={e => updateIng(list, set, i, "unit", e.target.value)}
+                        placeholder="unit"
+                        aria-label="unit"
+                      />
+                    </div>
+                    <div>
+                      <span className="fieldLabel">Ingredient</span>
+                      <input
+                        type="text"
+                        className="editInput ingNameInput"
+                        value={ing.ingredientName}
+                        onChange={e => updateIng(list, set, i, "ingredientName", e.target.value)}
+                        placeholder="ingredient name"
+                        aria-label="ingredient name"
+                      />
+                    </div>
+                    <button className="removeBtn" onClick={() => removeIng(set, i)} type="button" aria-label="remove">×</button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         ))}
-      </ul>
-      <button className="addRowBtn" onClick={() => set(prev => [...prev, emptyIng()])} type="button">
-        + Add ingredient
-      </button>
-    </>
-  );
+        <button className="addRowBtn" onClick={() => set(prev => [...prev, emptyIng()])} type="button">
+          + Add ingredient
+        </button>
+      </>
+    );
+  };
 
   return (
     <div className="modalOverlay">
