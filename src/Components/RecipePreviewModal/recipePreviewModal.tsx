@@ -111,8 +111,8 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
     return (
       <>
-        {groups.map(group => (
-          <div key={group.phase || "__main__"}>
+        {groups.map((group, groupIndex) => (
+          <div key={groupIndex}>
             {group.phase && (
               <div className="phaseHeaderRow">
                 <span className="fieldLabel">Section</span>
