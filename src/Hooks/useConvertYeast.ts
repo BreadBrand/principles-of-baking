@@ -12,6 +12,8 @@ const useConvertYeast = () => {
       const hasYeast = ingredients.some(i => isYeast(i.ingredientName));
       if (!hasYeast) return ingredients;
 
+      const yeastPhase = ingredients.find(i => isYeast(i.ingredientName))?.phase ?? "";
+
       const totalFlourGrams = ingredients
         .filter(i => isFlour(i.ingredientName))
         .reduce((sum, i) => sum + g(i), 0);
@@ -48,7 +50,7 @@ const useConvertYeast = () => {
           quantity: starterGrams,
           unit: "g",
           grams: starterGrams,
-          phase: "dough" as const,
+          phase: yeastPhase,
           bakerPercentage: 0,
           densityGPerMl: 1.0,
         },
@@ -99,7 +101,7 @@ const useConvertYeast = () => {
           quantity: yeastGrams,
           unit: "g",
           grams: yeastGrams,
-          phase: "dough" as const,
+          phase: starterIngredient.phase ?? "",
           bakerPercentage: 0,
           densityGPerMl: 0.43,
         },

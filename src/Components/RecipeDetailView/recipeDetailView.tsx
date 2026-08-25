@@ -68,7 +68,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
         <div>
           <div className="sectionLabel">Ingredients</div>
           {ingredientGroups.map(group => (
-            <div key={group.phase || "__main__"}>
+            <div key={group.phase || "__main__"} className="ingredientGroup">
               {group.phase && <div className="subsectionLabel">{group.phase}</div>}
               <ul className="ingredients" role="list">
                 {group.items.map(ing => (

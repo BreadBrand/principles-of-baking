@@ -239,5 +239,23 @@ describe("useConvertYeast", () => {
         .reduce((sum, i) => sum + i.grams, 0);
       expect(yeastIng!.grams).toBe(Math.round(restoredFlourTotal * 0.01));
     });
+
+    it("inherits the removed starter's phase for the injected active dry yeast ingredient", () => {
+      const result = convertYeast(multiPhaseSourdough, "sourdough");
+      const yeastIng = result.find(i => i.ingredientName === "active dry yeast");
+      expect(yeastIng?.phase).toBe("Stiff Sweet Starter");
+    });
+
+    const multiPhaseDry: Ingredient[] = [
+      makeIngredient({ ingredientName: "bread flour", grams: 500, quantity: 500, unit: "g", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "water", grams: 325, quantity: 325, unit: "ml", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "active dry yeast", grams: 5, quantity: 5, unit: "g", phase: "Main Dough" }),
+    ];
+
+    it("inherits the removed yeast's phase for the injected sourdough starter ingredient", () => {
+      const result = convertYeast(multiPhaseDry, "dry");
+      const starterIng = result.find(i => i.ingredientName === "sourdough starter");
+      expect(starterIng?.phase).toBe("Main Dough");
+    });
   });
 });

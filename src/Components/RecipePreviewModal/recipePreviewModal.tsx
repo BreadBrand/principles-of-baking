@@ -80,10 +80,11 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
       }
     }
 
-    const todraft = ({ ingredientName, quantity, unit }: EditIngredient) => ({
+    const todraft = ({ ingredientName, quantity, unit, phase }: EditIngredient) => ({
       ingredientName,
       quantity: parseFraction(quantity) as number,
       unit: unit as Unit,
+      ...(phase?.trim() ? { phase: phase.trim() } : {}),
     });
 
     const result = await createRecipe({
@@ -111,65 +112,69 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
     return (
       <>
-        {groups.map((group, groupIndex) => (
-          <div key={groupIndex}>
-            {group.phase && (
-              <div className="phaseHeaderRow">
-                <span className="fieldLabel">Section</span>
-                <input
-                  type="text"
-                  className="editInput phaseLabelInput"
-                  value={group.phase}
-                  onChange={e => renamePhase(group.phase, e.target.value)}
-                  aria-label="ingredient section label"
-                />
-              </div>
-            )}
-            <ul className="ingredientEditList">
-              {group.items.map(ing => {
-                const i = list.indexOf(ing);
-                return (
-                  <li key={i} className="ingredientRow">
-                    <div>
-                      <span className="fieldLabel">Qty</span>
-                      <input
-                        type="text"
-                        className="editInput ingQtyInput"
-                        value={ing.quantity}
-                        onChange={e => updateIng(list, set, i, "quantity", e.target.value)}
-                        placeholder="e.g. 1/2"
-                        aria-label="quantity"
-                      />
-                    </div>
-                    <div>
-                      <span className="fieldLabel">Unit</span>
-                      <input
-                        type="text"
-                        className="editInput ingUnitInput"
-                        value={ing.unit}
-                        onChange={e => updateIng(list, set, i, "unit", e.target.value)}
-                        placeholder="unit"
-                        aria-label="unit"
-                      />
-                    </div>
-                    <div>
-                      <span className="fieldLabel">Ingredient</span>
-                      <input
-                        type="text"
-                        className="editInput ingNameInput"
-                        value={ing.ingredientName}
-                        onChange={e => updateIng(list, set, i, "ingredientName", e.target.value)}
-                        placeholder="ingredient name"
-                        aria-label="ingredient name"
-                      />
-                    </div>
-                    <button className="removeBtn" onClick={() => removeIng(set, i)} type="button" aria-label="remove">×</button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
+        {groups.map((group, groupIndex) => {
+          const hasPhaseField = group.items.some(i => i.phase !== undefined);
+          const rawPhase = group.items[0]?.phase ?? group.phase;
+          return (
+            <div key={groupIndex} className="ingredientGroup">
+              {hasPhaseField && (
+                <div className="phaseHeaderRow">
+                  <span className="fieldLabel">Section</span>
+                  <input
+                    type="text"
+                    className="editInput phaseLabelInput"
+                    value={rawPhase}
+                    onChange={e => renamePhase(group.phase, e.target.value)}
+                    aria-label="ingredient section label"
+                  />
+                </div>
+              )}
+              <ul className="ingredientEditList">
+                {group.items.map(ing => {
+                  const i = list.indexOf(ing);
+                  return (
+                    <li key={i} className="ingredientRow">
+                      <div>
+                        <span className="fieldLabel">Qty</span>
+                        <input
+                          type="text"
+                          className="editInput ingQtyInput"
+                          value={ing.quantity}
+                          onChange={e => updateIng(list, set, i, "quantity", e.target.value)}
+                          placeholder="e.g. 1/2"
+                          aria-label="quantity"
+                        />
+                      </div>
+                      <div>
+                        <span className="fieldLabel">Unit</span>
+                        <input
+                          type="text"
+                          className="editInput ingUnitInput"
+                          value={ing.unit}
+                          onChange={e => updateIng(list, set, i, "unit", e.target.value)}
+                          placeholder="unit"
+                          aria-label="unit"
+                        />
+                      </div>
+                      <div>
+                        <span className="fieldLabel">Ingredient</span>
+                        <input
+                          type="text"
+                          className="editInput ingNameInput"
+                          value={ing.ingredientName}
+                          onChange={e => updateIng(list, set, i, "ingredientName", e.target.value)}
+                          placeholder="ingredient name"
+                          aria-label="ingredient name"
+                        />
+                      </div>
+                      <button className="removeBtn" onClick={() => removeIng(set, i)} type="button" aria-label="remove">×</button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
         <button className="addRowBtn" onClick={() => set(prev => [...prev, emptyIng()])} type="button">
           + Add ingredient
         </button>
