@@ -211,4 +211,51 @@ describe("useConvertYeast", () => {
       expect(result.find(i => i.ingredientName === "cold water")!.grams).toBe(65);
     });
   });
+
+  describe("multi-phase recipes (starter/tangzhong/main dough sections)", () => {
+    const multiPhaseSourdough: Ingredient[] = [
+      makeIngredient({ ingredientName: "sourdough starter", grams: 15, quantity: 15, unit: "g", phase: "Stiff Sweet Starter" }),
+      makeIngredient({ ingredientName: "bread flour", grams: 60, quantity: 60, unit: "g", phase: "Stiff Sweet Starter" }),
+      makeIngredient({ ingredientName: "bread flour", grams: 35, quantity: 35, unit: "g", phase: "Tangzhong" }),
+      makeIngredient({ ingredientName: "whole milk", grams: 175, quantity: 175, unit: "g", phase: "Tangzhong" }),
+      makeIngredient({ ingredientName: "cold water", grams: 225, quantity: 225, unit: "g", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "high-protein bread flour", grams: 575, quantity: 575, unit: "g", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "salt", grams: 12, quantity: 12, unit: "g", phase: "Main Dough" }),
+    ];
+
+    it("removes the starter ingredient regardless of which subsection it's tagged with", () => {
+      const result = convertYeast(multiPhaseSourdough, "sourdough");
+      expect(result.find(i => i.ingredientName === "sourdough starter")).toBeUndefined();
+    });
+
+    it("sums flour across all subsections (not just one) when computing the dry-yeast amount", () => {
+      const result = convertYeast(multiPhaseSourdough, "sourdough");
+      const yeastIng = result.find(i => i.ingredientName === "active dry yeast");
+      expect(yeastIng).toBeDefined();
+      // Restored flour total after adding back the starter's flour share, summed across every
+      // subsection's flour-named ingredient — not just whichever phase the starter itself was in.
+      const restoredFlourTotal = result
+        .filter(i => i.ingredientName.toLowerCase().includes("flour"))
+        .reduce((sum, i) => sum + i.grams, 0);
+      expect(yeastIng!.grams).toBe(Math.round(restoredFlourTotal * 0.01));
+    });
+
+    it("inherits the removed starter's phase for the injected active dry yeast ingredient", () => {
+      const result = convertYeast(multiPhaseSourdough, "sourdough");
+      const yeastIng = result.find(i => i.ingredientName === "active dry yeast");
+      expect(yeastIng?.phase).toBe("Stiff Sweet Starter");
+    });
+
+    const multiPhaseDry: Ingredient[] = [
+      makeIngredient({ ingredientName: "bread flour", grams: 500, quantity: 500, unit: "g", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "water", grams: 325, quantity: 325, unit: "ml", phase: "Main Dough" }),
+      makeIngredient({ ingredientName: "active dry yeast", grams: 5, quantity: 5, unit: "g", phase: "Main Dough" }),
+    ];
+
+    it("inherits the removed yeast's phase for the injected sourdough starter ingredient", () => {
+      const result = convertYeast(multiPhaseDry, "dry");
+      const starterIng = result.find(i => i.ingredientName === "sourdough starter");
+      expect(starterIng?.phase).toBe("Main Dough");
+    });
+  });
 });
