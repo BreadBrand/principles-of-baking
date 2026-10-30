@@ -7,7 +7,9 @@ import { auth } from '../../firebase';
 import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
 import { Link, useLocation } from 'react-router';
+import { FormattedMessage, useIntl } from 'react-intl';
 import OfflineIndicator from '../OfflineIndicator/offlineIndicator';
+import { SYMBOLS } from '../../Constants/untranslated';
 import { useInstallPromptContext } from '../../Context/InstallPromptContext';
 
 type HeaderProps = {
@@ -16,6 +18,7 @@ type HeaderProps = {
 
 const Header = ({ openLogin }: HeaderProps) => {
   const { user } = useAuth();
+  const intl = useIntl();
   const { openDrawer, closeDrawer, openRecipeDrawer, selectedId, activeTab } = useDrawer();
   const location = useLocation();
   // Covers both /tab and /tab/recipes/:id (shareable recipe URLs push the
@@ -41,15 +44,21 @@ const Header = ({ openLogin }: HeaderProps) => {
           </Link>
           <OfflineIndicator />
           <nav className="navLinks">
-            <Link to="/learn">Learn how to bake</Link>
-            <Link to="/tab">Recipes and more</Link>
-            <Link to="/about-me">About me</Link>
+            <Link to="/learn">
+              <FormattedMessage id="header.learn" defaultMessage="Learn how to bake" />
+            </Link>
+            <Link to="/tab">
+              <FormattedMessage id="header.recipes" defaultMessage="Recipes and more" />
+            </Link>
+            <Link to="/about-me">
+              <FormattedMessage id="header.about" defaultMessage="About me" />
+            </Link>
           </nav>
         </div>
         <div className="headerActions">
           {canInstall && (
             <Button className="installButton" onClick={promptInstall}>
-              Install App
+              <FormattedMessage id="header.install" defaultMessage="Install App" />
             </Button>
           )}
           <Button
@@ -64,7 +73,9 @@ const Header = ({ openLogin }: HeaderProps) => {
               }
             }}
           >
-            {user ? "Logout" : "Login"}
+            {user
+              ? intl.formatMessage({ id: "header.logout", defaultMessage: "Logout" })
+              : intl.formatMessage({ id: "header.login", defaultMessage: "Login" })}
           </Button>
         </div>
         <div className="mobileButtons">
@@ -75,16 +86,16 @@ const Header = ({ openLogin }: HeaderProps) => {
               ${isTabPage && activeTab === "tab1" && !selectedId ? "pulse" : ""}`
             }
             onClick={openRecipeDrawer}
-            aria-label="Toggle recipe list"
+            aria-label={intl.formatMessage({ id: "header.toggleRecipeList", defaultMessage: "Toggle recipe list" })}
           >
             <BreadIcon />
           </button>
           <button
             className="hamburgerButton"
             onClick={openDrawer}
-            aria-label="Toggle menu"
+            aria-label={intl.formatMessage({ id: "header.toggleMenu", defaultMessage: "Toggle menu" })}
           >
-            ☰
+            {SYMBOLS.menuBars}
           </button>
         </div>
       </div>

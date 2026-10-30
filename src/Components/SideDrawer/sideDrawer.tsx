@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { FormattedMessage, useIntl } from "react-intl";
 import Button from "../Button/button";
 import { useAuth } from "../../Context/AuthContext";
 import { signOut } from "firebase/auth";
@@ -6,6 +7,7 @@ import { auth } from "../../firebase";
 import { useDrawer } from "../../Context/DrawerContext";
 import { useInstallPromptContext } from "../../Context/InstallPromptContext";
 import "./sideDrawer.css";
+import { SYMBOLS } from "../../Constants/untranslated";
 
 type SideDrawerProps = {
   openLogin: () => void;
@@ -13,6 +15,7 @@ type SideDrawerProps = {
 const SideDrawer = ({ openLogin }: SideDrawerProps) => {
   const { isDrawerOpen, closeDrawer } = useDrawer();
   const { user } = useAuth();
+  const intl = useIntl();
   const { canInstall, promptInstall } = useInstallPromptContext();
 
   const handleLogout = async () => {
@@ -33,16 +36,16 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
       <div className={`sideDrawer ${isDrawerOpen ? "open" : ""}`} inert={isDrawerOpen ? undefined : true}>
         <div className="drawerContent">
           <Link to="/" onClick={closeDrawer}>
-            Home
+            <FormattedMessage id="sideDrawer.home" defaultMessage="Home" />
           </Link>
           <Link to="/learn" onClick={closeDrawer}>
-            Learn how to bake
+            <FormattedMessage id="sideDrawer.learn" defaultMessage="Learn how to bake" />
           </Link>
           <Link to="/tab" onClick={closeDrawer}>
-            Recipes and more
+            <FormattedMessage id="sideDrawer.recipes" defaultMessage="Recipes and more" />
           </Link>
           <Link to="/about-me" onClick={closeDrawer}>
-            About me
+            <FormattedMessage id="sideDrawer.about" defaultMessage="About me" />
           </Link>
           {canInstall && (
             <Button
@@ -52,7 +55,7 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
                 promptInstall();
               }}
             >
-              Install App
+              <FormattedMessage id="sideDrawer.install" defaultMessage="Install App" />
             </Button>
           )}
           <Button
@@ -66,11 +69,17 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
               }
             }}
           >
-            {user ? "Logout" : "Login"}
+            {user
+              ? intl.formatMessage({ id: "sideDrawer.logout", defaultMessage: "Logout" })
+              : intl.formatMessage({ id: "sideDrawer.login", defaultMessage: "Login" })}
           </Button>
         </div>
-        <button className="closeDrawerButton" onClick={closeDrawer}>
-          ✕
+        <button
+          className="closeDrawerButton"
+          onClick={closeDrawer}
+          aria-label={intl.formatMessage({ id: "sideDrawer.close", defaultMessage: "Close menu" })}
+        >
+          {SYMBOLS.closeCross}
         </button>
       </div>
     </>

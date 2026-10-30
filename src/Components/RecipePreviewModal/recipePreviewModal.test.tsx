@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithIntl as render } from "../../test/renderWithIntl";
 import { describe, it, expect, vi } from "vitest";
 
 // RecipePreviewModal pulls in useCreateRecipe -> firebase.ts, which calls getAuth() at module

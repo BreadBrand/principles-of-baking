@@ -1,28 +1,38 @@
+import type { IntlShape } from "react-intl";
 import type { Ingredient } from "../types/models";
 import { CONVERSION_THRESHOLD, CUP_VOLUME, TBLS_VOLUME, TSP_VOLUME } from "./constants";
 import { tbspToFraction, toFraction } from "./helperFunctions";
 
-function abbreviateUnit(unit: string): string {
-  switch (unit.toLowerCase()) {
-    case "grams":
-      return "g";
-    case "count":
-      return "";
-    default:
-      return unit;
-  }
-}
+const unitMessages = {
+  g: { id: "ingredientDisplay.unitGrams", defaultMessage: "g" },
+  cups: { id: "ingredientDisplay.unitCups", defaultMessage: "cups" },
+  tbsp: { id: "ingredientDisplay.unitTbsp", defaultMessage: "tbsp" },
+  tsp: { id: "ingredientDisplay.unitTsp", defaultMessage: "tsp" },
+} as const;
 
-export function formatIngredientDisplay(ing: Ingredient, unit: string): string {
+export function formatIngredientDisplay(ing: Ingredient, unit: string, intl: IntlShape): string {
+  const measured = (amount: string | number, unitLabel: string) =>
+    intl.formatMessage(
+      { id: "ingredientDisplay.measured", defaultMessage: "{amount} {unit}: {name}" },
+      { amount, unit: unitLabel, name: ing.ingredientName },
+    );
+  const grams = (amount: string | number) => measured(amount, intl.formatMessage(unitMessages.g));
+
   if (ing.unit.toLowerCase() === "count") {
-    return `${Math.round(ing.quantity)}: ${ing.ingredientName}`;
+    return intl.formatMessage(
+      { id: "ingredientDisplay.count", defaultMessage: "{amount}: {name}" },
+      { amount: Math.round(ing.quantity), name: ing.ingredientName },
+    );
   }
 
   const hasNoAmount = !(ing.grams > 0) && !(Number.isFinite(ing.quantity) && ing.quantity > 0);
   if (hasNoAmount) {
     return unit === "cups"
-      ? `a dash: ${ing.ingredientName}`
-      : `⅛ g: ${ing.ingredientName}`;
+      ? intl.formatMessage(
+          { id: "ingredientDisplay.dash", defaultMessage: "a dash: {name}" },
+          { name: ing.ingredientName },
+        )
+      : grams("⅛");
   }
 
   const isGrams = ing.unit.toLowerCase() === "grams" || ing.unit.toLowerCase() === "g";
@@ -30,10 +40,10 @@ export function formatIngredientDisplay(ing: Ingredient, unit: string): string {
 
   if (unit === "g" && !isGrams) {
     if (ing.unit.toLowerCase() === "oz") {
-      return `${Math.round(ing.quantity * 28.35)} g: ${ing.ingredientName}`;
+      return grams(Math.round(ing.quantity * 28.35));
     }
     if (ing.grams > 0) {
-      return `${ing.grams} g: ${ing.ingredientName}`;
+      return grams(ing.grams);
     }
   }
 
@@ -47,14 +57,15 @@ export function formatIngredientDisplay(ing: Ingredient, unit: string): string {
 
     if (ml !== null) {
       if (ml >= CONVERSION_THRESHOLD) {
-        return `${toFraction(ml / CUP_VOLUME)} cups: ${ing.ingredientName}`;
+        return measured(toFraction(ml / CUP_VOLUME), intl.formatMessage(unitMessages.cups));
       } else if (ml >= TBLS_VOLUME) {
-        return `${tbspToFraction(ml / TBLS_VOLUME)} tbsp: ${ing.ingredientName}`;
+        return measured(tbspToFraction(ml / TBLS_VOLUME), intl.formatMessage(unitMessages.tbsp));
       } else {
-        return `${tbspToFraction(ml / TSP_VOLUME)} tsp: ${ing.ingredientName}`;
+        return measured(tbspToFraction(ml / TSP_VOLUME), intl.formatMessage(unitMessages.tsp));
       }
     }
   }
 
-  return `${toFraction(ing.quantity)} ${abbreviateUnit(ing.unit)}: ${ing.ingredientName}`;
+  const storedUnit = ["grams", "g"].includes(ing.unit.toLowerCase()) ? intl.formatMessage(unitMessages.g) : ing.unit;
+  return measured(toFraction(ing.quantity), storedUnit);
 }

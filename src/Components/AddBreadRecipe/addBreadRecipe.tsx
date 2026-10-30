@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import InputWithLabel from "../InputWithLabel/inputWithLabel";
 import useCreateRecipe from "../../Hooks/UseCreateRecipe";
 import Dropdown from "../DropDown/DropDown";
@@ -17,6 +18,7 @@ import {
 const AddBreadRecipe = () => {
   const { createRecipe, loading } = useCreateRecipe();
   const { addToast } = useToast();
+  const intl = useIntl();
 
   const [instructionCount, setInstructionCount] = useState(1);
   const [unit, setUnit] = useState<Unit>(UNITS[0]);
@@ -62,9 +64,9 @@ const AddBreadRecipe = () => {
   const onSubmit = async () => {
     const success = await createRecipe(newRecipe);
     if (success) {
-      addToast("Recipe created successfully!", "success");
+      addToast(intl.formatMessage({ id: "addBreadRecipe.created", defaultMessage: "Recipe created successfully!" }), "success");
     } else {
-      addToast("Failed to create recipe. Please try again.", "error");
+      addToast(intl.formatMessage({ id: "addBreadRecipe.failed", defaultMessage: "Failed to create recipe. Please try again." }), "error");
     }
   }
 
@@ -81,32 +83,32 @@ const AddBreadRecipe = () => {
   return (
     <div className="addRecipeContainer">
       <InputWithLabel
-        label="Title"
+        label={intl.formatMessage({ id: "addBreadRecipe.title", defaultMessage: "Title" })}
         value={newRecipe?.title ? newRecipe.title : ""}
         onChange={onChangeRecipeTitle}
         id="recipe-title-input"
       />
       <InputWithLabel
-        label="Description"
+        label={intl.formatMessage({ id: "addBreadRecipe.description", defaultMessage: "Description" })}
         value={newRecipe?.description ? newRecipe.description : ""}
         onChange={onChangeRecipeDescription}
         id="recipe-description-input"
       />
       <div className="flex">
         <InputWithLabel
-          label="Add Ingredient"
+          label={intl.formatMessage({ id: "addBreadRecipe.addIngredient", defaultMessage: "Add Ingredient" })}
           value={addIngredient?.ingredientName ? addIngredient.ingredientName : ""}
           onChange={onChangeIngredientName}
           id="ingredient-name"
         />
         <InputWithLabel
-          label="measurement"
+          label={intl.formatMessage({ id: "addBreadRecipe.measurement", defaultMessage: "measurement" })}
           value={addIngredient.quantity ? addIngredient.quantity.toString() : '0'}
           onChange={onChangeMeasurement}
           id="ingredient-qty"
         />
         <Dropdown
-          label="Select Unit: "
+          label={intl.formatMessage({ id: "addBreadRecipe.selectUnit", defaultMessage: "Select Unit: " })}
           value={unit}
           options={UNITS}
           onChange={(e) => setUnit(e.target.value)}
@@ -115,15 +117,17 @@ const AddBreadRecipe = () => {
         <Button
           onClick={addIngredientOnClick}
         >
-          Add
+          <FormattedMessage id="addBreadRecipe.add" defaultMessage="Add" />
         </Button>
       </div>
       <div className="flex">
-        <div className="alignSelfFlexStart">{`${instructionCount}.`}</div>
+        <div className="alignSelfFlexStart">
+          {intl.formatMessage({ id: "addBreadRecipe.instructionNumber", defaultMessage: "{number}." }, { number: instructionCount })}
+        </div>
         <TextArea
           id="add-instruction"
           htmlFor="add-instructions"
-          label="Add Instruction"
+          label={intl.formatMessage({ id: "addBreadRecipe.addInstruction", defaultMessage: "Add Instruction" })}
           value={addInstruction}
           setChange={setAddInstruction}
           labelStyle={{ alignSelf: "flex-start"}}
@@ -132,14 +136,19 @@ const AddBreadRecipe = () => {
           style={{ alignSelf: "flex-start"}}
           onClick={addInstructionOnClick}
         >
-          Add
+          <FormattedMessage id="addBreadRecipe.add" defaultMessage="Add" />
         </Button>
       </div>
       <div>
         {
           newRecipe?.doughIngredients.map(({ ingredientName, quantity, unit }) => (
             <div key={ingredientName + quantity} className="flex">
-              <div>{`${ingredientName}: ` + quantity.toString() + unit}</div>
+              <div>
+                {intl.formatMessage(
+                  { id: "addBreadRecipe.ingredientLine", defaultMessage: "{name}: {quantity}{unit}" },
+                  { name: ingredientName, quantity: quantity.toString(), unit },
+                )}
+              </div>
             </div>
           ))
         }
@@ -153,7 +162,9 @@ const AddBreadRecipe = () => {
       </div>
       <YeastToggle yeastType={newRecipe.yeastType} onChange={toggleYeastType} />
       <Button style={{alignSelf: "flex-start"}} onClick={onSubmit} disabled={loading}>
-        { loading ? "Sending" : "Submit" }
+        {loading
+          ? intl.formatMessage({ id: "addBreadRecipe.sending", defaultMessage: "Sending" })
+          : intl.formatMessage({ id: "addBreadRecipe.submit", defaultMessage: "Submit" })}
       </Button>
     </div >
   )

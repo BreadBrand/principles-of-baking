@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import useConvertYeast from "./useConvertYeast";
 import { Ingredient } from "../types/models";
 import { formatIngredientDisplay } from "../Utility/formatIngredientDisplay";
+import { intl } from "../test/intl";
 
 const makeIngredient = (
   partial: Pick<Ingredient, "ingredientName" | "grams" | "quantity" | "unit"> & Partial<Ingredient>
@@ -53,7 +54,7 @@ describe("useConvertYeast", () => {
     it("displays the starter in cups, not grams, when cups is selected", () => {
       const result = convertYeast(dryYeastRecipe, "dry");
       const starter = result.find(i => i.ingredientName === "sourdough starter")!;
-      expect(formatIngredientDisplay(starter, "cups")).toBe("½ + ⅛ cups: sourdough starter");
+      expect(formatIngredientDisplay(starter, "cups", intl)).toBe("½ + ⅛ cups: sourdough starter");
     });
 
     it("reduces flour by half the starter weight", () => {
@@ -142,7 +143,7 @@ describe("useConvertYeast", () => {
     it("displays the yeast in tsp, not grams, when cups is selected", () => {
       const result = convertYeast(sourdoughRecipe, "sourdough");
       const yeast = result.find(i => i.ingredientName === "active dry yeast")!;
-      expect(formatIngredientDisplay(yeast, "cups")).toBe("2 ½ tsp: active dry yeast");
+      expect(formatIngredientDisplay(yeast, "cups", intl)).toBe("2 ½ tsp: active dry yeast");
     });
 
     it("restores flour by half the starter weight", () => {

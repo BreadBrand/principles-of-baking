@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { useIntl } from "react-intl";
 import { MouseEvent } from "react";
 import useSelectedMonth from "../../Hooks/UseSelectedMonth";
 import "./Calendar.css";
@@ -11,7 +11,11 @@ const Calendar = () => {
     selectedDay,
   } = useSelectedMonth();
 
-  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const intl = useIntl();
+
+  const weekdays = Array.from({ length: 7 }, (_, index) =>
+    intl.formatDate(new Date(2024, 0, 7 + index), { weekday: "long" }),
+  );
 
   // Use currentTarget to always get the .day wrapper div, even if clicking the number text
   const dayOnClick = (e: MouseEvent<HTMLElement>) => {
@@ -23,11 +27,15 @@ const Calendar = () => {
       <div className="calendar">
         <div>
           <div className="controls">
-            <button className="leftButton" onClick={prevSelectedMonth}>prev</button>
-            <button className="rightButton" onClick={nextSelectedMonth}>next</button>
+            <button className="leftButton" onClick={prevSelectedMonth}>
+              {intl.formatMessage({ id: "calendar.prev", defaultMessage: "prev" })}
+            </button>
+            <button className="rightButton" onClick={nextSelectedMonth}>
+              {intl.formatMessage({ id: "calendar.next", defaultMessage: "next" })}
+            </button>
           </div>
           <div className="monthTitle">
-            {format(selectedDay, 'MMMM')} {format(selectedDay, 'yyyy')}
+            {intl.formatDate(selectedDay, { month: "long", year: "numeric" })}
           </div>
           <div className="headers">
             {weekdays.map(day => (
@@ -50,7 +58,7 @@ const Calendar = () => {
                   key={isoString}
                 >
                   <div className="dayNumber">
-                    {format(day, "d")}
+                    {intl.formatNumber(day.getDate())}
                   </div>
                 </div>
               );

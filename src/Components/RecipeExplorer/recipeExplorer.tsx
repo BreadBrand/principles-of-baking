@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { RecipeContext } from "../../Context/RecipeContext";
 import RecipeCard from "../RecipeCard/recipeCard";
 import RecipeDetailView from "../RecipeDetailView/recipeDetailView";
@@ -11,6 +12,7 @@ import useSyncRecipeUrl from "../../Hooks/useSyncRecipeUrl";
 
 const RecipeExplorer = () => {
   const recipes = useContext(RecipeContext);
+  const intl = useIntl();
   const { selectedId, setSelectedId } = useDrawer();
   const { filteredRecipes, searchTerm, setSearchTerm } = useRecipeFilter(recipes);
   const { pendingUrlId } = useSyncRecipeUrl();
@@ -36,18 +38,23 @@ const RecipeExplorer = () => {
           <input
             className="recipeSearchInput"
             type="search"
-            placeholder="Search recipes…"
+            placeholder={intl.formatMessage({ id: "recipeExplorer.searchPlaceholder", defaultMessage: "Search recipes…" })}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            aria-label="Search recipes"
+            aria-label={intl.formatMessage({ id: "recipeExplorer.searchLabel", defaultMessage: "Search recipes" })}
           />
           {showCount && (
-            <p className="recipeCount">{filteredRecipes.length} of {recipes.length} recipes</p>
+            <p className="recipeCount">{intl.formatMessage(
+              { id: "recipeExplorer.count", defaultMessage: "{shown} of {total, plural, one {# recipe} other {# recipes}}" },
+              { shown: filteredRecipes.length, total: recipes.length },
+            )}</p>
           )}
         </div>
         <div className="recipeCardsList">
           {filteredRecipes.length === 0 ? (
-            <p className="noRecipesMessage">No recipes match your search.</p>
+            <p className="noRecipesMessage">
+              <FormattedMessage id="recipeExplorer.noResults" defaultMessage="No recipes match your search." />
+            </p>
           ) : (
             filteredRecipes.map(recipe => (
               <RecipeCard
@@ -65,18 +72,26 @@ const RecipeExplorer = () => {
           <RecipeDetailView key={selectedRecipe.id} recipe={selectedRecipe} />
         ) : isLoading ? (
           <div className="promptContainer">
-            <p className="desktopPrompt">Loading recipe…</p>
-            <p className="mobilePrompt">Loading recipe…</p>
+            <p className="desktopPrompt"><FormattedMessage id="recipeExplorer.loading" defaultMessage="Loading recipe…" /></p>
+            <p className="mobilePrompt"><FormattedMessage id="recipeExplorer.loading" defaultMessage="Loading recipe…" /></p>
           </div>
         ) : isNotFound ? (
           <div className="promptContainer">
-            <p className="desktopPrompt">Recipe not found</p>
-            <p className="mobilePrompt">Recipe not found</p>
+            <p className="desktopPrompt"><FormattedMessage id="recipeExplorer.notFound" defaultMessage="Recipe not found" /></p>
+            <p className="mobilePrompt"><FormattedMessage id="recipeExplorer.notFound" defaultMessage="Recipe not found" /></p>
           </div>
         ) : (
           <div className="promptContainer">
-            <p className="desktopPrompt">Select a recipe to view details</p>
-            <p className="mobilePrompt">Click the <WaveText text="bouncing bread icon" /> to see a list of recipes</p>
+            <p className="desktopPrompt">
+              <FormattedMessage id="recipeExplorer.selectPrompt" defaultMessage="Select a recipe to view details" />
+            </p>
+            <p className="mobilePrompt">
+              <FormattedMessage
+                id="recipeExplorer.drawerPrompt"
+                defaultMessage="Click the <wave>bouncing bread icon</wave> to see a list of recipes"
+                values={{ wave: (chunks) => <WaveText text={chunks.join("")} /> }}
+              />
+            </p>
           </div>
         )}
       </main>

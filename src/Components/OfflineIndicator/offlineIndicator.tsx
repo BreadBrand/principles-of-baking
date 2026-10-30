@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { useOnlineStatus } from '../../Hooks/useOnlineStatus';
 import './offlineIndicator.css';
 
@@ -9,7 +10,7 @@ const OfflineIndicator = () => {
   return (
     <span className="offlineIndicatorPill" role="status">
       <span className="offlineIndicatorDot" aria-hidden="true" />
-      Offline
+      <FormattedMessage id="offlineIndicator.offline" defaultMessage="Offline" />
     </span>
   );
 };

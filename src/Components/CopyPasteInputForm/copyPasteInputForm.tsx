@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import Button from "../Button/button";
 import "./copyPasteInputForm.css"
 import { useParseRecipe } from "../../Hooks/useParseRecipe";
 import RecipePreviewModal from "../RecipePreviewModal/recipePreviewModal";
 
 const CopyPasteInputForm = () => {
+  const intl = useIntl();
   const [text, setText] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
   const [originalText, setOriginalText] = useState<string>("");
@@ -40,13 +42,15 @@ const CopyPasteInputForm = () => {
         className="textAreaStyles"
         value={text}
         onChange={handleChange}
-        placeholder="Paste your recipe here..."
+        placeholder={intl.formatMessage({ id: "copyPasteInputForm.placeholder", defaultMessage: "Paste your recipe here..." })}
       ></textarea>
       <Button
         onClick={handleParse}
         disabled={!text.trim() || loading}
       >
-        {loading ? "Parsing..." : "Parse"}
+        {loading
+          ? intl.formatMessage({ id: "copyPasteInputForm.parsing", defaultMessage: "Parsing..." })
+          : intl.formatMessage({ id: "copyPasteInputForm.parse", defaultMessage: "Parse" })}
       </Button>
 
       {error && (
@@ -54,7 +58,7 @@ const CopyPasteInputForm = () => {
           <p className="parseErrorText">{error}</p>
           {parseFailed && (
             <button className="manualEntryBtn" onClick={handleManualEntry} type="button">
-              Enter manually
+              <FormattedMessage id="copyPasteInputForm.enterManually" defaultMessage="Enter manually" />
             </button>
           )}
         </div>
