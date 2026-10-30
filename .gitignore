@@ -36,3 +36,8 @@ docs/superpowers/
 # local planning and agent config
 docs/
 .claude/
+
+passage-report.json
+passage-report.md
+passage-eval-*.json
+passage-eval-*.md
