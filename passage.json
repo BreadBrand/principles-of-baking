@@ -1,0 +1,364 @@
+{
+  "source": "src/i18n/locales/en.json",
+  "sourceLocale": "en",
+  "targets": [
+    "es",
+    "fr",
+    "de",
+    "pt-BR",
+    "it",
+    "ja",
+    "zh-Hans"
+  ],
+  "output": "src/i18n/locales/{locale}.json",
+  "context": {
+    "brief": "The Bread Machine (bread-machine.dev) is a website for home bakers. It converts dry-yeast bread recipes to sourdough and back, scales recipes by baker's percentage, calculates water temperature, schedules bake days, and teaches beginners how to bake bread. Visitors are mostly beginners baking at home. Recipes use grams and cups.",
+    "style": "Friendly, encouraging and direct, like a patient baking teacher. Address the reader informally where the language allows. Prefer everyday words over technical jargon, but use the standard baking term where one exists. Interface labels stay short. In Italian address the reader with informal \"tu\"."
+  },
+  "glossary": [
+    {
+      "en": "Bread Machine",
+      "es": "Bread Machine",
+      "fr": "Bread Machine",
+      "de": "Bread Machine",
+      "pt-BR": "Bread Machine",
+      "ja": "Bread Machine",
+      "zh-Hans": "Bread Machine",
+      "it": "Bread Machine"
+    },
+    {
+      "en": "dry yeast",
+      "es": "levadura seca",
+      "fr": "levure sèche",
+      "de": "Trockenhefe",
+      "pt-BR": "fermento seco",
+      "ja": "ドライイースト",
+      "zh-Hans": "干酵母",
+      "it": "lievito secco"
+    },
+    {
+      "en": "sourdough",
+      "es": "masa madre",
+      "fr": "levain naturel",
+      "de": "Sauerteig",
+      "pt-BR": "fermentação natural",
+      "ja": "サワードウ",
+      "zh-Hans": "酸种",
+      "it": "lievito madre"
+    },
+    {
+      "en": "starter",
+      "es": "masa madre",
+      "fr": "levain",
+      "de": "Anstellgut",
+      "pt-BR": "fermento natural",
+      "ja": "スターター",
+      "it": "lievito madre"
+    },
+    {
+      "en": "poolish",
+      "es": "poolish",
+      "fr": "poolish",
+      "de": "Poolish",
+      "pt-BR": "poolish",
+      "ja": "ポーリッシュ",
+      "zh-Hans": "波兰种",
+      "it": "poolish"
+    },
+    {
+      "en": "hydration",
+      "es": "hidratación",
+      "fr": "hydratation",
+      "pt-BR": "hidratação",
+      "ja": "加水率",
+      "de": "Hydration",
+      "zh-Hans": "含水量",
+      "it": "idratazione"
+    },
+    {
+      "en": "autolyse",
+      "es": "autólisis",
+      "fr": "autolyse",
+      "de": "Autolyse",
+      "pt-BR": "autólise",
+      "ja": "オートリーズ",
+      "zh-Hans": "自溶",
+      "it": "autolisi"
+    },
+    {
+      "en": "crumb",
+      "es": "miga",
+      "fr": "mie",
+      "de": "Krume",
+      "pt-BR": "miolo",
+      "ja": "クラム",
+      "zh-Hans": "面包芯",
+      "it": "mollica"
+    },
+    {
+      "en": "bulk fermentation",
+      "es": "primera fermentación",
+      "fr": "pointage",
+      "de": "Stockgare",
+      "pt-BR": "primeira fermentação",
+      "ja": "一次発酵",
+      "zh-Hans": "一次发酵",
+      "it": "prima lievitazione"
+    },
+    {
+      "en": "final fermentation",
+      "es": "segunda fermentación",
+      "fr": "apprêt",
+      "de": "Stückgare",
+      "pt-BR": "segunda fermentação",
+      "ja": "二次発酵",
+      "zh-Hans": "二次发酵",
+      "it": "seconda lievitazione"
+    },
+    {
+      "en": "baker's percentage",
+      "es": "porcentaje del panadero",
+      "fr": "pourcentage boulanger",
+      "de": "Bäckerprozent",
+      "pt-BR": "porcentagem do padeiro",
+      "ja": "ベーカーズパーセント",
+      "zh-Hans": "烘焙百分比",
+      "it": "percentuale del panettiere"
+    },
+    {
+      "en": "sourdough starter",
+      "es": "masa madre",
+      "fr": "levain",
+      "de": "Sauerteig-Anstellgut",
+      "pt-BR": "fermento natural",
+      "ja": "サワードウスターター",
+      "zh-Hans": "酸种酵头",
+      "it": "lievito madre"
+    },
+    {
+      "en": "levain",
+      "es": "masa madre",
+      "fr": "levain",
+      "de": "Levain",
+      "pt-BR": "levain",
+      "ja": "ルヴァン",
+      "zh-Hans": "酵种",
+      "it": "levain"
+    },
+    {
+      "en": "preferment",
+      "es": "prefermento",
+      "fr": "préferment",
+      "de": "Vorteig",
+      "pt-BR": "pré-fermento",
+      "ja": "発酵種",
+      "zh-Hans": "预发酵面种",
+      "it": "prefermento"
+    },
+    {
+      "en": "instant dry yeast",
+      "es": "levadura seca instantánea",
+      "fr": "levure sèche instantanée",
+      "de": "Instant-Trockenhefe",
+      "pt-BR": "fermento biológico seco instantâneo",
+      "ja": "インスタントドライイースト",
+      "zh-Hans": "即发干酵母",
+      "it": "lievito secco istantaneo"
+    }
+  ],
+  "notes": [
+    {
+      "pattern": "header.toggle*",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "sideDrawer.close",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "recipeDrawer.close",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "iosInstallPrompt.dismiss",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "unitToggle.label",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "yeastToggle.label",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "*.searchLabel",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "recipePreviewModal.*Label",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "recipePreviewModal.remove*",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "scaleBreadRecipe.backLabel",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "roundLogo.alt",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "tab.tools",
+      "text": "Screen-reader label for a control (aria-label). Describe what the control does in a few words. It is not visible text."
+    },
+    {
+      "pattern": "header.*",
+      "text": "Top navigation link or button. Keep it to a few words."
+    },
+    {
+      "pattern": "sideDrawer.*",
+      "text": "Mobile menu link or button. Keep it to a few words."
+    },
+    {
+      "pattern": "tab.*",
+      "text": "Tab label in a tab bar. Keep it short."
+    },
+    {
+      "pattern": "*Placeholder",
+      "text": "Placeholder inside an empty input. A short hint or example, not a sentence."
+    },
+    {
+      "pattern": "*.placeholder",
+      "text": "Placeholder inside an empty input. A short hint or example, not a sentence."
+    },
+    {
+      "pattern": "ingredientDisplay.unit*",
+      "text": "Unit abbreviation shown next to an amount, such as 2 cups or 500 g. Use the standard abbreviation in the target language, as short as possible."
+    },
+    {
+      "pattern": "unitToggle.grams",
+      "text": "Unit abbreviation on a toggle switch. Use the standard abbreviation in the target language, as short as possible."
+    },
+    {
+      "pattern": "unitToggle.cups",
+      "text": "Unit name on a toggle switch. Keep it very short."
+    },
+    {
+      "pattern": "yeastToggle.*",
+      "text": "Option on a toggle switch between two kinds of yeast. Keep it very short."
+    },
+    {
+      "pattern": "ingredientDisplay.measured",
+      "text": "One ingredient line in a recipe, for example '2 cups: bread flour'. Keep the order amount, unit, colon, ingredient name."
+    },
+    {
+      "pattern": "ingredientDisplay.dash",
+      "text": "Amount shown for an ingredient with no quantity, such as salt. Reads like 'a dash: salt'."
+    },
+    {
+      "pattern": "learningFooter.*",
+      "text": "Button or progress text at the bottom of a lesson page. Keep it short."
+    },
+    {
+      "pattern": "getStarted.*",
+      "text": "Beginner baking lesson written in the site author's first-person voice. Keep numbers, temperatures and times as written."
+    },
+    {
+      "pattern": "step?.*",
+      "text": "Beginner baking lesson written in the site author's first-person voice. Keep numbers, temperatures and times as written."
+    },
+    {
+      "pattern": "step1.formula",
+      "text": "A formula. Translate only the words and keep the symbols and structure."
+    },
+    {
+      "pattern": "getStarted.intro",
+      "text": "The <wave> tag marks a word that is animated. Keep the tag around the translation of the highlighted word."
+    },
+    {
+      "pattern": "getStarted.units",
+      "text": "The <wave> tag marks a word that is animated. Keep the tag around the translation of the highlighted word."
+    },
+    {
+      "pattern": "recipeExplorer.drawerPrompt",
+      "text": "The <wave> tag marks words that are animated. Keep the tag around the translation of the highlighted words."
+    },
+    {
+      "pattern": "iosInstallPrompt.instructions",
+      "text": "Steps for installing the site on an iPhone from Safari. Use Apple's official names in the target language for Share, Add to Home Screen and View More, and keep the <strong> tags around them."
+    },
+    {
+      "pattern": "scaleBreadRecipe.printHint",
+      "text": "The quoted text names the Save as PDF option in the browser print dialog. Use the browser's wording in the target language."
+    },
+    {
+      "pattern": "landing.*",
+      "text": "Landing-page copy. Friendly and inviting."
+    },
+    {
+      "pattern": "app.*",
+      "text": "Short notification shown briefly in a corner of the screen."
+    },
+    {
+      "pattern": "recipePreviewModal.confidence*",
+      "text": "Quality rating of an automatic recipe import. Use a short word or phrase. confidenceHigh, confidenceGood and confidenceLow are rating levels for how reliably the recipe was read; keep them to a single short level word or phrase. confidenceTitle, confidenceIngredients and confidenceInstructions are the names of the parts of the recipe that were rated, not instructions."
+    },
+    {
+      "pattern": "aboutMe.*",
+      "text": "Personal biography written in the first person by the site's author."
+    },
+    {
+      "pattern": "step4.slap.*",
+      "text": "A numbered step in a how-to. It is an instruction addressed to the reader (imperative, second person), never first person or narration. \"The side closest to you\" means the edge of the dough nearest the reader."
+    },
+    {
+      "pattern": "app.friend",
+      "text": "Gender-neutral word for a friend, shown in a short notification. Use a neutral form if the language has one."
+    },
+    {
+      "pattern": "calendar.next",
+      "text": "Calendar button that moves to the next month. Keep it to one word."
+    },
+    {
+      "pattern": "aboutMe.backgroundLabel",
+      "text": "Heading for the author's home baking and personal story. \"Baking\" means baking at home, not a bakery shop or a profession; \"background\" means personal history, not a visual background."
+    },
+    {
+      "pattern": "recipeSchedule.desiredDate",
+      "text": "Label for the date on which the baker wants to eat the finished bread. Use natural, everyday wording, not a coined compound."
+    },
+    {
+      "pattern": "tab.scale",
+      "text": "\"Scale\" means to change the quantity of every ingredient in proportion to make a bigger or smaller batch. It does not mean resize, adapt or convert."
+    },
+    {
+      "pattern": "scaleBreadRecipe.title",
+      "text": "\"Scale\" means to change the quantity of every ingredient in proportion to make a bigger or smaller batch. It does not mean resize, adapt or convert."
+    },
+    {
+      "pattern": "scaleBreadRecipe.prepare",
+      "text": "Button that calculates the scaled ingredient amounts for the recipe the baker entered. It does not mean gathering ingredients."
+    }
+  ],
+  "models": {
+    "translate": "claude-haiku-4-5",
+    "review": "claude-sonnet-5-5",
+    "repair": "claude-sonnet-5-5"
+  },
+  "rates": {
+    "claude-haiku-4-5": {
+      "inputPerMillion": 1,
+      "outputPerMillion": 5
+    },
+    "claude-sonnet-5-5": {
+      "inputPerMillion": 2,
+      "outputPerMillion": 10
+    }
+  },
+  "concurrency": 12,
+  "spendCap": 50
+}
