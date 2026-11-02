@@ -96,7 +96,8 @@
 
   .navLinks,
   .loginButton,
-  .installButton {
+  .installButton,
+  .languageSelect.headerLanguageSelect {
     display: none;
   }
 
