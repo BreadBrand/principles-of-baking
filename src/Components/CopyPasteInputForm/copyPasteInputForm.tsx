@@ -13,6 +13,10 @@ const CopyPasteInputForm = () => {
 
   const { recipe, loading, error, parseFailed, parseRecipe, clearError } = useParseRecipe();
 
+  const errorText = error?.kind === "empty"
+    ? intl.formatMessage({ id: "copyPasteInputForm.emptyError", defaultMessage: "Recipe text cannot be empty." })
+    : error?.message ?? intl.formatMessage({ id: "copyPasteInputForm.parseError", defaultMessage: "Failed to parse recipe." });
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     if (error) clearError();
@@ -55,7 +59,7 @@ const CopyPasteInputForm = () => {
 
       {error && (
         <div className="parseErrorBlock">
-          <p className="parseErrorText">{error}</p>
+          <p className="parseErrorText">{errorText}</p>
           {parseFailed && (
             <button className="manualEntryBtn" onClick={handleManualEntry} type="button">
               <FormattedMessage id="copyPasteInputForm.enterManually" defaultMessage="Enter manually" />

@@ -52,11 +52,8 @@ function App() {
     addToast(intl.formatMessage({ id: "app.loggedOut", defaultMessage: "You have logged out." }));
   });
 
-  const showFetchError = useEffectEvent((message: string) => {
-    addToast(
-      intl.formatMessage({ id: "app.fetchError", defaultMessage: "Error fetching recipes: {error}" }, { error: message }),
-      "error",
-    );
+  const showFetchError = useEffectEvent(() => {
+    addToast(intl.formatMessage({ id: "app.fetchError", defaultMessage: "Error fetching recipes." }), "error");
   });
 
   useEffect(() => {
@@ -71,7 +68,7 @@ function App() {
 
   useEffect(() => {
     if (error) {
-      showFetchError(error);
+      showFetchError();
     }
   }, [error]);
 
