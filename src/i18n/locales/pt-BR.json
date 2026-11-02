@@ -12,7 +12,7 @@
   "addBreadRecipe.addInstruction": "Adicionar etapa",
   "addBreadRecipe.created": "Receita criada com sucesso!",
   "addBreadRecipe.description": "Descrição",
-  "addBreadRecipe.failed": "Não consegui criar a receita. Tenta de novo.",
+  "addBreadRecipe.failed": "Não consegui criar a receita. Tente de novo.",
   "addBreadRecipe.ingredientLine": "{name}: {quantity}{unit}",
   "addBreadRecipe.instructionNumber": "{number}.",
   "addBreadRecipe.measurement": "medida",
