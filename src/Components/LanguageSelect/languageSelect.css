@@ -42,6 +42,15 @@
   padding: 0;
 }
 
+.languageSelect option {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.languageSelect option:checked {
+  background-color: var(--surface-color);
+}
+
 .languageSelectGlobe {
   line-height: 1;
 }
