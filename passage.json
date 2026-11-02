@@ -13,7 +13,7 @@
   "output": "src/i18n/locales/{locale}.json",
   "context": {
     "brief": "The Bread Machine (bread-machine.dev) is a website for home bakers. It converts dry-yeast bread recipes to sourdough and back, scales recipes by baker's percentage, calculates water temperature, schedules bake days, and teaches beginners how to bake bread. Visitors are mostly beginners baking at home. Recipes use grams and cups.",
-    "style": "Friendly, encouraging and direct, like a patient baking teacher. Address the reader informally where the language allows. Prefer everyday words over technical jargon, but use the standard baking term where one exists. Interface labels stay short. In Italian address the reader with informal \"tu\"."
+    "style": "Friendly, encouraging and direct, like a patient baking teacher. Address the reader informally where the language allows. Prefer everyday words over technical jargon, but use the standard baking term where one exists. Interface labels stay short. Always address the reader informally and never switch to the formal form: tu in French and Italian, du in German, tú in Spanish, você in Portuguese. Keep one register throughout."
   },
   "glossary": [
     {
