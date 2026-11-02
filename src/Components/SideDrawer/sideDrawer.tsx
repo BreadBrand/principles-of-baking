@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { FormattedMessage, useIntl } from "react-intl";
+import LanguageSelect from "../LanguageSelect/languageSelect";
 import Button from "../Button/button";
 import { useAuth } from "../../Context/AuthContext";
 import { signOut } from "firebase/auth";
@@ -47,6 +48,7 @@ const SideDrawer = ({ openLogin }: SideDrawerProps) => {
           <Link to="/about-me" onClick={closeDrawer}>
             <FormattedMessage id="sideDrawer.about" defaultMessage="About me" />
           </Link>
+          <LanguageSelect />
           {canInstall && (
             <Button
               style={{ alignSelf: "flex-start" }}

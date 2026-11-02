@@ -8,6 +8,7 @@ import { useDrawer } from '../../Context/DrawerContext';
 import BreadIcon from '../../assets/breadIcon';
 import { Link, useLocation } from 'react-router';
 import { FormattedMessage, useIntl } from 'react-intl';
+import LanguageSelect from '../LanguageSelect/languageSelect';
 import OfflineIndicator from '../OfflineIndicator/offlineIndicator';
 import { SYMBOLS } from '../../Constants/untranslated';
 import { useInstallPromptContext } from '../../Context/InstallPromptContext';
@@ -61,6 +62,7 @@ const Header = ({ openLogin }: HeaderProps) => {
               <FormattedMessage id="header.install" defaultMessage="Install App" />
             </Button>
           )}
+          <LanguageSelect className="headerLanguageSelect" />
           <Button
             className="loginButton"
             style={{ justifySelf: "flex-end" }}

@@ -1,0 +1,57 @@
+.languageSelect {
+  position: relative;
+  display: inline-flex;
+  border-radius: 12px;
+  background-color: var(--accent-secondary-color);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.languageSelectFace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 12px 20px;
+  line-height: normal;
+  border-radius: 12px;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  transform: translateY(-4px);
+  transition: transform 500ms;
+}
+
+.languageSelect:hover .languageSelectFace {
+  transform: translateY(-6px);
+  transition: transform 250ms;
+}
+
+.languageSelect:active .languageSelectFace {
+  transform: translateY(-2px);
+  transition: transform 50ms;
+}
+
+.languageSelect select {
+  background: transparent;
+  color: inherit;
+  border: none;
+  font: revert;
+  font-size: inherit;
+  cursor: pointer;
+  max-width: 9rem;
+  height: 1lh;
+  padding: 0;
+}
+
+.languageSelectGlobe {
+  line-height: 1;
+}
+
+.languageSelect:focus-within {
+  outline: 2px solid var(--link-color);
+  outline-offset: 4px;
+}
+
+.languageSelect:focus-within .languageSelectFace {
+  transform: translateY(-6px);
+  transition: transform 250ms;
+}

@@ -2,6 +2,7 @@ export const SYMBOLS = {
   closeCross: "✕",
   multiplySign: "×",
   menuBars: "☰",
+  globe: "🌐",
   nonBreakingSpace: String.fromCharCode(0xa0),
 } as const;
 
