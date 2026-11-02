@@ -29,7 +29,21 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+}
+
+.headerActions .top {
+  font-size: 1.2rem;
+  padding: 8px 20px;
+}
+
+.headerActions .languageSelectFace {
+  font-size: 1.2rem;
+  padding: 8px 14px;
+}
+
+.headerActions .languageSelect select {
+  max-width: 7rem;
 }
 
 .navLinks {
