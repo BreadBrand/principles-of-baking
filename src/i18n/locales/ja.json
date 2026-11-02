@@ -75,7 +75,7 @@
   "header.toggleRecipeList": "レシピリストを切り替え",
   "ingredientDisplay.count": "{amount}: {name}",
   "ingredientDisplay.dash": "少々: {name}",
-  "ingredientDisplay.measured": "{amount} {unit}: {name}",
+  "ingredientDisplay.measured": "{amount}{unit}：{name}",
   "iosInstallPrompt.dismiss": "インストール手順を閉じる",
   "iosInstallPrompt.instructions": "オフラインアクセスのためにインストール：<strong>共有</strong>をタップします（見つからない場合は<strong>•••</strong>の下を確認してください）。次に<strong>ホーム画面に追加</strong>を探します（非表示の場合は<strong>その他</strong>をタップしてください）。",
   "landing.heroSubtitle": "自分でパンを作るのは、思っているほど複雑ではありません。",

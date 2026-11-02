@@ -176,7 +176,7 @@
   "sideDrawer.logout": "退出",
   "sideDrawer.recipes": "食谱及更多",
   "step1.advanced": "作为进阶练习，你可以按烘焙百分比来扩大或缩小配方，然后烤这个新的扩大或缩小的配方，看看是否有效。",
-  "step1.calc": "{dividend} / {divisor} = {quotient}",
+  "step1.calc": "{dividend} ÷ {divisor} = {quotient}",
   "step1.exampleIntro": "例如，如果食谱要求 500g 面粉、300g 水和 10g 盐，烘焙百分比将是：",
   "step1.exampleTitle": "实例讲解",
   "step1.flour": "面粉",
