@@ -1,3 +1,4 @@
+import { FormattedMessage, useIntl } from "react-intl";
 import { Unit } from "../../types/dto";
 import "./UnitToggle.css";
 
@@ -7,9 +8,10 @@ type UnitToggleProps = {
 };
 
 const UnitToggle = ({ unit, onChange }: UnitToggleProps) => {
+  const intl = useIntl();
   return (
-    <label className="toggleWrapper" aria-label="Switch between grams and cups">
-      <span className={`toggleLabel ${unit === "g" ? "toggleActive" : ""}`}>g</span>
+    <label className="toggleWrapper" aria-label={intl.formatMessage({ id: "unitToggle.label", defaultMessage: "Switch between grams and cups" })}>
+      <span className={`toggleLabel ${unit === "g" ? "toggleActive" : ""}`}><FormattedMessage id="unitToggle.grams" defaultMessage="g" /></span>
       <div className="toggle">
         <input
           type="checkbox"
@@ -18,7 +20,7 @@ const UnitToggle = ({ unit, onChange }: UnitToggleProps) => {
         />
         <span className="slider" />
       </div>
-      <span className={`toggleLabel ${unit === "cups" ? "toggleActive" : ""}`}>cups</span>
+      <span className={`toggleLabel ${unit === "cups" ? "toggleActive" : ""}`}><FormattedMessage id="unitToggle.cups" defaultMessage="cups" /></span>
     </label>
   );
 };

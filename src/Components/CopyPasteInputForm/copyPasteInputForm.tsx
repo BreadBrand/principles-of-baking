@@ -1,15 +1,21 @@
 import { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import Button from "../Button/button";
 import "./copyPasteInputForm.css"
 import { useParseRecipe } from "../../Hooks/useParseRecipe";
 import RecipePreviewModal from "../RecipePreviewModal/recipePreviewModal";
 
 const CopyPasteInputForm = () => {
+  const intl = useIntl();
   const [text, setText] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
   const [originalText, setOriginalText] = useState<string>("");
 
   const { recipe, loading, error, parseFailed, parseRecipe, clearError } = useParseRecipe();
+
+  const errorText = error?.kind === "empty"
+    ? intl.formatMessage({ id: "copyPasteInputForm.emptyError", defaultMessage: "Recipe text cannot be empty." })
+    : error?.message ?? intl.formatMessage({ id: "copyPasteInputForm.parseError", defaultMessage: "Failed to parse recipe." });
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -40,21 +46,23 @@ const CopyPasteInputForm = () => {
         className="textAreaStyles"
         value={text}
         onChange={handleChange}
-        placeholder="Paste your recipe here..."
+        placeholder={intl.formatMessage({ id: "copyPasteInputForm.placeholder", defaultMessage: "Paste your recipe here..." })}
       ></textarea>
       <Button
         onClick={handleParse}
         disabled={!text.trim() || loading}
       >
-        {loading ? "Parsing..." : "Parse"}
+        {loading
+          ? intl.formatMessage({ id: "copyPasteInputForm.parsing", defaultMessage: "Parsing..." })
+          : intl.formatMessage({ id: "copyPasteInputForm.parse", defaultMessage: "Parse" })}
       </Button>
 
       {error && (
         <div className="parseErrorBlock">
-          <p className="parseErrorText">{error}</p>
+          <p className="parseErrorText">{errorText}</p>
           {parseFailed && (
             <button className="manualEntryBtn" onClick={handleManualEntry} type="button">
-              Enter manually
+              <FormattedMessage id="copyPasteInputForm.enterManually" defaultMessage="Enter manually" />
             </button>
           )}
         </div>

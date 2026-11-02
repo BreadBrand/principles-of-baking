@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 import Button from '../Button/button';
 import './learningFooter.css';
 
@@ -29,11 +30,13 @@ const LearningFooter = ({ step }: LearningFooterProps) => {
   return (
     <div className='footerContainer'>
       <div>
-        {step > 0 && <Button onClick={handleBack}>Back</Button>}
+        {step > 0 && <Button onClick={handleBack}><FormattedMessage id="learningFooter.back" defaultMessage="Back" /></Button>}
       </div>
-      {step > 0 && <div className="stepProgress">Step {step} of {TOTAL_STEPS}</div>}
+      {step > 0 && <div className="stepProgress">
+        <FormattedMessage id="learningFooter.progress" defaultMessage="Step {step} of {total}" values={{ step, total: TOTAL_STEPS }} />
+      </div>}
       <div>
-        {!isLastStep && <Button onClick={handleNext}>Next</Button>}
+        {!isLastStep && <Button onClick={handleNext}><FormattedMessage id="learningFooter.next" defaultMessage="Next" /></Button>}
       </div>
     </div>
   );

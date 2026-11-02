@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithIntl as render } from "../../test/renderWithIntl";
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("../../assets/SelfPortrait.jpg", () => ({ default: "SelfPortrait.jpg" }));

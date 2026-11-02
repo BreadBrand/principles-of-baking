@@ -3,6 +3,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import formatjs from 'eslint-plugin-formatjs';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -19,8 +20,10 @@ export default tseslint.config(
     },
     plugins: {
       'react-refresh': reactRefresh,
+      formatjs,
     },
     rules: {
+      'formatjs/no-literal-string-in-jsx': ['error', { props: { exclude: [['style', 'children']] } }],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

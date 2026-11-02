@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useEffectEvent, useRef } from 'react';
+import { useIntl } from 'react-intl';
 import './App.css';
 import Tab from './Components/TabComponents/tab';
 import useFetchRecipes from './Hooks/UseFetchRecipes';
@@ -23,6 +24,7 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { user } = useAuth();
   const { toasts, addToast, removeToast } = useToast();
+  const intl = useIntl();
   const prevUser = useRef(user);
 
   // Closing the login modal on a successful sign-in is a pure, idempotent state
@@ -41,21 +43,34 @@ function App() {
     if (user) setIsLoginOpen(false);
   }
 
+  const showWelcome = useEffectEvent((displayName: string | null) => {
+    const name = displayName || intl.formatMessage({ id: "app.friend", defaultMessage: "friend" });
+    addToast(intl.formatMessage({ id: "app.welcome", defaultMessage: "Welcome, {name}!" }, { name }));
+  });
+
+  const showLoggedOut = useEffectEvent(() => {
+    addToast(intl.formatMessage({ id: "app.loggedOut", defaultMessage: "You have logged out." }));
+  });
+
+  const showFetchError = useEffectEvent(() => {
+    addToast(intl.formatMessage({ id: "app.fetchError", defaultMessage: "Error fetching recipes." }), "error");
+  });
+
   useEffect(() => {
     if (user === undefined) return;
     if (user) {
-      addToast(`Welcome, ${user.displayName || "friend"}!`);
+      showWelcome(user.displayName);
     } else if (prevUser.current) {
-      addToast("You have logged out.");
+      showLoggedOut();
     }
     prevUser.current = user;
-  }, [user, addToast]);
+  }, [user]);
 
   useEffect(() => {
     if (error) {
-      addToast(`Error fetching recipes: ${error}`, "error");
+      showFetchError();
     }
-  }, [error, addToast]);
+  }, [error]);
 
   return (
     <RecipeContext.Provider value={recipes}>

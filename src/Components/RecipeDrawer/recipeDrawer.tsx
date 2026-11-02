@@ -1,7 +1,9 @@
+import { useIntl } from "react-intl";
 import { useDrawer } from "../../Context/DrawerContext";
 import { isStarter } from "../../Utility/ingredientMatchers";
 import { Recipe } from "../../types/models";
 import "./recipeDrawer.css";
+import { SYMBOLS } from "../../Constants/untranslated";
 
 type RecipeDrawerProps = {
   onSelectRecipe: (id: string) => void;
@@ -21,6 +23,7 @@ const RecipeDrawer = ({
   setSearchTerm,
 }: RecipeDrawerProps) => {
   const { isRecipeDrawerOpen, closeRecipeDrawer } = useDrawer();
+  const intl = useIntl();
 
   const handleSelect = (id: string) => {
     onSelectRecipe(id);
@@ -40,23 +43,27 @@ const RecipeDrawer = ({
           <input
             className="drawerSearchInput"
             type="search"
-            placeholder="Search recipes…"
+            placeholder={intl.formatMessage({ id: "recipeDrawer.searchPlaceholder", defaultMessage: "Search recipes…" })}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            aria-label="Search recipes"
+            aria-label={intl.formatMessage({ id: "recipeDrawer.searchLabel", defaultMessage: "Search recipes" })}
           />
           {showCount && (
-            <p className="drawerSearchCount">{filteredRecipes.length} of {totalRecipes} recipes</p>
+            <p className="drawerSearchCount">{intl.formatMessage(
+              { id: "recipeDrawer.count", defaultMessage: "{shown} of {total, plural, one {# recipe} other {# recipes}}" },
+              { shown: filteredRecipes.length, total: totalRecipes },
+            )}</p>
           )}
         </div>
         <div className="recipeDrawerContent">
           {filteredRecipes.length === 0 ? (
-            <p className="drawerNoResults">No recipes match your search.</p>
+            <p className="drawerNoResults">{intl.formatMessage({ id: "recipeDrawer.noResults", defaultMessage: "No recipes match your search." })}</p>
           ) : (
             filteredRecipes.map(recipe => {
-              const yeastLabel = recipe.doughIngredients.some(i => isStarter(i.ingredientName))
-                ? "sourdough"
-                : "dry yeast";
+              const isSourdough = recipe.doughIngredients.some(i => isStarter(i.ingredientName));
+              const yeastLabel = isSourdough
+                ? intl.formatMessage({ id: "recipeDrawer.sourdough", defaultMessage: "sourdough" })
+                : intl.formatMessage({ id: "recipeDrawer.dryYeast", defaultMessage: "dry yeast" });
               return (
                 <button
                   key={recipe.id}
@@ -64,14 +71,18 @@ const RecipeDrawer = ({
                   onClick={() => handleSelect(recipe.id)}
                 >
                   {recipe.title}
-                  <span className={`drawerYeastBadge${yeastLabel === "dry yeast" ? " drawerYeastBadgeDry" : ""}`}>{yeastLabel}</span>
+                  <span className={`drawerYeastBadge${isSourdough ? "" : " drawerYeastBadgeDry"}`}>{yeastLabel}</span>
                 </button>
               );
             })
           )}
         </div>
-        <button className="recipeCloseButton" onClick={closeRecipeDrawer}>
-          ✕
+        <button
+          className="recipeCloseButton"
+          onClick={closeRecipeDrawer}
+          aria-label={intl.formatMessage({ id: "recipeDrawer.close", defaultMessage: "Close recipe list" })}
+        >
+          {SYMBOLS.closeCross}
         </button>
       </div>
     </>

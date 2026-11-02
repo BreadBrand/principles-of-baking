@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Recipe } from "../../types/models";
 import UnitToggle from "../UnitToggle/UnitToggle";
 import YeastToggle from "../YeastToggle/YeastToggle";
@@ -30,6 +31,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
   const [unit, setUnit] = useState(() => inferInitialUnit(recipe));
   const [yeastType, setYeastType] = useState<YeastType>(() => recipe ? inferBaseYeastType(recipe) : "dry");
   const { convertYeast } = useConvertYeast();
+  const intl = useIntl();
 
   if (!recipe) return null;
 
@@ -66,14 +68,14 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
       <h5>{recipe.description}</h5>
       <div className="body">
         <div>
-          <div className="sectionLabel">Ingredients</div>
+          <div className="sectionLabel"><FormattedMessage id="recipeDetailView.ingredients" defaultMessage="Ingredients" /></div>
           {ingredientGroups.map(group => (
             <div key={group.phase || "__main__"} className="ingredientGroup">
               {group.phase && <div className="subsectionLabel">{group.phase}</div>}
               <ul className="ingredients" role="list">
                 {group.items.map(ing => (
                   <li key={ing.ingredientName}>
-                    {formatIngredientDisplay(ing, unit)}
+                    {formatIngredientDisplay(ing, unit, intl)}
                   </li>
                 ))}
               </ul>
@@ -81,7 +83,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
           ))}
         </div>
         <div>
-          <div className="sectionLabel">Instructions</div>
+          <div className="sectionLabel"><FormattedMessage id="recipeDetailView.instructions" defaultMessage="Instructions" /></div>
           <ol className="instructions" role="list">
             {recipe.instructions.map(inst => (
               <li key={inst}>{inst}</li>

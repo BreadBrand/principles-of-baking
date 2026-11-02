@@ -1,4 +1,5 @@
 import './waveText.css';
+import { SYMBOLS } from '../../Constants/untranslated';
 import {CSSProperties} from 'react';
 
 type WaveTextProps = {
@@ -15,7 +16,7 @@ const WaveText = ({ text }: WaveTextProps) => {
       {chars.map((char, index) => (
         <span key={index} style={{ '--i': index + 1 } as WaveCharStyle}>
           {char}
-          {char === ' ' && '\u00A0'}
+          {char === ' ' && SYMBOLS.nonBreakingSpace}
         </span>
       ))}
     </span>

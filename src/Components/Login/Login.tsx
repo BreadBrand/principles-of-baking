@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { auth } from "../../firebase";
 import "./Login.css";
 import { FirebaseError } from "firebase/app";
+import { FormattedMessage } from "react-intl";
 import {
   signInWithEmailAndPassword,
   GithubAuthProvider,
@@ -113,11 +114,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         className="modalContent"
       >
         <h2 id="login-title" className="modalTitle">
-          Login
+          <FormattedMessage id="login.title" defaultMessage="Login" />
         </h2>
         <form onSubmit={handleEmailLogin} className="form">
           <label htmlFor="email" className="label">
-            Email
+            <FormattedMessage id="login.email" defaultMessage="Email" />
           </label>
           <input
             id="email"
@@ -129,7 +130,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           />
 
           <label htmlFor="password" className="label">
-            Password
+            <FormattedMessage id="login.password" defaultMessage="Password" />
           </label>
           <input
             id="password"
@@ -144,7 +145,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             type="submit"
             className="submitButton"
           >
-            Sign in with Email
+            <FormattedMessage id="login.signInEmail" defaultMessage="Sign in with Email" />
           </button>
         </form>
 
@@ -153,19 +154,19 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             onClick={handleGithubLogin}
             className="githubButton"
           >
-            Sign in with GitHub
+            <FormattedMessage id="login.signInGithub" defaultMessage="Sign in with GitHub" />
           </button>
           <button
             onClick={handleGoogleLogin}
             className="googleButton"
           >
-            Sign in with Google
+            <FormattedMessage id="login.signInGoogle" defaultMessage="Sign in with Google" />
           </button>
           <button
             onClick={onClose}
             className="cancelButton"
           >
-            Cancel
+            <FormattedMessage id="login.cancel" defaultMessage="Cancel" />
           </button>
         </div>
       </div>

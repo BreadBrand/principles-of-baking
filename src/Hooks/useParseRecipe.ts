@@ -3,10 +3,12 @@ import { RecipeDTO } from "../types/dto";
 import { auth } from "../firebase";
 import { getAuthToken, buildApiUrl } from "../Utility/apiClient";
 
+export type ParseError = { kind: "empty" } | { kind: "failed"; message: string | null };
+
 interface ParseResult {
   recipe: RecipeDTO | null;
   loading: boolean;
-  error: string | null;
+  error: ParseError | null;
   parseFailed: boolean;
   parseRecipe: (text: string) => Promise<boolean>;
   clearError: () => void;
@@ -15,12 +17,12 @@ interface ParseResult {
 export function useParseRecipe(): ParseResult {
   const [recipe, setRecipe] = useState<RecipeDTO | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ParseError | null>(null);
   const [parseFailed, setParseFailed] = useState(false);
 
   const parseRecipe = useCallback(async (text: string): Promise<boolean> => {
     if (!text.trim()) {
-      setError("Recipe text cannot be empty.");
+      setError({ kind: "empty" });
       return false;
     }
 
@@ -61,7 +63,7 @@ export function useParseRecipe(): ParseResult {
       return true;
     } catch (err) {
       console.log("Parse failed:", err);
-      setError(err instanceof Error ? err.message : "Failed to parse recipe.");
+      setError({ kind: "failed", message: err instanceof Error ? err.message : null });
       setRecipe(null);
       return false;
     } finally {

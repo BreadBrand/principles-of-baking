@@ -1,4 +1,5 @@
 import { useParams } from "react-router";
+import { FormattedMessage } from "react-intl";
 import "./learningStep.css";
 import LearningFooter from "../LearningFooter/learningFooter";
 import Step1 from "./Step1/step1";
@@ -13,7 +14,7 @@ const components: { [key: string]: React.FC } = {
   "4": Step4,
 };
 
-const StepNotFound: React.FC = () => <div>Step not found</div>;
+const StepNotFound: React.FC = () => <div><FormattedMessage id="learningStep.notFound" defaultMessage="Step not found" /></div>;
 
 const LearningStep = () => {
   const { step } = useParams<{ step: string }>();

@@ -1,3 +1,4 @@
+import { FormattedMessage, useIntl } from "react-intl";
 import { YeastType } from "../../Hooks/useConvertYeast";
 import "../UnitToggle/UnitToggle.css";
 
@@ -7,9 +8,10 @@ type YeastToggleProps = {
 };
 
 const YeastToggle = ({ yeastType, onChange }: YeastToggleProps) => {
+  const intl = useIntl();
   return (
-    <label className="toggleWrapper" aria-label="Switch between dry yeast and sourdough">
-      <span className={`toggleLabel ${yeastType === "dry" ? "toggleActive" : ""}`}>dry yeast</span>
+    <label className="toggleWrapper" aria-label={intl.formatMessage({ id: "yeastToggle.label", defaultMessage: "Switch between dry yeast and sourdough" })}>
+      <span className={`toggleLabel ${yeastType === "dry" ? "toggleActive" : ""}`}><FormattedMessage id="yeastToggle.dry" defaultMessage="dry yeast" /></span>
       <div className="toggle">
         <input
           type="checkbox"
@@ -18,7 +20,7 @@ const YeastToggle = ({ yeastType, onChange }: YeastToggleProps) => {
         />
         <span className="slider" />
       </div>
-      <span className={`toggleLabel ${yeastType === "sourdough" ? "toggleActive" : ""}`}>sourdough</span>
+      <span className={`toggleLabel ${yeastType === "sourdough" ? "toggleActive" : ""}`}><FormattedMessage id="yeastToggle.sourdough" defaultMessage="sourdough" /></span>
     </label>
   );
 };

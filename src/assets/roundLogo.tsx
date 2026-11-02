@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import logo from '../assets/breadmachinelogo.svg';
 
 type LogoProps = {
@@ -6,10 +7,11 @@ type LogoProps = {
 };
 
 const RoundLogo = ({ height, width }: LogoProps) => {
+  const intl = useIntl();
   return (
     <img
       src={logo}
-      alt="Bread Machine Logo"
+      alt={intl.formatMessage({ id: "roundLogo.alt", defaultMessage: "Bread Machine Logo" })}
       width={width}
       height={height}
     />
