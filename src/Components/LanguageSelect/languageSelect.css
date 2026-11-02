@@ -12,6 +12,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 12px 20px;
+  line-height: normal;
   border-radius: 12px;
   background-color: var(--surface-color);
   color: var(--text-color);
@@ -33,9 +34,16 @@
   background: transparent;
   color: inherit;
   border: none;
-  font: inherit;
+  font: revert;
+  font-size: inherit;
   cursor: pointer;
   max-width: 9rem;
+  height: 1lh;
+  padding: 0;
+}
+
+.languageSelectGlobe {
+  line-height: 1;
 }
 
 .languageSelect:focus-within {
