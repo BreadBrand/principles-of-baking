@@ -30,7 +30,6 @@ const CopyPasteInputForm = () => {
     const ok = await parseRecipe(text);
     if (ok) {
       setOriginalText(text);
-      setText("");
       setShowPreview(true);
     }
   }
@@ -51,8 +50,15 @@ const CopyPasteInputForm = () => {
 
   return (
     <div className="copyPasteForm">
+      <label htmlFor="copyPasteTextArea" className="copyPasteLabel">
+        <FormattedMessage id="copyPasteInputForm.label" defaultMessage="Add a recipe" />
+      </label>
+      <p id="copyPasteHelper" className="copyPasteHelper">
+        <FormattedMessage id="copyPasteInputForm.helper" defaultMessage="Paste a recipe from anywhere, with its ingredients and steps. We'll sort it into fields you can review before saving." />
+      </p>
       <textarea
         id="copyPasteTextArea"
+        aria-describedby="copyPasteHelper"
         className="textAreaStyles"
         value={text}
         onChange={handleChange}

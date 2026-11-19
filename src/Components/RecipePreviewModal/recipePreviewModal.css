@@ -354,3 +354,24 @@
   cursor: text;
   user-select: text;
 }
+
+.fieldMissing {
+  border-color: var(--error-color);
+}
+
+.discardConfirm {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--error-color);
+}
+
+.discardConfirmText {
+  margin: 0;
+  margin-right: auto;
+  font-weight: 600;
+}
