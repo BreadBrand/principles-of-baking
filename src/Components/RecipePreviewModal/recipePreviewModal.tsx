@@ -66,6 +66,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
   const [instructions, setInstructions] = useState<string[]>(initialState.instructions);
   const [confirmingDiscard, setConfirmingDiscard] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const discardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -83,14 +84,25 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
     }
   };
 
+  useEffect(() => {
+    if (confirmingDiscard) discardRef.current?.focus();
+  }, [confirmingDiscard]);
+
+  const cancelDiscard = () => {
+    setConfirmingDiscard(false);
+    dialogRef.current?.focus();
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "Escape") return;
     e.stopPropagation();
-    if (confirmingDiscard) {
-      setConfirmingDiscard(false);
-    } else {
-      requestClose();
-    }
+    requestClose();
+  };
+
+  const handleDiscardKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Escape") return;
+    e.stopPropagation();
+    cancelDiscard();
   };
 
   const updateIng = (
@@ -223,6 +235,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
     <div className="modalOverlay">
       <div
         className="parseModalContent"
+        inert={confirmingDiscard}
         role="dialog"
         aria-modal="true"
         aria-label={intl.formatMessage({ id: "recipePreviewModal.dialogLabel", defaultMessage: "Review and save recipe" })}
@@ -245,6 +258,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
           placeholder={intl.formatMessage({ id: "recipePreviewModal.title", defaultMessage: "Recipe title" })}
           aria-label={intl.formatMessage({ id: "recipePreviewModal.title", defaultMessage: "Recipe title" })}
         />
+        {!title.trim() && <span className="fieldMissingText"><FormattedMessage id="recipePreviewModal.required" defaultMessage="Required" /></span>}
 
         <input
           className={`editInput descriptionInput${description.trim() ? "" : " fieldMissing"}`}
@@ -254,6 +268,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
           placeholder={intl.formatMessage({ id: "recipePreviewModal.description", defaultMessage: "Recipe description" })}
           aria-label={intl.formatMessage({ id: "recipePreviewModal.description", defaultMessage: "Recipe description" })}
         />
+        {!description.trim() && <span className="fieldMissingText"><FormattedMessage id="recipePreviewModal.required" defaultMessage="Required" /></span>}
 
         {confidence && (
           <div className="confidenceSection">
@@ -353,18 +368,32 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
             <FormattedMessage id="recipePreviewModal.close" defaultMessage="Close" />
           </Button>
         </div>
-        {confirmingDiscard && (
-          <div className="discardConfirm" role="alertdialog" aria-label={intl.formatMessage({ id: "recipePreviewModal.discardPrompt", defaultMessage: "Discard your changes?" })}>
-            <p className="discardConfirmText"><FormattedMessage id="recipePreviewModal.discardPrompt" defaultMessage="Discard your changes?" /></p>
-            <Button onClick={() => setConfirmingDiscard(false)}>
-              <FormattedMessage id="recipePreviewModal.keepEditing" defaultMessage="Keep editing" />
-            </Button>
-            <Button onClick={onClose} type="secondary">
-              <FormattedMessage id="recipePreviewModal.discard" defaultMessage="Discard" />
-            </Button>
-          </div>
-        )}
       </div>
+      {confirmingDiscard && (
+        <div className="modalOverlay discardOverlay">
+          <div
+            className="discardDialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="discardPromptText"
+            tabIndex={-1}
+            ref={discardRef}
+            onKeyDown={handleDiscardKeyDown}
+          >
+            <p id="discardPromptText" className="discardPromptText">
+              <FormattedMessage id="recipePreviewModal.discardPrompt" defaultMessage="Discard your changes?" />
+            </p>
+            <div className="discardActions">
+              <Button onClick={cancelDiscard}>
+                <FormattedMessage id="recipePreviewModal.keepEditing" defaultMessage="Keep editing" />
+              </Button>
+              <Button onClick={onClose} type="secondary">
+                <FormattedMessage id="recipePreviewModal.discard" defaultMessage="Discard" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

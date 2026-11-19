@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import Button from "../Button/button";
 import "./copyPasteInputForm.css"
@@ -6,6 +6,8 @@ import { useParseRecipe } from "../../Hooks/useParseRecipe";
 import RecipePreviewModal from "../RecipePreviewModal/recipePreviewModal";
 import { useRecipeActions } from "../../Context/RecipeActionsContext";
 import { useToastContext } from "../../Context/ToastContext";
+import { useIsBelowViewport } from "../../Hooks/useIsBelowViewport";
+import ScrollDownHint from "../ScrollDownHint/scrollDownHint";
 
 const CopyPasteInputForm = () => {
   const intl = useIntl();
@@ -14,6 +16,8 @@ const CopyPasteInputForm = () => {
   const [text, setText] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
   const [originalText, setOriginalText] = useState<string>("");
+  const formEndRef = useRef<HTMLDivElement>(null);
+  const contentBelowFold = useIsBelowViewport(formEndRef);
 
   const { recipe, loading, error, parseFailed, parseRecipe, clearError } = useParseRecipe();
 
@@ -82,6 +86,12 @@ const CopyPasteInputForm = () => {
             </button>
           )}
         </div>
+      )}
+
+      <div ref={formEndRef} className="copyPasteFormEnd" />
+
+      {contentBelowFold && (
+        <ScrollDownHint onClick={() => formEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })} />
       )}
 
       {showPreview && (
