@@ -1,0 +1,30 @@
+.durationInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.durationLabel {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.durationFields {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.durationFields .durationNumber {
+  width: 3.5rem;
+  text-align: center;
+}
+
+.durationUnit {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.durationFields .durationInvalid {
+  border: 2px solid var(--toast-danger-color);
+}

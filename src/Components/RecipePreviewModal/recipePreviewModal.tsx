@@ -5,6 +5,8 @@ import { parseFraction } from "../../Utility/parseFraction";
 import { type RecipeDTO, type IngredientDTO, type Unit } from "../../types/dto";
 import { groupByPhase } from "../../Utility/groupByPhase";
 import { hasUnsavedEdits } from "../../Utility/hasUnsavedEdits";
+import { toDurationFields, toTotalMinutes } from "../../Utility/recipeDuration";
+import DurationInput from "../DurationInput/durationInput";
 import "./recipePreviewModal.css";
 import { SYMBOLS } from "../../Constants/untranslated";
 import Button from "../Button/button";
@@ -46,12 +48,17 @@ const buildInitialState = (recipe: RecipeDTO | null) => ({
     quantity: ing.quantity.toString(),
   })) as EditIngredient[],
   instructions: recipe?.instructions ?? [],
+  servings: recipe?.servings ?? "",
+  prepTime: toDurationFields(recipe?.prepTime),
+  cookTime: toDurationFields(recipe?.cookTime),
+  additionalTime: toDurationFields(recipe?.additionalTime),
 });
 
 const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePreviewModalProps) => {
   const { createRecipe, loading, error, clearError } = useCreateRecipe();
   const intl = useIntl();
   const [hasQuantityError, setHasQuantityError] = useState(false);
+  const [hasTimeError, setHasTimeError] = useState(false);
 
   const manualEntry = !recipe;
   const lowConfidence = recipe
@@ -64,6 +71,10 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
   const [doughIngredients, setDoughIngredients] = useState<EditIngredient[]>(initialState.doughIngredients);
   const [otherIngredients, setOtherIngredients] = useState<EditIngredient[]>(initialState.otherIngredients);
   const [instructions, setInstructions] = useState<string[]>(initialState.instructions);
+  const [servings, setServings] = useState(initialState.servings);
+  const [prepTime, setPrepTime] = useState(initialState.prepTime);
+  const [cookTime, setCookTime] = useState(initialState.cookTime);
+  const [additionalTime, setAdditionalTime] = useState(initialState.additionalTime);
   const [confirmingDiscard, setConfirmingDiscard] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const discardRef = useRef<HTMLDivElement>(null);
@@ -76,7 +87,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
   const requestClose = () => {
     if (loading) return;
-    const edited = hasUnsavedEdits(initialState, { title, description, doughIngredients, otherIngredients, instructions });
+    const edited = hasUnsavedEdits(initialState, { title, description, doughIngredients, otherIngredients, instructions, servings, prepTime, cookTime, additionalTime });
     if (edited) {
       setConfirmingDiscard(true);
     } else {
@@ -124,6 +135,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
   const handleSave = async () => {
     setHasQuantityError(false);
+    setHasTimeError(false);
     clearError();
     const allIngs = [...doughIngredients, ...otherIngredients].filter(i => i.ingredientName.trim());
     for (const ing of allIngs) {
@@ -131,6 +143,14 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
         setHasQuantityError(true);
         return;
       }
+    }
+
+    const prepMinutes = toTotalMinutes(prepTime);
+    const cookMinutes = toTotalMinutes(cookTime);
+    const additionalMinutes = toTotalMinutes(additionalTime);
+    if (prepMinutes === null || cookMinutes === null || additionalMinutes === null) {
+      setHasTimeError(true);
+      return;
     }
 
     const todraft = ({ ingredientName, quantity, unit, phase }: EditIngredient) => ({
@@ -147,12 +167,17 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
       otherIngredients: otherIngredients.filter(i => i.ingredientName.trim()).map(todraft),
       instructions: instructions.filter(s => s.trim()),
       yeastType: detectYeastType(doughIngredients),
+      meta: {
+        ...(servings.trim() ? { servings: servings.trim() } : {}),
+        prepTime: prepMinutes,
+        cookTime: cookMinutes,
+        additionalTime: additionalMinutes,
+      },
     });
     if (result.ok) { onClose(); onSaved?.(); }
   };
 
   const confidence = recipe?.confidence;
-  const hasMeta = recipe && (recipe.servings || recipe.prepTime || recipe.cookTime || recipe.additionalTime);
 
   const renderIngredientList = (
     list: EditIngredient[],
@@ -306,14 +331,22 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
           </div>
         )}
 
-        {hasMeta && (
-          <div className="parsedMeta">
-            {recipe.servings && <span><FormattedMessage id="recipePreviewModal.servings" defaultMessage="{servings} servings" values={{ servings: recipe.servings }} /></span>}
-            {recipe.prepTime && <span><FormattedMessage id="recipePreviewModal.prepTime" defaultMessage="Prep: {time}" values={{ time: recipe.prepTime }} /></span>}
-            {recipe.cookTime && <span><FormattedMessage id="recipePreviewModal.cookTime" defaultMessage="Cook: {time}" values={{ time: recipe.cookTime }} /></span>}
-            {recipe.additionalTime && <span><FormattedMessage id="recipePreviewModal.additionalTime" defaultMessage="Additional: {time}" values={{ time: recipe.additionalTime }} /></span>}
-          </div>
-        )}
+        <h2><FormattedMessage id="recipePreviewModal.details" defaultMessage="Details" /></h2>
+        <div className="detailsGrid">
+          <label className="servingsField">
+            <span className="durationLabel"><FormattedMessage id="recipePreviewModal.servingsLabel" defaultMessage="Servings" /></span>
+            <input
+              type="text"
+              className="editInput servingsInput"
+              value={servings}
+              onChange={e => setServings(e.target.value)}
+              placeholder={intl.formatMessage({ id: "recipePreviewModal.servingsPlaceholder", defaultMessage: "e.g. 2 loaves" })}
+            />
+          </label>
+          <DurationInput label={intl.formatMessage({ id: "recipePreviewModal.prepTimeLabel", defaultMessage: "Prep time" })} value={prepTime} onChange={setPrepTime} />
+          <DurationInput label={intl.formatMessage({ id: "recipePreviewModal.cookTimeLabel", defaultMessage: "Cook time" })} value={cookTime} onChange={setCookTime} />
+          <DurationInput label={intl.formatMessage({ id: "recipePreviewModal.additionalTimeLabel", defaultMessage: "Additional time" })} value={additionalTime} onChange={setAdditionalTime} />
+        </div>
 
         <h2><FormattedMessage id="recipePreviewModal.ingredients" defaultMessage="Ingredients" /></h2>
         {renderIngredientList(doughIngredients, setDoughIngredients)}
@@ -350,11 +383,13 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
         </button>
 
         <div className="modalActions">
-          {(hasQuantityError || error) && (
+          {(hasQuantityError || hasTimeError || error) && (
             <p className="errorText">
               {hasQuantityError
                 ? intl.formatMessage({ id: "recipePreviewModal.quantityError", defaultMessage: "One or more quantities couldn't be read. Check ingredient amounts." })
-                : error}
+                : hasTimeError
+                  ? intl.formatMessage({ id: "recipePreviewModal.timeError", defaultMessage: "Times must be whole hours and minutes, up to 7 days." })
+                  : error}
             </p>
           )}
           <Button onClick={handleSave} disabled={

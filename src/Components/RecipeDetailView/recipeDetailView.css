@@ -22,6 +22,17 @@
   margin-bottom: 0;
 }
 
+.recipeMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+}
+
 .body {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
