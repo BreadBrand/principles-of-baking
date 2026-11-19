@@ -4,7 +4,6 @@ import TabContent from "../TabContent/tabContent";
 import ScaleBreadRecipe from "../ScaleBreadRecipe/scaleBreadRecipe";
 import CalcDoughTemp from "../CalcDoughTemp/calcDoughTemp";
 import RecipeSchedule from "../RecipeSchedule/recipeSchedule";
-// import AddBreadRecipe from "../AddBreadRecipe/addBreadRecipe";
 import "./tab.css";
 import { useIntl } from "react-intl";
 import { useAuth } from "../../Context/AuthContext";
