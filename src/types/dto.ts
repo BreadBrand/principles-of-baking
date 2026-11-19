@@ -1,5 +1,4 @@
-export const UNITS = ["g", "oz", "ml", "cups", "Tbls", "tsp"];
-export type Unit = typeof UNITS[number];
+export type Unit = string;
 
 export type IngredientDraft = {
   ingredientName: string;
