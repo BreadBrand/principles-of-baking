@@ -84,14 +84,18 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
     }
   };
 
+  const wasConfirmingDiscard = useRef(false);
+
   useEffect(() => {
-    if (confirmingDiscard) discardRef.current?.focus();
+    if (confirmingDiscard) {
+      discardRef.current?.focus();
+    } else if (wasConfirmingDiscard.current) {
+      dialogRef.current?.focus();
+    }
+    wasConfirmingDiscard.current = confirmingDiscard;
   }, [confirmingDiscard]);
 
-  const cancelDiscard = () => {
-    setConfirmingDiscard(false);
-    dialogRef.current?.focus();
-  };
+  const cancelDiscard = () => setConfirmingDiscard(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "Escape") return;
