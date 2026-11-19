@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import TabNavItem from "../TabNavItem/tabNavItem";
 import TabContent from "../TabContent/tabContent";
 import ScaleBreadRecipe from "../ScaleBreadRecipe/scaleBreadRecipe";
@@ -15,15 +16,24 @@ const Tab = () => {
   const { activeTab, setActiveTab } = useDrawer();
   const { user } = useAuth();
   const intl = useIntl();
+  const tabListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    tabListRef.current
+      ?.querySelector<HTMLElement>('[aria-selected="true"]')
+      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [activeTab, user]);
 
   return (
     <div className="tabContainer" >
-      <div role="tablist" aria-label={intl.formatMessage({ id: "tab.tools", defaultMessage: "Bread recipe tools" })} className="tabs">
+      <div className="tabsScroller">
+      <div ref={tabListRef} role="tablist" aria-label={intl.formatMessage({ id: "tab.tools", defaultMessage: "Bread recipe tools" })} className="tabs">
         <TabNavItem id="tab1" title={intl.formatMessage({ id: "tab.recipeView", defaultMessage: "Recipe view" })} activeTab={activeTab} setActiveTab={setActiveTab} />
         <TabNavItem id="tab2" title={intl.formatMessage({ id: "tab.scale", defaultMessage: "Scale Bread Recipe" })} activeTab={activeTab} setActiveTab={setActiveTab} />
         <TabNavItem id="tab3" title={intl.formatMessage({ id: "tab.waterTemp", defaultMessage: "Calculate Water Temp" })} activeTab={activeTab} setActiveTab={setActiveTab} />
         {user && <TabNavItem id="tab4" title={intl.formatMessage({ id: "tab.scheduler", defaultMessage: "Scheduler" })} activeTab={activeTab} setActiveTab={setActiveTab} />}
         {user && <TabNavItem id="tab5" title={intl.formatMessage({ id: "tab.addRecipe", defaultMessage: "Add Recipe" })} activeTab={activeTab} setActiveTab={setActiveTab} />}
+      </div>
       </div>
       <div className="layout">
         <TabContent id="tab1" activeTab={activeTab}>

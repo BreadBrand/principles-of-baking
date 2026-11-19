@@ -17,6 +17,7 @@ const TabNavItem = ({ id, title, activeTab, setActiveTab }: tabNavItemProps) => 
       onClick={handleClick}
       className={activeTab === id ? "active selector" : "inactive selector"}
       role="tab"
+      aria-selected={activeTab === id}
     >
       {title}
     </button>

@@ -12,28 +12,43 @@
 }
 
 /* --- TAB BAR --- */
+.tabsScroller {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  padding: 10px 6px 12px;
+  margin: -10px 0 -12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-secondary-color-rgb), 0.6) transparent;
+}
+
 .tabs {
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--surface-color);
   border-radius: 10px;
-  width: fit-content;
+  width: max-content;
   box-sizing: border-box;
 }
 
 /* --- MOBILE --- */
 @media screen and (max-width: 480px) {
-  .tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .tabsScroller {
     width: 100%;
-    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .tabs::-webkit-scrollbar {
+  .tabsScroller::-webkit-scrollbar {
     display: none;
+  }
+
+  .tabs {
+    flex-wrap: nowrap;
+    width: 100%;
+    min-width: max-content;
+    justify-content: flex-start;
   }
 
   .layout {
