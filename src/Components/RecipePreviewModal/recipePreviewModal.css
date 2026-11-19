@@ -128,7 +128,7 @@
   margin-bottom: 0.5rem;
 }
 
-.servingsField {
+.detailsTextField {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

@@ -14,6 +14,7 @@ export interface Meta {
   createdAt: string;
   updatedAt: string;
   tags?: string[];
+  author?: string;
   servings?: string;
   prepTime?: number;
   cookTime?: number;

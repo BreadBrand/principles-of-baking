@@ -7,6 +7,11 @@ export const formatRecipeMeta = (meta: Meta | undefined, intl: IntlShape): strin
 
   const items: string[] = [];
 
+  const author = meta.author?.trim();
+  if (author) {
+    items.push(intl.formatMessage({ id: "recipeDetailView.author", defaultMessage: "By {author}" }, { author }));
+  }
+
   const servings = meta.servings?.trim();
   if (servings) {
     items.push(intl.formatMessage({ id: "recipeDetailView.servings", defaultMessage: "Servings: {servings}" }, { servings }));

@@ -8,6 +8,7 @@ export type IngredientDraft = {
   phase?: string;
 };
 export type RecipeMetaRequest = {
+  author?: string;
   servings?: string;
   prepTime: number;
   cookTime: number;
@@ -44,6 +45,7 @@ export interface RecipeDTO {
   doughIngredients: IngredientDTO[];
   otherIngredients: IngredientDTO[] | null;
   instructions: string[];
+  author?: string;
   servings?: string;
   prepTime?: number;
   cookTime?: number;
