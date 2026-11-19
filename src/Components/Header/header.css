@@ -105,8 +105,7 @@
   }
 }
 
-/* --- RESPONSIVE BREAKPOINT --- */
-@media (max-width: 480px) {
+@media (max-width: 1100px) {
 
   .navLinks,
   .loginButton,
@@ -118,6 +117,16 @@
   .hamburgerButton {
     display: block;
   }
+
+  .mobileButtons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+  }
+}
+
+/* --- RESPONSIVE BREAKPOINT --- */
+@media (max-width: 480px) {
 
   .headerContainer {
     height: 100px;
@@ -148,9 +157,8 @@
   }
 
   .mobileButtons {
-    display: flex;
-    justify-content: space-evenly;
     width: 100px;
+    gap: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {

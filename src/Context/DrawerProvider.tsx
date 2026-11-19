@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactNode } from "react";
 import { DrawerContext } from "./DrawerContext";
+import { MOBILE_MAX_WIDTH, NAV_COLLAPSE_MAX_WIDTH } from "../Constants/breakpoints";
 
 export const DrawerProvider = ({ children }: {children: ReactNode }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -8,15 +9,21 @@ export const DrawerProvider = ({ children }: {children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<string>("tab1");
 
   useEffect(() => {
-    const mql = window.matchMedia("(min-width: 481px)");
-    const handler = (e: MediaQueryListEvent) => {
-      if (e.matches) {
-        setIsDrawerOpen(false);
-        setIsRecipeDrawerOpen(false);
-      }
+    const closeWhenWiderThan = (maxWidth: number, close: () => void) => {
+      const mql = window.matchMedia(`(min-width: ${maxWidth + 1}px)`);
+      const handler = (e: MediaQueryListEvent) => {
+        if (e.matches) close();
+      };
+      mql.addEventListener("change", handler);
+      return () => mql.removeEventListener("change", handler);
     };
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+
+    const stopSideMenu = closeWhenWiderThan(NAV_COLLAPSE_MAX_WIDTH, () => setIsDrawerOpen(false));
+    const stopRecipeDrawer = closeWhenWiderThan(MOBILE_MAX_WIDTH, () => setIsRecipeDrawerOpen(false));
+    return () => {
+      stopSideMenu();
+      stopRecipeDrawer();
+    };
   }, []);
 
   const openDrawer = () => {
