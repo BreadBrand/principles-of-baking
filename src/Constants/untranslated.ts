@@ -3,6 +3,7 @@ export const SYMBOLS = {
   multiplySign: "×",
   menuBars: "☰",
   globe: "🌐",
+  wavingHand: "👋",
   nonBreakingSpace: String.fromCharCode(0xa0),
 } as const;
 
