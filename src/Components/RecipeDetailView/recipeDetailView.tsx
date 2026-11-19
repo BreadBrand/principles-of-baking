@@ -7,6 +7,7 @@ import useConvertYeast, { YeastType } from "../../Hooks/useConvertYeast";
 import { isStarter, isWater, isYeast } from "../../Utility/ingredientMatchers";
 import { formatIngredientDisplay } from "../../Utility/formatIngredientDisplay";
 import { groupByPhase } from "../../Utility/groupByPhase";
+import { formatRecipeMeta } from "../../Utility/formatRecipeMeta";
 import "./recipeDetailView.css";
 
 type RecipeDetailViewProps = {
@@ -52,6 +53,7 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
     : recipe.doughIngredients;
   const displayIngredients = [...displayDoughIngredients, ...(recipe.otherIngredients ?? [])];
   const ingredientGroups = groupByPhase(displayIngredients);
+  const metaItems = formatRecipeMeta(recipe.meta, intl);
 
   return (
     <div className="recipeDetailView">
@@ -66,6 +68,13 @@ const RecipeDetailView = ({ recipe }: RecipeDetailViewProps) => {
       </div>
       <h2>{recipe.title}</h2>
       <h5>{recipe.description}</h5>
+      {metaItems.length > 0 && (
+        <ul className="recipeMeta" role="list">
+          {metaItems.map(item => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
       <div className="body">
         <div>
           <div className="sectionLabel"><FormattedMessage id="recipeDetailView.ingredients" defaultMessage="Ingredients" /></div>

@@ -15,9 +15,9 @@ export interface Meta {
   updatedAt: string;
   tags?: string[];
   servings?: string;
-  prepTime?: string;
-  cookTime?: string;
-  additionalTime?: string;
+  prepTime?: number;
+  cookTime?: number;
+  additionalTime?: number;
 }
 
 export type YeastType = "dry" | "sourdough";

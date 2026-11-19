@@ -1,3 +1,5 @@
+import type { DurationFields } from "./recipeDuration";
+
 type IngredientEditState = {
   ingredientName: string;
   quantity: string;
@@ -11,6 +13,10 @@ export type RecipeEditState = {
   doughIngredients: IngredientEditState[];
   otherIngredients: IngredientEditState[];
   instructions: string[];
+  servings: string;
+  prepTime: DurationFields;
+  cookTime: DurationFields;
+  additionalTime: DurationFields;
 };
 
 const comparableIngredient = ({ ingredientName, quantity, unit, phase }: IngredientEditState) => ({
@@ -26,6 +32,10 @@ const comparable = (state: RecipeEditState) => ({
   doughIngredients: state.doughIngredients.map(comparableIngredient),
   otherIngredients: state.otherIngredients.map(comparableIngredient),
   instructions: state.instructions,
+  servings: state.servings,
+  prepTime: state.prepTime,
+  cookTime: state.cookTime,
+  additionalTime: state.additionalTime,
 });
 
 export const hasUnsavedEdits = (initial: RecipeEditState, current: RecipeEditState): boolean =>

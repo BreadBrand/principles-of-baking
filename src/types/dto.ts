@@ -7,6 +7,12 @@ export type IngredientDraft = {
   unit: Unit;
   phase?: string;
 };
+export type RecipeMetaRequest = {
+  servings?: string;
+  prepTime: number;
+  cookTime: number;
+  additionalTime: number;
+};
 export type RecipeRequest = {
   title: string;
   description: string;
@@ -14,6 +20,7 @@ export type RecipeRequest = {
   otherIngredients?: IngredientDraft[];
   instructions: string[];
   yeastType: "dry" | "sourdough";
+  meta?: RecipeMetaRequest;
 };
 
 export interface IngredientDTO {
@@ -38,8 +45,8 @@ export interface RecipeDTO {
   otherIngredients: IngredientDTO[] | null;
   instructions: string[];
   servings?: string;
-  prepTime?: string;
-  cookTime?: string;
-  additionalTime?: string;
+  prepTime?: number;
+  cookTime?: number;
+  additionalTime?: number;
   confidence: ConfidenceMeta;
 }

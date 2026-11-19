@@ -9,6 +9,10 @@ const baseState = (): RecipeEditState => ({
   ],
   otherIngredients: [],
   instructions: ["Mix", "Bake"],
+  servings: "4",
+  prepTime: { hours: "1", minutes: "" },
+  cookTime: { hours: "", minutes: "45" },
+  additionalTime: { hours: "", minutes: "" },
 });
 
 describe("hasUnsavedEdits", () => {
@@ -54,5 +58,14 @@ describe("hasUnsavedEdits", () => {
     const current = baseState();
     current.doughIngredients[0] = { ...current.doughIngredients[0], rawLine: "500 g bread flour", parseOK: true } as typeof current.doughIngredients[0];
     expect(hasUnsavedEdits(baseState(), current)).toBe(false);
+  });
+
+  it("is true when servings change", () => {
+    expect(hasUnsavedEdits(baseState(), { ...baseState(), servings: "6" })).toBe(true);
+  });
+
+  it("is true when a time field changes", () => {
+    expect(hasUnsavedEdits(baseState(), { ...baseState(), cookTime: { hours: "1", minutes: "45" } })).toBe(true);
+    expect(hasUnsavedEdits(baseState(), { ...baseState(), additionalTime: { hours: "", minutes: "5" } })).toBe(true);
   });
 });

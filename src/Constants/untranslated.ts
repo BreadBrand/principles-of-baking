@@ -4,6 +4,7 @@ export const SYMBOLS = {
   menuBars: "☰",
   globe: "🌐",
   wavingHand: "👋",
+  zeroPlaceholder: "0",
   nonBreakingSpace: String.fromCharCode(0xa0),
 } as const;
 
