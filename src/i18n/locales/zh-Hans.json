@@ -145,6 +145,7 @@
   "recipePreviewModal.remove": "删除",
   "recipePreviewModal.removeStep": "删除步骤",
   "recipePreviewModal.save": "保存食谱",
+  "recipePreviewModal.saved": "食谱已保存",
   "recipePreviewModal.saving": "正在保存...",
   "recipePreviewModal.section": "部分",
   "recipePreviewModal.sectionLabel": "配料分区标签",

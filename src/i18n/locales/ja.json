@@ -145,6 +145,7 @@
   "recipePreviewModal.remove": "削除",
   "recipePreviewModal.removeStep": "ステップを削除",
   "recipePreviewModal.save": "レシピを保存",
+  "recipePreviewModal.saved": "レシピを保存しました",
   "recipePreviewModal.saving": "保存中...",
   "recipePreviewModal.section": "セクション",
   "recipePreviewModal.sectionLabel": "材料セクションのラベル",

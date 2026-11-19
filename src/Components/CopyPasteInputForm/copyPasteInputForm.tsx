@@ -4,9 +4,13 @@ import Button from "../Button/button";
 import "./copyPasteInputForm.css"
 import { useParseRecipe } from "../../Hooks/useParseRecipe";
 import RecipePreviewModal from "../RecipePreviewModal/recipePreviewModal";
+import { useRecipeActions } from "../../Context/RecipeActionsContext";
+import { useToastContext } from "../../Context/ToastContext";
 
 const CopyPasteInputForm = () => {
   const intl = useIntl();
+  const { refreshRecipes } = useRecipeActions();
+  const { addToast } = useToastContext();
   const [text, setText] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
   const [originalText, setOriginalText] = useState<string>("");
@@ -38,6 +42,12 @@ const CopyPasteInputForm = () => {
   };
 
   const handleClose = () => setShowPreview(false);
+
+  const handleSaved = () => {
+    setText("");
+    addToast(intl.formatMessage({ id: "recipePreviewModal.saved", defaultMessage: "Recipe saved" }), "success");
+    refreshRecipes();
+  };
 
   return (
     <div className="copyPasteForm">
@@ -73,7 +83,7 @@ const CopyPasteInputForm = () => {
           recipe={recipe}
           originalText={originalText}
           onClose={handleClose}
-          onSaved={() => setText("")}
+          onSaved={handleSaved}
         />
       )}
     </div>

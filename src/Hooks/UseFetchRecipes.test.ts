@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import useFetchRecipes from './UseFetchRecipes';
 import { saveRecipesToCache } from '../Utility/recipeCache';
 import { type Recipe } from '../types/models';
@@ -58,5 +58,37 @@ describe('useFetchRecipes', () => {
 
     expect(result.current.recipes).toEqual([]);
     expect(result.current.error).toBe('offline');
+  });
+
+  it('refetches the list and picks up new recipes when refresh is called', async () => {
+    const secondRecipe: Recipe = { ...sampleRecipe, id: 'r2', title: 'Second Loaf' };
+    const fetchSpy = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce({ ok: true, json: async () => [sampleRecipe] } as Response)
+      .mockResolvedValueOnce({ ok: true, json: async () => [sampleRecipe, secondRecipe] } as Response);
+
+    const { result } = renderHook(() => useFetchRecipes());
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    await act(async () => {
+      await result.current.refresh();
+    });
+
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(result.current.recipes.map(r => r.id)).toEqual(['r1', 'r2']);
+  });
+
+  it('keeps the current list when a refresh fails', async () => {
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce({ ok: true, json: async () => [sampleRecipe] } as Response)
+      .mockRejectedValueOnce(new Error('offline'));
+
+    const { result } = renderHook(() => useFetchRecipes());
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    await act(async () => {
+      await result.current.refresh();
+    });
+
+    expect(result.current.recipes).toEqual([sampleRecipe]);
   });
 });

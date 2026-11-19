@@ -145,6 +145,7 @@
   "recipePreviewModal.remove": "remove",
   "recipePreviewModal.removeStep": "remove step",
   "recipePreviewModal.save": "Save Recipe",
+  "recipePreviewModal.saved": "Recipe saved",
   "recipePreviewModal.saving": "Saving...",
   "recipePreviewModal.section": "Section",
   "recipePreviewModal.sectionLabel": "ingredient section label",
