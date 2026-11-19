@@ -22,6 +22,12 @@
   scrollbar-color: rgba(var(--accent-secondary-color-rgb), 0.6) transparent;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .tabsScroller {
+    scroll-behavior: smooth;
+  }
+}
+
 .tabs {
   display: flex;
   align-items: center;
