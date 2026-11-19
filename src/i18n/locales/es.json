@@ -145,6 +145,7 @@
   "recipePreviewModal.remove": "Eliminar",
   "recipePreviewModal.removeStep": "eliminar paso",
   "recipePreviewModal.save": "Guardar Receta",
+  "recipePreviewModal.saved": "Receta guardada",
   "recipePreviewModal.saving": "Guardando...",
   "recipePreviewModal.section": "Sección",
   "recipePreviewModal.sectionLabel": "etiqueta de sección de ingredientes",

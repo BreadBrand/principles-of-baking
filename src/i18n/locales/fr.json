@@ -145,6 +145,7 @@
   "recipePreviewModal.remove": "Supprimer",
   "recipePreviewModal.removeStep": "supprimer l'étape",
   "recipePreviewModal.save": "Enregistrer la recette",
+  "recipePreviewModal.saved": "Recette enregistrée",
   "recipePreviewModal.saving": "Enregistrement en cours...",
   "recipePreviewModal.section": "Section",
   "recipePreviewModal.sectionLabel": "étiquette de section d'ingrédients",

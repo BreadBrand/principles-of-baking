@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Recipe, Ingredient } from '../types/models';
 import { saveRecipesToCache, loadRecipesFromCache } from '../Utility/recipeCache';
 
@@ -17,6 +17,15 @@ function normalizeRecipe(raw: RawRecipeDoc): Recipe {
   };
 }
 
+const fetchRecipeList = async (): Promise<Recipe[]> => {
+  const resp = await fetch('/api/recipes');
+  if (!resp.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const data: RawRecipeDoc[] = await resp.json();
+  return data.map(normalizeRecipe);
+};
+
 const useFetchRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,12 +34,7 @@ const useFetchRecipes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await fetch('/api/recipes');
-        if (!resp.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data: RawRecipeDoc[] = await resp.json();
-        const normalized = data.map(normalizeRecipe);
+        const normalized = await fetchRecipeList();
         setRecipes(normalized);
         saveRecipesToCache(normalized);
       } catch (error) {
@@ -51,7 +55,17 @@ const useFetchRecipes = () => {
     fetchData();
   }, []);
 
-  return { recipes, loading, error };
+  const refresh = useCallback(async () => {
+    try {
+      const normalized = await fetchRecipeList();
+      setRecipes(normalized);
+      saveRecipesToCache(normalized);
+    } catch (error) {
+      console.error('Error refreshing recipes:', error);
+    }
+  }, []);
+
+  return { recipes, loading, error, refresh };
 };
 
 export default useFetchRecipes;

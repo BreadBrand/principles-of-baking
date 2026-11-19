@@ -1,4 +1,4 @@
-import { useState, useEffect, useEffectEvent, useRef } from 'react';
+import { useState, useEffect, useEffectEvent, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import './App.css';
 import Tab from './Components/TabComponents/tab';
@@ -16,16 +16,20 @@ import { useToast } from './Hooks/useToast';
 import { DrawerProvider } from './Context/DrawerProvider';
 import SideDrawer from './Components/SideDrawer/sideDrawer';
 import { RecipeContext } from './Context/RecipeContext';
+import { RecipeActionsContext } from './Context/RecipeActionsContext';
+import { ToastContext } from './Context/ToastContext';
 import IosInstallPrompt from './Components/IosInstallPrompt/iosInstallPrompt';
 import { InstallPromptProvider } from './Context/InstallPromptProvider';
 
 function App() {
-  const { recipes, error } = useFetchRecipes();
+  const { recipes, error, refresh } = useFetchRecipes();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { user } = useAuth();
   const { toasts, addToast, removeToast } = useToast();
   const intl = useIntl();
   const prevUser = useRef(user);
+  const toastActions = useMemo(() => ({ addToast }), [addToast]);
+  const recipeActions = useMemo(() => ({ refreshRecipes: refresh }), [refresh]);
 
   // Closing the login modal on a successful sign-in is a pure, idempotent state
   // update (always sets to the same fixed value), so it's handled with React's
@@ -74,6 +78,8 @@ function App() {
 
   return (
     <RecipeContext.Provider value={recipes}>
+      <RecipeActionsContext.Provider value={recipeActions}>
+      <ToastContext.Provider value={toastActions}>
       <InstallPromptProvider>
       <DrawerProvider>
       <Router>
@@ -102,6 +108,8 @@ function App() {
         </div>
       </DrawerProvider>
       </InstallPromptProvider>
+      </ToastContext.Provider>
+      </RecipeActionsContext.Provider>
     </RecipeContext.Provider>
   );
 }
