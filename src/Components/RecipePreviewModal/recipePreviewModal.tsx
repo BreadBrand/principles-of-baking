@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl, type IntlShape } from "react-intl";
 import useCreateRecipe from "../../Hooks/UseCreateRecipe";
 import { parseFraction } from "../../Utility/parseFraction";
 import { type RecipeDTO, type IngredientDTO, type Unit } from "../../types/dto";
 import { groupByPhase } from "../../Utility/groupByPhase";
+import { hasUnsavedEdits } from "../../Utility/hasUnsavedEdits";
 import "./recipePreviewModal.css";
 import { SYMBOLS } from "../../Constants/untranslated";
 import Button from "../Button/button";
@@ -32,6 +33,21 @@ const emptyIng = (): EditIngredient => ({
   ingredientName: "", quantity: "", unit: "g", rawLine: "", parseOK: true,
 });
 
+const buildInitialState = (recipe: RecipeDTO | null) => ({
+  title: recipe?.title ?? "",
+  description: recipe?.description ?? "",
+  doughIngredients: (recipe?.doughIngredients ?? []).map(ing => ({
+    ...ing,
+    quantity: ing.quantity.toString(),
+    ingredientName: ing.ingredientName || ing.rawLine,
+  })) as EditIngredient[],
+  otherIngredients: (recipe?.otherIngredients ?? []).map(ing => ({
+    ...ing,
+    quantity: ing.quantity.toString(),
+  })) as EditIngredient[],
+  instructions: recipe?.instructions ?? [],
+});
+
 const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePreviewModalProps) => {
   const { createRecipe, loading, error, clearError } = useCreateRecipe();
   const intl = useIntl();
@@ -42,22 +58,56 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
     ? recipe.confidence.ingredients < 0.4 || recipe.confidence.instructions < 0.4
     : false;
 
-  const [title, setTitle] = useState(recipe?.title ?? "");
-  const [description, setDescription] = useState(recipe?.description ?? "");
-  const [doughIngredients, setDoughIngredients] = useState<EditIngredient[]>(() =>
-    (recipe?.doughIngredients ?? []).map(ing => ({
-      ...ing,
-      quantity: ing.quantity.toString(),
-      ingredientName: ing.ingredientName || ing.rawLine,
-    }))
-  );
-  const [otherIngredients, setOtherIngredients] = useState<EditIngredient[]>(
-    (recipe?.otherIngredients ?? []).map(ing => ({
-      ...ing,
-      quantity: ing.quantity.toString(),
-    }))
-  );
-  const [instructions, setInstructions] = useState<string[]>(recipe?.instructions ?? []);
+  const [initialState] = useState(() => buildInitialState(recipe));
+  const [title, setTitle] = useState(initialState.title);
+  const [description, setDescription] = useState(initialState.description);
+  const [doughIngredients, setDoughIngredients] = useState<EditIngredient[]>(initialState.doughIngredients);
+  const [otherIngredients, setOtherIngredients] = useState<EditIngredient[]>(initialState.otherIngredients);
+  const [instructions, setInstructions] = useState<string[]>(initialState.instructions);
+  const [confirmingDiscard, setConfirmingDiscard] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const discardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    dialogRef.current?.focus();
+    return () => previouslyFocused?.focus();
+  }, []);
+
+  const requestClose = () => {
+    if (loading) return;
+    const edited = hasUnsavedEdits(initialState, { title, description, doughIngredients, otherIngredients, instructions });
+    if (edited) {
+      setConfirmingDiscard(true);
+    } else {
+      onClose();
+    }
+  };
+
+  const wasConfirmingDiscard = useRef(false);
+
+  useEffect(() => {
+    if (confirmingDiscard) {
+      discardRef.current?.focus();
+    } else if (wasConfirmingDiscard.current) {
+      dialogRef.current?.focus();
+    }
+    wasConfirmingDiscard.current = confirmingDiscard;
+  }, [confirmingDiscard]);
+
+  const cancelDiscard = () => setConfirmingDiscard(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Escape") return;
+    e.stopPropagation();
+    requestClose();
+  };
+
+  const handleDiscardKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Escape") return;
+    e.stopPropagation();
+    cancelDiscard();
+  };
 
   const updateIng = (
     list: EditIngredient[],
@@ -187,7 +237,16 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
   return (
     <div className="modalOverlay">
-      <div className="parseModalContent">
+      <div
+        className="parseModalContent"
+        inert={confirmingDiscard}
+        role="dialog"
+        aria-modal="true"
+        aria-label={intl.formatMessage({ id: "recipePreviewModal.dialogLabel", defaultMessage: "Review and save recipe" })}
+        tabIndex={-1}
+        ref={dialogRef}
+        onKeyDown={handleKeyDown}
+      >
 
         {manualEntry && (
           <div className="parseBanner">
@@ -196,20 +255,24 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
         )}
 
         <input
-          className="editInput titleInput"
+          className={`editInput titleInput${title.trim() ? "" : " fieldMissing"}`}
+          aria-required="true"
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder={intl.formatMessage({ id: "recipePreviewModal.title", defaultMessage: "Recipe title" })}
           aria-label={intl.formatMessage({ id: "recipePreviewModal.title", defaultMessage: "Recipe title" })}
         />
+        {!title.trim() && <span className="fieldMissingText"><FormattedMessage id="recipePreviewModal.required" defaultMessage="Required" /></span>}
 
         <input
-          className="editInput descriptionInput"
+          className={`editInput descriptionInput${description.trim() ? "" : " fieldMissing"}`}
+          aria-required="true"
           value={description}
           onChange={e => setDescription(e.target.value)}
           placeholder={intl.formatMessage({ id: "recipePreviewModal.description", defaultMessage: "Recipe description" })}
           aria-label={intl.formatMessage({ id: "recipePreviewModal.description", defaultMessage: "Recipe description" })}
         />
+        {!description.trim() && <span className="fieldMissingText"><FormattedMessage id="recipePreviewModal.required" defaultMessage="Required" /></span>}
 
         {confidence && (
           <div className="confidenceSection">
@@ -305,11 +368,36 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
               ? intl.formatMessage({ id: "recipePreviewModal.saving", defaultMessage: "Saving..." })
               : intl.formatMessage({ id: "recipePreviewModal.save", defaultMessage: "Save Recipe" })}
           </Button>
-          <Button onClick={onClose} type="secondary" disabled={loading}>
+          <Button onClick={requestClose} type="secondary" disabled={loading}>
             <FormattedMessage id="recipePreviewModal.close" defaultMessage="Close" />
           </Button>
         </div>
       </div>
+      {confirmingDiscard && (
+        <div className="modalOverlay discardOverlay">
+          <div
+            className="discardDialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="discardPromptText"
+            tabIndex={-1}
+            ref={discardRef}
+            onKeyDown={handleDiscardKeyDown}
+          >
+            <p id="discardPromptText" className="discardPromptText">
+              <FormattedMessage id="recipePreviewModal.discardPrompt" defaultMessage="Discard your changes?" />
+            </p>
+            <div className="discardActions">
+              <Button onClick={cancelDiscard}>
+                <FormattedMessage id="recipePreviewModal.keepEditing" defaultMessage="Keep editing" />
+              </Button>
+              <Button onClick={onClose} type="secondary">
+                <FormattedMessage id="recipePreviewModal.discard" defaultMessage="Discard" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

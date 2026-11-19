@@ -354,3 +354,49 @@
   cursor: text;
   user-select: text;
 }
+
+.fieldMissing {
+  border: 2px solid var(--toast-danger-color);
+}
+
+.fieldMissingText {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--toast-danger-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.discardOverlay {
+  z-index: 1000;
+  animation: overlayFade 0.15s ease-out;
+}
+
+.discardDialog {
+  background: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid rgba(var(--accent-secondary-color-rgb), 0.7);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: modalPop 0.2s ease-out;
+}
+
+.discardDialog:focus {
+  outline: none;
+}
+
+.discardPromptText {
+  margin: 0 0 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.discardActions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

@@ -1,0 +1,43 @@
+@keyframes scrollDownHintBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+.scrollDownHintTrack {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 1.25rem;
+  z-index: 90;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scrollDownHintButton {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+  line-height: 1;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: var(--background-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  animation: scrollDownHintBounce 1.4s ease-in-out infinite;
+}
+
+.scrollDownHintButton:hover {
+  background: var(--accent-secondary-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollDownHintButton {
+    animation: none;
+  }
+}
