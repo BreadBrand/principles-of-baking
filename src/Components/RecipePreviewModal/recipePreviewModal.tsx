@@ -20,6 +20,8 @@ type RecipePreviewModalProps = {
 
 type EditIngredient = Omit<IngredientDTO, 'quantity'> & { quantity: string };
 
+const AUTHOR_MAX_LENGTH = 100;
+
 const confidenceLabel = (score: number, intl: IntlShape): { label: string; color: string } => {
   if (score >= 0.8) return { label: intl.formatMessage({ id: "recipePreviewModal.confidenceHigh", defaultMessage: "High" }), color: "#4caf50" };
   if (score >= 0.6) return { label: intl.formatMessage({ id: "recipePreviewModal.confidenceGood", defaultMessage: "Good" }), color: "rgba(202, 150, 92, 1)" };
@@ -48,6 +50,7 @@ const buildInitialState = (recipe: RecipeDTO | null) => ({
     quantity: ing.quantity.toString(),
   })) as EditIngredient[],
   instructions: recipe?.instructions ?? [],
+  author: recipe?.author ?? "",
   servings: recipe?.servings ?? "",
   prepTime: toDurationFields(recipe?.prepTime),
   cookTime: toDurationFields(recipe?.cookTime),
@@ -71,6 +74,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
   const [doughIngredients, setDoughIngredients] = useState<EditIngredient[]>(initialState.doughIngredients);
   const [otherIngredients, setOtherIngredients] = useState<EditIngredient[]>(initialState.otherIngredients);
   const [instructions, setInstructions] = useState<string[]>(initialState.instructions);
+  const [author, setAuthor] = useState(initialState.author);
   const [servings, setServings] = useState(initialState.servings);
   const [prepTime, setPrepTime] = useState(initialState.prepTime);
   const [cookTime, setCookTime] = useState(initialState.cookTime);
@@ -87,7 +91,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
   const requestClose = () => {
     if (loading) return;
-    const edited = hasUnsavedEdits(initialState, { title, description, doughIngredients, otherIngredients, instructions, servings, prepTime, cookTime, additionalTime });
+    const edited = hasUnsavedEdits(initialState, { title, description, doughIngredients, otherIngredients, instructions, author, servings, prepTime, cookTime, additionalTime });
     if (edited) {
       setConfirmingDiscard(true);
     } else {
@@ -168,6 +172,7 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
       instructions: instructions.filter(s => s.trim()),
       yeastType: detectYeastType(doughIngredients),
       meta: {
+        ...(author.trim() ? { author: author.trim() } : {}),
         ...(servings.trim() ? { servings: servings.trim() } : {}),
         prepTime: prepMinutes,
         cookTime: cookMinutes,
@@ -333,7 +338,18 @@ const RecipePreviewModal = ({ recipe, originalText, onClose, onSaved }: RecipePr
 
         <h2><FormattedMessage id="recipePreviewModal.details" defaultMessage="Details" /></h2>
         <div className="detailsGrid">
-          <label className="servingsField">
+          <label className="detailsTextField">
+            <span className="durationLabel"><FormattedMessage id="recipePreviewModal.authorLabel" defaultMessage="Author" /></span>
+            <input
+              type="text"
+              className="editInput authorInput"
+              value={author}
+              maxLength={AUTHOR_MAX_LENGTH}
+              onChange={e => setAuthor(e.target.value)}
+              placeholder={intl.formatMessage({ id: "recipePreviewModal.authorPlaceholder", defaultMessage: "Original recipe author" })}
+            />
+          </label>
+          <label className="detailsTextField">
             <span className="durationLabel"><FormattedMessage id="recipePreviewModal.servingsLabel" defaultMessage="Servings" /></span>
             <input
               type="text"

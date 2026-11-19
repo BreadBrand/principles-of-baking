@@ -56,7 +56,7 @@ describe("RecipePreviewModal — section header rename", () => {
 });
 
 describe("RecipePreviewModal — details", () => {
-  const withDetails: RecipeDTO = { ...baseRecipe, servings: "5", prepTime: 120, cookTime: 150 };
+  const withDetails: RecipeDTO = { ...baseRecipe, author: "Jane Doe", servings: "5", prepTime: 120, cookTime: 150 };
 
   const field = (name: string) => screen.getByLabelText(name) as HTMLInputElement;
 
@@ -68,6 +68,7 @@ describe("RecipePreviewModal — details", () => {
     render(<RecipePreviewModal recipe={withDetails} onClose={() => {}} />);
 
     expect(field("Servings").value).toBe("5");
+    expect(field("Author").value).toBe("Jane Doe");
     expect(field("Prep time, hours").value).toBe("2");
     expect(field("Prep time, minutes").value).toBe("");
     expect(field("Cook time, hours").value).toBe("2");
@@ -79,6 +80,7 @@ describe("RecipePreviewModal — details", () => {
     render(<RecipePreviewModal recipe={baseRecipe} onClose={() => {}} />);
 
     expect(field("Servings").value).toBe("");
+    expect(field("Author").value).toBe("");
     expect(field("Prep time, hours").value).toBe("");
     expect(field("Cook time, minutes").value).toBe("");
   });
@@ -89,10 +91,12 @@ describe("RecipePreviewModal — details", () => {
     fireEvent.change(field("Prep time, hours"), { target: { value: "1" } });
     fireEvent.change(field("Prep time, minutes"), { target: { value: "15" } });
     fireEvent.change(field("Additional time, minutes"), { target: { value: "20" } });
+    fireEvent.change(field("Author"), { target: { value: "  John Smith " } });
     fireEvent.click(screen.getByText("Save Recipe"));
 
     await vi.waitFor(() => expect(createRecipe).toHaveBeenCalledTimes(1));
     expect(createRecipe.mock.calls[0][0].meta).toEqual({
+      author: "John Smith",
       servings: "5",
       prepTime: 75,
       cookTime: 150,
@@ -100,7 +104,7 @@ describe("RecipePreviewModal — details", () => {
     });
   });
 
-  it("omits servings from meta when it is blank", async () => {
+  it("omits servings and author from meta when they are blank", async () => {
     render(<RecipePreviewModal recipe={baseRecipe} onClose={() => {}} />);
 
     fireEvent.click(screen.getByText("Save Recipe"));
@@ -126,6 +130,21 @@ describe("RecipePreviewModal — details", () => {
 
     expect(field("Prep time, minutes")).toHaveAttribute("aria-invalid", "true");
     expect(field("Cook time, minutes")).toHaveAttribute("aria-invalid", "false");
+  });
+
+  it("limits the author to the length the backend accepts", () => {
+    render(<RecipePreviewModal recipe={withDetails} onClose={() => {}} />);
+
+    expect(field("Author")).toHaveAttribute("maxlength", "100");
+  });
+
+  it("asks before discarding when only the author was edited", () => {
+    render(<RecipePreviewModal recipe={withDetails} onClose={() => {}} />);
+
+    fireEvent.change(field("Author"), { target: { value: "Someone Else" } });
+    fireEvent.click(screen.getByText("Close"));
+
+    expect(screen.getByText("Discard your changes?")).toBeInTheDocument();
   });
 
   it("asks before discarding when only a detail was edited", () => {

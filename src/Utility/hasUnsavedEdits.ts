@@ -13,6 +13,7 @@ export type RecipeEditState = {
   doughIngredients: IngredientEditState[];
   otherIngredients: IngredientEditState[];
   instructions: string[];
+  author: string;
   servings: string;
   prepTime: DurationFields;
   cookTime: DurationFields;
@@ -32,6 +33,7 @@ const comparable = (state: RecipeEditState) => ({
   doughIngredients: state.doughIngredients.map(comparableIngredient),
   otherIngredients: state.otherIngredients.map(comparableIngredient),
   instructions: state.instructions,
+  author: state.author,
   servings: state.servings,
   prepTime: state.prepTime,
   cookTime: state.cookTime,

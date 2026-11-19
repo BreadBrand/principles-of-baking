@@ -10,6 +10,7 @@ const baseState = (): RecipeEditState => ({
   otherIngredients: [],
   instructions: ["Mix", "Bake"],
   servings: "4",
+  author: "Jane Doe",
   prepTime: { hours: "1", minutes: "" },
   cookTime: { hours: "", minutes: "45" },
   additionalTime: { hours: "", minutes: "" },
@@ -58,6 +59,10 @@ describe("hasUnsavedEdits", () => {
     const current = baseState();
     current.doughIngredients[0] = { ...current.doughIngredients[0], rawLine: "500 g bread flour", parseOK: true } as typeof current.doughIngredients[0];
     expect(hasUnsavedEdits(baseState(), current)).toBe(false);
+  });
+
+  it("is true when the author changes", () => {
+    expect(hasUnsavedEdits(baseState(), { ...baseState(), author: "John Smith" })).toBe(true);
   });
 
   it("is true when servings change", () => {

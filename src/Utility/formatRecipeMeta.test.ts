@@ -10,9 +10,10 @@ const baseMeta: Meta = {
 };
 
 describe("formatRecipeMeta", () => {
-  it("lists servings, prep, cook and additional time in that order", () => {
-    const meta: Meta = { ...baseMeta, servings: "5", prepTime: 120, cookTime: 150, additionalTime: 30 };
+  it("lists author, servings, prep, cook and additional time in that order", () => {
+    const meta: Meta = { ...baseMeta, author: "Jane Doe", servings: "5", prepTime: 120, cookTime: 150, additionalTime: 30 };
     expect(formatRecipeMeta(meta, intl)).toEqual([
+      "By Jane Doe",
       "Servings: 5",
       "Prep: 2 h",
       "Cook: 2 h 30 min",
@@ -21,7 +22,7 @@ describe("formatRecipeMeta", () => {
   });
 
   it("skips fields that are missing or zero", () => {
-    const meta: Meta = { ...baseMeta, servings: "", prepTime: 0, cookTime: 45 };
+    const meta: Meta = { ...baseMeta, author: "  ", servings: "", prepTime: 0, cookTime: 45 };
     expect(formatRecipeMeta(meta, intl)).toEqual(["Cook: 45 min"]);
   });
 
